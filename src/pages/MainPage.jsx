@@ -20,6 +20,10 @@ const MainPage = () => {
   const handleTestPage = () => {
     nav("/test");
   };
+  
+  const handleNewPage = ()=>{
+    nav("/new");
+  };
 
   return (
     <div>
@@ -32,6 +36,7 @@ const MainPage = () => {
       <button onClick={handleShopPage}>상점페이지로 이동하기</button>
       <button onClick={handleCommunityPage}>커뮤니티페이지로 이동하기</button>
       <button onClick={handleTestPage}>테스트로 이동하기</button>
+      <button onClick={handleNewPage}>New로 이동하기</button>
     </div>
   );
 };

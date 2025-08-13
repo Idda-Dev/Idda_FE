@@ -6,8 +6,8 @@ import MissionIcon from "../assets/MissionIcon.png";
 import ShopIcon from "../assets/ShopIcon.png";
 import CommunityIcon from "../assets/CommunityIcon.png";
 
-const TapBar = ({ icons = {} }) => {
-  // 기본 아이콘과 전달받은 아이콘 합치기 (props가 있으면 덮어쓰기)
+const TabBar = ({ icons = {}, backgroundColor = "#E8F0FF" }) => {
+  // 기본 아이콘과 전달받은 아이콘 합치기, 배경색 재설정
   const finalIcons = {
     home: icons.home || HomeIcon,
     mission: icons.mission || MissionIcon,
@@ -16,7 +16,7 @@ const TapBar = ({ icons = {} }) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper backgroundColor={backgroundColor}>
       <TabButton>
         <TabIcon src={finalIcons.home} alt="홈" />
         홈
@@ -48,7 +48,7 @@ const Wrapper = styled.div`
   align-items: center;
   z-index: 100;
 
-  background-color: #E8F0FF;
+  background-color: ${({ backgroundColor }) => backgroundColor};
   border-radius: 16px 16px 0 0;
 `;
 
@@ -72,12 +72,13 @@ const TabButton = styled.button`
 const TabIcon = styled.img`
   width: 20px;
   height: 20px;
-  margin-bottom: 2px; /* 아이콘과 글자 사이 간격 */
+  margin-bottom: 2px; 
 `;
 
-export default TapBar;
+export default TabBar;
 
-// 페이지에서 아이콘 변경
+
+// 페이지에서 아이콘, 배경색 변경
 
 // import TapBar from "../components/TapBar";
 // import CustomHomeIcon from "../assets/CustomHomeIcon.png";
@@ -86,7 +87,10 @@ export default TapBar;
 //   return (
 //     <div>
 //       {/* 페이지 내용 */}
-//       <TapBar icons={{ home: CustomHomeIcon }} />
+//       <TapBar 
+//          icons={{ home: CustomHomeIcon }} 
+//          backgroundColor="#FFF0E0"
+//        />
 //     </div>
 //   );
 // }
