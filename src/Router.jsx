@@ -4,6 +4,7 @@ import MainPage from "./pages/MainPage";
 import MissonPage from "./pages/MissonPage";
 import CommunityPage from "./pages/CommunityPage";
 import ShopPage from "./pages/ShopPage";
+import TestPage from "./pages/TestPage";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
       { path: "/mission", element: <MissonPage /> },
       { path: "/community", element: <CommunityPage /> },
       { path: "/shop", element: <ShopPage /> },
+      { path: "/test", element: <TestPage /> },
     ],
   },
 ]);

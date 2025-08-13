@@ -17,6 +17,10 @@ const MainPage = () => {
     nav("/community");
   };
 
+  const handleTestPage = () => {
+    nav("/test");
+  };
+
   return (
     <div>
       <Column>
@@ -27,6 +31,7 @@ const MainPage = () => {
       <button onClick={handleMissionPage}>미션페이지로 이동하기</button>
       <button onClick={handleShopPage}>상점페이지로 이동하기</button>
       <button onClick={handleCommunityPage}>커뮤니티페이지로 이동하기</button>
+      <button onClick={handleTestPage}>테스트로 이동하기</button>
     </div>
   );
 };
