@@ -26,11 +26,12 @@ const Container = styled.div`
   height: 100vh;
   align-items: center;
   background-color: #f8faff;
+  padding-bottom: 2.5rem;
 `;
 
 const Wrapper = styled.div`
   width: calc(74% + 2rem);
-  height: calc(100% - 10% - 1.6rem); /* 헤더 + nocation 높이 제외 */
+  height: calc(100% - 52px - 2.5rem); /* 헤더 + nocation 높이 제외 */
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

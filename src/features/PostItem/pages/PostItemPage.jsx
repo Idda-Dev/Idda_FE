@@ -87,7 +87,7 @@ const CommentInputWrapper = styled.div`
   width: 100%;
 
   /* 인풋 실제 높이를 px로 고정 */
-  height: 56px;
+  height: 3.5rem;
 
   display: flex;
   justify-content: center;

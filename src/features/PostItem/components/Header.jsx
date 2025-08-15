@@ -19,9 +19,8 @@ const Container = styled.div`
   align-items: center;
 
   /* 핵심: flex 컨텍스트에서 높이 고정 + 수축 방지 */
-  flex: 0 0 70px;
-  height: 70px;
-  min-height: 70px;
+  flex: 0 0 52px;
+  height: 52px;
 
   width: 100%;
   background-color: #E8F0FF;

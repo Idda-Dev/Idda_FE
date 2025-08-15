@@ -45,7 +45,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column; 
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 13px;
   border-radius: 8px;
   background-color: #fff;
   box-shadow: 0px -1px 6px rgba(0, 0, 0, 0.06);
@@ -57,7 +57,7 @@ const ContentBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  height: 6rem;
+  height: 5.5rem;
   padding: 0 1.3rem ;
   padding-top: 1rem;
 `;
