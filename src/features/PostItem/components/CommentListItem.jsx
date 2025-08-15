@@ -1,25 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import ProfileIcon from "../assets/ProfileIcon.png"; // 확장자 확인
+import ProfileIcon from "../assets/ProfileIcon.png";
 import ModalIcon from "../assets/ModalIcon.png";
+import CommentModal from '../../CommentModal/pages/CommentModalPage';
 
 const CommentListItem = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <Container>
       <Wrapper>
         <ProfileImage src={ProfileIcon} alt="프로필 이미지" />
         <NickName>메에</NickName>
-        <ModalButton>
+        <ModalButton onClick={() => setIsModalOpen(true)}>
           <img src={ModalIcon} alt="액션 버튼" />
         </ModalButton>
       </Wrapper>
-      <Content>
-        이 책 재밌나여?
-      </Content>
+
+      <Content>이 책 재밌나여?</Content>
       <Time>08/25 15:00</Time>
+
+      {/* 모달 */}
+      <CommentModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </Container>
   );
 };
+
+export default CommentListItem;
+
 
 const Container = styled.div`
   background-color: #F8FAFF;
@@ -108,4 +119,4 @@ const Time = styled.p`
   color: #7F7F7F;
 `;
 
-export default CommentListItem;
+
