@@ -6,6 +6,7 @@ import CommunityPage from "./pages/CommunityPage";
 import ShopPage from "./pages/ShopPage";
 import TestPage from "./pages/TestPage";
 import NewPage from "./pages/NewPage";
+import PostItemPage from "./features/PostItem/pages/PostItemPage";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
       { path: "/shop", element: <ShopPage /> },
       { path: "/test", element: <TestPage /> },
       { path: "/new", element: <NewPage /> },
+      { path: "/community/posts/postitem", element: <PostItemPage /> },
     ],
   },
 ]);
