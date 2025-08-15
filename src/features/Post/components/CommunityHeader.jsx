@@ -1,33 +1,25 @@
-import React from 'react';
-import BackIcon from "../assets/BackIcon.png";
+import React from 'react'
 import styled from 'styled-components';
+import BackIcon from "../../PostItem/assets/BackIcon.png"
 
-const Header = () => {
+const CommunityHeader = () => {
   return (
     <Container>
       <Back src={BackIcon} alt="뒤로가기" />
       <Title> 다같이 한걸음</Title>
     </Container>
   );
-};
-
+}
 
 const Container = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  /* 핵심: flex 컨텍스트에서 높이 고정 + 수축 방지 */
-  flex: 0 0 70px;
   height: 70px;
-  min-height: 70px;
-
   width: 100%;
   background-color: #E8F0FF;
-  box-sizing: border-box;
 `;
-
 
 const Back = styled.img`
   position: absolute;
@@ -46,4 +38,4 @@ const Title = styled.p`
   line-height: 20px;
 `;
 
-export default Header;
+export default CommunityHeader;
