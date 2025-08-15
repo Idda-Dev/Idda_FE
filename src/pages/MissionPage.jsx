@@ -5,9 +5,12 @@ import styled from "styled-components";
 import Calendar from "../features/MissonCalendar/components/Calendar";
 import TabBar from "../components/TabBar.jsx";
 
+import CalendarModal from "../features/MissonCalendar/components/CalendarModal.jsx";
+
 import PupleMissionIcon from "../assets/PupleMissionIcon.png";
 import PrevIcon from "../features/MissonCalendar/assets/PrevIcon.png";
 import NextIcon from "../features/MissonCalendar/assets/NextIcon.png";
+
 import Photo from "../features/PostItem/assets/ProfileIcon.png";
 
 // ui보려고 캘린더 크기조절되는거 걍 과거현재미래로 나눠둠 !
@@ -75,9 +78,9 @@ const MissonPage = () => {
         )}
 
         {selectedDateType === "future" && (
-          <Modal>
-            <div>아직 미션이 없어요!</div>
-          </Modal>
+          <ModalBox>
+              <CalendarModal isOpen={true} onClose={() => setSelectedDateType(null)}/>
+          </ModalBox>
         )}
 
         {!isPast && <Massege>한 걸음, 두 걸음, 같이 걸어요.</Massege>}
@@ -98,6 +101,7 @@ const Container = styled.div`
 
 const ContentWrapper = styled.div`
   height: calc(100% - 2.5rem);
+  
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -183,17 +187,19 @@ const PhotoBox = styled.div`
   align-items: center;
 `;
 
-const Modal = styled.div`
-  position: fixed;
+const ModalBox = styled.div`
+  position: absolute;       // fixed 대신 absolute
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
+  background: rgba(0,0,0,0.6);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+  box-sizing: border-box;
 `;
 
 const Massege = styled.p`
