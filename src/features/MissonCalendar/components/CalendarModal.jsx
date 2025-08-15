@@ -37,9 +37,8 @@ const Overlay = styled.div`
 `;
 
 const ContentBox = styled.div`
-  background: white;
   padding: 0.9rem 2rem;
-  width: 55%;
+  width: 33%;
   border-radius: 16px;
   min-width: 250px;
   max-width: 80%;
@@ -52,6 +51,7 @@ const ContentBox = styled.div`
 `;
 
 const Star = styled.img`
+  margin-top: 0.2rem;
   width: 1.1rem;
   height: 1.1rem;
 `;

@@ -12,6 +12,7 @@ import PrevIcon from "../features/MissonCalendar/assets/PrevIcon.png";
 import NextIcon from "../features/MissonCalendar/assets/NextIcon.png";
 
 import Photo from "../features/PostItem/assets/ProfileIcon.png";
+import Record from "../features/MissonCalendar/components/Record.jsx";
 
 // ui보려고 캘린더 크기조절되는거 걍 과거현재미래로 나눠둠 !
 
@@ -64,17 +65,9 @@ const MissonPage = () => {
         </CalendarBox>
 
         {isPast && (
-          <PhotoBox isPast={isPast}>
-            <img
-              src={Photo}
-              alt="미션 사진"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-            />
-          </PhotoBox>
+          <RecordBox isPast={isPast}>
+            <Record/>
+          </RecordBox>
         )}
 
         {selectedDateType === "future" && (
@@ -100,8 +93,7 @@ const Container = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  height: calc(100% - 2.5rem);
-  
+  height: calc(100% - 1rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -109,19 +101,26 @@ const ContentWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
-  width: 100%;
+  position: fixed;        /* 화면에 고정 */
+  top: 6rem;              /* 상단에서 1rem */
+  left: 50%;              /* 화면 가로 중앙 */
+  transform: translateX(-50%); /* 중앙 정렬 보정 */
+  
+  width: 60%;
   height: 2rem;
+
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
+  z-index: 10;  /* 다른 요소 위에 표시 */
 `;
+
 
 const MonthBox = styled.div`
   position: relative;
   height: 100%;
-  width: 35%;
-  aspect-ratio: 55 / 13;
+  width: 30%;
   border-radius: 36px;
   background-color: #b1aaff;
   background-repeat: no-repeat;
@@ -168,20 +167,20 @@ const PrevButton = styled(ArrowButton)``;
 const NextButton = styled(ArrowButton)``;
 
 const CalendarBox = styled.div`
-  padding: 3rem;
-  width: ${({ isPast }) => (isPast ? "90%" : "100%")};
+  padding: ${({ isPast }) => (isPast ? "2rem 3rem 0.5rem 3rem" : "3rem")};
+  width: ${({ isPast }) => (isPast ? "90%" : "95%")};
   max-width: 480px;
-  height: ${({ isPast }) => (isPast ? "21rem" : "30rem")};
+  height: ${({ isPast }) => (isPast ? "17rem" : "28rem")};
   display: flex;
+  margin-top: 3rem;
+  margin-bottom: ${({ isPast }) => (isPast ? "1rem" : "0")};
   justify-content: center;
   background-color: white;
 `;
 
-const PhotoBox = styled.div`
-  width: ${({ isPast }) => (isPast ? "70%" : "100%")};
-  height: 10rem;
-  background-color: #eee;
-  margin-top: 1rem;
+const RecordBox = styled.div`
+  width: ${({ isPast }) => (isPast ? "66%" : "100%")};
+  height: 17rem;
   display: flex;
   justify-content: center;
   align-items: center;

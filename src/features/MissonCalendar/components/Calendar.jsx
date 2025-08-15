@@ -83,7 +83,6 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-auto-rows: 1fr;
-  row-gap: 7px;
 `;
 
 const DayCell = styled.div`
