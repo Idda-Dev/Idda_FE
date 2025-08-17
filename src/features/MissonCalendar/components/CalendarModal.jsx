@@ -37,8 +37,8 @@ const Overlay = styled.div`
 `;
 
 const ContentBox = styled.div`
-  padding: 0.9rem 2rem;
-  width: 33%;
+  padding: 0.8rem 1.5rem;
+  width: 19%;
   border-radius: 16px;
   min-width: 250px;
   max-width: 80%;
@@ -52,18 +52,18 @@ const ContentBox = styled.div`
 
 const Star = styled.img`
   margin-top: 0.2rem;
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1rem;
+  height: 1rem;
 `;
 
 const DefaultMission = styled.img`
-  width: 13.5rem;   // 가로 10rem
+  width: 100%;   // 가로 10rem
   height: auto;   // 원본 비율 유지
 `;
 
 
 const ContentText = styled.div`
-  width: 13.5rem;
+  width: 100%;
   font-size: 0.76rem;
   color: #444444;
   text-align: start;
@@ -84,6 +84,7 @@ const BackButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end; /* 오른쪽 정렬 */
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.3rem;
+  padding: 0;
 `;
 

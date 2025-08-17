@@ -21,17 +21,18 @@ const CommentModalPage = ({ isOpen, onClose }) => {
 export default CommentModalPage;
 
 const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  z-index: 999;
+   position: absolute;  /* 🔥 Container 기준으로만 덮음 */
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background-color: rgba(0,0,0,0.6);
+   display: flex;
+   justify-content: center;
+   align-items: flex-end;
+   z-index: 999;
 `;
+
 
 const Modal = styled.div`
   width: 280px;
