@@ -35,7 +35,7 @@ const Mission = () => {
         <img
           src={CalendarIcon}
           alt="CalendarIcon"
-          style={{ width: "10%", cursor: "pointer" }}
+          style={{ width: "12%", cursor: "pointer" }}
         />
       </Row>
       <ImageWrapper>
