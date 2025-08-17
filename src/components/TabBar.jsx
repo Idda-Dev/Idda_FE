@@ -6,6 +6,17 @@ import MissionIcon from "../assets/MissionIcon.png";
 import ShopIcon from "../assets/ShopIcon.png";
 import CommunityIcon from "../assets/CommunityIcon.png";
 
+// 탭바 가져다 쓸때
+// 페이지 컨테이너 설정 다음과 같이 하기 (absolute - relative 로 설정해둠)
+// const Container = styled.div`
+//   width: 100%;
+//   margin: 0 auto;
+//   position: relative;
+//   min-height: 100%;
+//   display: flex;
+//   flex-direction: column;
+// `
+
 const TabBar = ({ icons = {}, backgroundColor = "#E8F0FF" }) => {
   // 기본 아이콘과 전달받은 아이콘 합치기, 배경색 재설정
   const finalIcons = {
@@ -39,10 +50,11 @@ const TabBar = ({ icons = {}, backgroundColor = "#E8F0FF" }) => {
 
 const Wrapper = styled.div`
   position: absolute;
-  padding: 1.7rem 4rem;
+  padding: 1.5rem 2rem;
   bottom: 0;
   width: 100%;
   height: 2.5rem;
+
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -81,14 +93,14 @@ export default TabBar;
 // 페이지에서 아이콘, 배경색 변경
 
 // import TapBar from "../components/TapBar";
-// import CustomHomeIcon from "../assets/CustomHomeIcon.png";
+// import PurpleHomeIcon from "../assets/PurpleHomeIcon.png";
 
 // function MissonPage() {
 //   return (
 //     <div>
 //       {/* 페이지 내용 */}
 //       <TapBar 
-//          icons={{ home: CustomHomeIcon }} 
+//          icons={{ home: PurpleHomeIcon }} 
 //          backgroundColor="#FFF0E0"
 //        />
 //     </div>
