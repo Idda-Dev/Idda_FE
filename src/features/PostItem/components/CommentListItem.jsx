@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ProfileIcon from "../assets/ProfileIcon.png";
 import ModalIcon from "../assets/ModalIcon.png";
-import CommentModal from '../../CommentModal/pages/CommentModalPage';
+import CommentModal from './CommentModalPage';
 
 const CommentListItem = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
