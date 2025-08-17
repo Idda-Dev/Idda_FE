@@ -1,3 +1,4 @@
+// ShopHeader.jsx
 import React from 'react';
 import BackIcon from "../../PostItem/assets/BackIcon.png";
 import styled from 'styled-components';
@@ -11,22 +12,22 @@ const ShopHeader = () => {
   );
 };
 
-
 const Container = styled.div`
-  position: relative;
+  position: absolute;
+  top: 0;
+  z-index: 10;
+
   display: flex;
   justify-content: center;
   align-items: center;
 
-  /* 핵심: flex 컨텍스트에서 높이 고정 + 수축 방지 */
   flex: 0 0 52px;
   height: 52px;
-
   width: 100%;
+
   background-color: #E8F0FF;
   box-sizing: border-box;
 `;
-
 
 const Back = styled.img`
   position: absolute;
