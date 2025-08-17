@@ -120,7 +120,7 @@ const Wrapper = styled.div`
 const MonthBox = styled.div`
   position: relative;
   height: 100%;
-  width: 30%;
+  width: 15%;
   border-radius: 36px;
   background-color: #b1aaff;
   background-repeat: no-repeat;
