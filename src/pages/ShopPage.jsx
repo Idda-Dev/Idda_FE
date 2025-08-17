@@ -40,7 +40,8 @@ const Wrapper = styled.div`
 
 const ShopListWrapper = styled.div`
   flex: 1;          /* 남은 공간 모두 차지 */
-  width: 73%;
+  width: 100%;
+  padding: 0 3rem;
   display: flex;
   flex-direction: column;
   overflow-y: auto; 

@@ -32,12 +32,12 @@ const Container = styled.div`
     align-items: center;
 
     margin-top: 2rem;
-    padding: 1rem 1.7rem;
+    padding: 0 1.5rem;
 `
 
 const Profile=styled.img`
-  height: 5.5rem;
-  width: 5.5rem;
+  height: 5.8rem;
+  width: 5.8rem;
   border-radius: 50%;
 `
 const Content=styled.div`
@@ -45,7 +45,7 @@ const Content=styled.div`
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
-  height: 5.5rem;
+  height: 5.8rem;
 `
 
 const Wrapper=styled.div`
@@ -57,11 +57,11 @@ const Wrapper=styled.div`
   gap:0.4rem;
 `
 const Icon=styled.img`
-  height: 1.7rem;
+  height: 1.6rem;
   width: auto;
 `
 const MyCandy=styled.p`
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 550;
   color: white;
 `
@@ -73,7 +73,7 @@ const Button = styled.button`
   font-size: 0.6rem;
   font-weight: 550;
   cursor: pointer;
-  width: 75%;                
+  width: 70%;                
   height: 1.5rem;         
   text-align: center;
 
@@ -81,7 +81,7 @@ const Button = styled.button`
   justify-content: center;   /* 수평 중앙 */
   align-items: center;       /* 수직 중앙 */
 
-  padding: 0.7rem 0;                /* 불필요한 padding 제거 */
+  padding: 0.8rem 0;                /* 불필요한 padding 제거 */
 
   border: none;              /* 테두리 제거 */
   outline: none;             /* 클릭/포커스 아웃라인 제거 */
