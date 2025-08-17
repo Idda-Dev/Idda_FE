@@ -9,8 +9,6 @@ import ReverseCard from "./assets/ReverseCard.png";
 import PlusButton from "./assets/PlusButton.png";
 
 const Mission = () => {
-  const options = ["잘 맞아요", "무난해요", "안 맞아요"];
-
   const fileInputRef = useRef(null);
 
   const handleImageClick = () => {
@@ -22,19 +20,18 @@ const Mission = () => {
     if (f) setFile(f);
   };
 
-  const [selected, setSelected] = useState(""); // 취향 선택
   const [file, setFile] = useState(null); // 사진 첨부
   const [note, setNote] = useState(""); // 글 입력
 
-  const isReady = !!(selected && file && note.trim()); // ✅ 세 조건 모두 충족?
+  const isReady = !!(file && note.trim()); // ✅ 세 조건 모두 충족?
 
   return (
     <MainContainer>
       <Row style={{ justifyContent: "space-between", marginBottom: "20px" }}>
-        <Row style={{ gap: "10px" }}>
-          <img src={Star1} alt="Star" style={{ width: "10%" }} />
-          <TodayInfoBox>오늘의 미션</TodayInfoBox>
-        </Row>
+        <TodayInfoBox>
+          <img src={Star1} alt="Star" style={{ width: "20%" }} />
+          오늘의 미션
+        </TodayInfoBox>
         <img
           src={CalendarIcon}
           alt="CalendarIcon"
@@ -50,19 +47,7 @@ const Mission = () => {
         </TextOverlayRegular>
         <CandyOverlay>사탕 5개</CandyOverlay>
       </ImageWrapper>
-      <TastyQuestion>오늘 미션은 취향에 맞았나요?</TastyQuestion>
-      <Row style={{ justifyContent: "space-between" }}>
-        {options.map((option) => (
-          <TastyOptionButton
-            key={option}
-            $active={selected === option}
-            onClick={() => setSelected(option)}
-          >
-            {option}
-          </TastyOptionButton>
-        ))}
-      </Row>
-      <Divider />
+
       <Row style={{ justifyContent: "space-between", marginBottom: "20px" }}>
         <Row style={{ gap: "10px" }}>
           <img src={Star1} alt="Star" style={{ width: "10%" }} />
@@ -110,12 +95,13 @@ const TodayInfoBox = styled.div`
   box-shadow: -10px 0 20px 0 rgba(0, 0, 0, 0.06);
   min-width: 120px;
   height: 30px;
-  padding: 5px 31px;
+  padding: 5px 15px 5px 5px;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+
+  display: flex;
+  gap: 6px;
   flex-shrink: 0;
-  line-height: 20px; /* 153.846% */
   font-weight: bold;
   font-size: 13px;
 `;
