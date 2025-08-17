@@ -21,10 +21,12 @@ const CommentListItem = () => {
       <Time>08/25 15:00</Time>
 
       {/* 모달 */}
-      <CommentModal 
+      <ModalContainer>
+        <CommentModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
-      />
+        />
+      </ModalContainer>
     </Container>
   );
 };
@@ -118,5 +120,10 @@ const Time = styled.p`
   font-size: 0.55rem;
   color: #7F7F7F;
 `;
+
+const ModalContainer = styled.div`
+  width: 100%
+;
+`
 
 

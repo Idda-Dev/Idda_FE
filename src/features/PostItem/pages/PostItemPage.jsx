@@ -57,7 +57,7 @@ const PostItemPage = () => {
 const Container = styled.div`
   width: 100%;
   max-width: 800px;
-  height: 100vh;
+  height: 100%;
   position: relative;
   background-color: #F8FAFF;
   display: flex;
