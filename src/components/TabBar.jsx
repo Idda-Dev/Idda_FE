@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom"; 
 
 // 기본아이콘
 import HomeIcon from "../assets/HomeIcon.png";
@@ -18,7 +19,8 @@ import CommunityIcon from "../assets/CommunityIcon.png";
 // `
 
 const TabBar = ({ icons = {}, backgroundColor = "#E8F0FF" }) => {
-  // 기본 아이콘과 전달받은 아이콘 합치기, 배경색 재설정
+  const navigate = useNavigate(); // 페이지 이동 함수
+
   const finalIcons = {
     home: icons.home || HomeIcon,
     mission: icons.mission || MissionIcon,
@@ -28,25 +30,26 @@ const TabBar = ({ icons = {}, backgroundColor = "#E8F0FF" }) => {
 
   return (
     <Wrapper backgroundColor={backgroundColor}>
-      <TabButton>
+      <TabButton onClick={() => navigate("/")}>
         <TabIcon src={finalIcons.home} alt="홈" />
         홈
       </TabButton>
-      <TabButton>
+      <TabButton onClick={() => navigate("/mission")}>
         <TabIcon src={finalIcons.mission} alt="미션" />
         미션
       </TabButton>
-      <TabButton>
+      <TabButton onClick={() => navigate("/shop")}>
         <TabIcon src={finalIcons.shop} alt="상점" />
         상점
       </TabButton>
-      <TabButton>
+      <TabButton onClick={() => navigate("/community")}>
         <TabIcon src={finalIcons.community} alt="게시판" />
         게시판
       </TabButton>
     </Wrapper>
   );
 };
+
 
 const Wrapper = styled.div`
   position: absolute;
