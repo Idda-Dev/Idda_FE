@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
-import CouponHeader from '../components/CouponHeader';
+import Header from '../../../components/Header';
 import Coupons from '../components/Coupons';
 
 const MyCouponsPage = () => {
@@ -8,7 +8,7 @@ const MyCouponsPage = () => {
 
   return (
     <Container>
-      <CouponHeader />
+      <Header title="내 쿠폰"/>
 
       <ButtonGroup>
         <TabButton 
@@ -39,7 +39,7 @@ const Container = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  padding-top: 52px; // 헤더 높이만큼 띄움
+  padding-top: 3.5rem; // 헤더 높이만큼 띄움
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

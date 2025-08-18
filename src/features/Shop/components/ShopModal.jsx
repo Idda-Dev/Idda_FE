@@ -71,7 +71,7 @@ const Button = styled.button`
   color: black;
   border: none;
   border-radius: 16px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   padding: 0.5rem 2rem;
   cursor: pointer;
   display: flex;

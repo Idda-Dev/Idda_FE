@@ -9,16 +9,22 @@ const CommunityHeader = () => {
       <Title> 다같이 한걸음</Title>
     </Container>
   );
-}
+};
 
 const Container = styled.div`
-  position: relative;
+  position: absolute;
+  top: 0;
+  z-index: 10;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 52px;
+
+  height: 3.5rem;
   width: 100%;
+
   background-color: #E8F0FF;
+  box-sizing: border-box;
 `;
 
 const Back = styled.img`

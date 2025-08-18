@@ -1,31 +1,30 @@
 import React from 'react';
-import BackIcon from "../../PostItem/assets/BackIcon.png";
+import BackIcon from "../features/PostItem/assets/BackIcon.png";
 import styled from 'styled-components';
 
-const CouponHeader = () => {
+const Header = ({title}) => {
   return (
     <Container>
       <Back src={BackIcon} alt="뒤로가기" />
-      <Title> 내 쿠폰</Title>
+      <Title> {title}</Title>
     </Container>
   );
 };
 
+
 const Container = styled.div`
   position: absolute;
-  top: 0;
-  z-index: 10;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
+  top: 0;
   height: 3.5rem;
-  width: 100%;
 
+  width: 100%;
   background-color: #E8F0FF;
   box-sizing: border-box;
 `;
+
 
 const Back = styled.img`
   position: absolute;
@@ -44,4 +43,4 @@ const Title = styled.p`
   line-height: 20px;
 `;
 
-export default CouponHeader;
+export default Header;

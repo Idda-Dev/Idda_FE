@@ -13,14 +13,14 @@ const Header = () => {
 
 
 const Container = styled.div`
-  position: relative;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
 
   /* 핵심: flex 컨텍스트에서 높이 고정 + 수축 방지 */
-  flex: 0 0 52px;
-  height: 52px;
+
+  height: 3.5rem;
 
   width: 100%;
   background-color: #E8F0FF;

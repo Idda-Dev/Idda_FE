@@ -50,7 +50,7 @@ const TabBar = ({ icons = {}, backgroundColor = "#E8F0FF" }) => {
 
 const Wrapper = styled.div`
   position: absolute;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 3rem;
   bottom: 0;
   width: 100%;
   height: 2.5rem;

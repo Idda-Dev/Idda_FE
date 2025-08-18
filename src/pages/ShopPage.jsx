@@ -1,5 +1,5 @@
 import React from "react";
-import ShopHeader from "../features/Shop/components/ShopHeader";
+import Header from "../components/Header";
 import TabBar from "../components/TabBar";
 import Box from "../features/Shop/components/Box";
 import ShopList from "../features/Shop/components/ShopList";
@@ -10,7 +10,7 @@ import PurpleShopIcon from "../assets/PurpleShopIcon.png"
 const ShopPage = () => {
   return (
     <Wrapper>
-      <ShopHeader />
+      <Header title="솜뭉치 가게" />
       <CharacterProfile />
       <Box />
       <ShopListWrapper>
@@ -28,7 +28,7 @@ const Wrapper = styled.div`
   width: 100%;
   margin: 0 auto;
 
-  padding-top: 52px;      /* 헤더 높이 */
+  padding-top: 3.5rem;      /* 헤더 높이 */
   padding-bottom: 1.5rem; /* 탭바 높이 */
 
   position: relative;
