@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import PostList from "../features/Post/components/PostList";
 import Nocation from "../features/Post/components/Nocation";
 
+
 const CommunityPage = () => {
+  const [location, setLocation] = useState("노량진동"); // 기본값
+
   return (
     <Container>
       <Header title="다같이 한걸음" backPath="/" />
       <Wrapper>
-        <Nocation />
+        <Nocation location={location} />
         <PostListWrapper>
-          <PostList />
+          <PostList setLocation={setLocation} />
         </PostListWrapper>
       </Wrapper>
     </Container>

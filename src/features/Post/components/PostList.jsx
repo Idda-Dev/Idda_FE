@@ -5,7 +5,7 @@ import PostListItem from "./PostListItem";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const PostList = () => {
+const PostList = ({setLocation}) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,6 +21,11 @@ const PostList = () => {
         const res = await axios.get(`${BASE_URL}/api/missions/posts`);
 
         setPosts(res.data);
+
+        if (res.data.length && setLocation) {
+          setLocation(res.data[0].location);
+        } //로케이션 설정
+
       } catch (err) {
         console.error("API 호출 실패:", err);
         setPosts([]);
