@@ -1,4 +1,3 @@
-// ShopHeader.jsx
 import React from 'react';
 import BackIcon from "../../PostItem/assets/BackIcon.png";
 import styled from 'styled-components';
@@ -7,7 +6,7 @@ const CouponHeader = () => {
   return (
     <Container>
       <Back src={BackIcon} alt="뒤로가기" />
-      <Title> 다같이 한걸음</Title>
+      <Title> 내 쿠폰</Title>
     </Container>
   );
 };

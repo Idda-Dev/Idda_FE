@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import Photo from "../assets/Photo.png";
-import Candy from "../assets/Candy.png";
-import ShopModal from '../components/ShopModal'; // 방금 만든 모달 import
+import Photo from "../../Shop/assets/Photo.png";
+import Candy from "../../Shop/assets/Candy.png";
 
-const ShopListItem = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const Coupon = () => {
 
-  const handleCountClick = () => {
-    setIsModalOpen(true);
-  };
 
   return (
     <>
@@ -18,25 +13,19 @@ const ShopListItem = () => {
         <Wrapper>
           <Title>리얼안심탕수육</Title>
           <Text>전메뉴 20% 할인</Text>
-          <CandyWrapper>
-            <Icon src={Candy} />
-            <Count onClick={handleCountClick}>20개</Count>
-          </CandyWrapper>
+          <MiniWrapper>
+            <EndTime>~ 25.08.30</EndTime>
+            <Button>사용하기</Button>
+          </MiniWrapper>
         </Wrapper>
       </Container>
 
-      {/* 모달 연결 */}
-      <ShopModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
     </>
   );
 };
 
-export default ShopListItem;
+export default Coupon;
 
-/* ---------- Styled ---------- */
 const Container = styled.div`
   width: 100%;
   height: auto;
@@ -79,22 +68,23 @@ const Text = styled.p`
   line-height: 20px;
 `;
 
-const CandyWrapper = styled.p`
+const MiniWrapper = styled.p`
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-end;
   margin-top: 0.8rem;
   margin-bottom: 0;
   gap: 0.5rem;
 `;
 
-const Icon = styled.img`
-  width: 2rem;
-  height: 2rem;
-`;
+const EndTime =styled.p`
+    font-size: 0.7rem;
+    margin: 0;
+    color: #444444;
+`
 
-const Count = styled.div`
+const Button = styled.div`
   background-color: #D1CDFF;
   height: 1.7rem;
   width: 4rem;
