@@ -11,7 +11,7 @@ const PostListItem = ({ post }) => {
   const formatCount = (count) => (count > 999 ? "999+" : count);
 
   const handleClick = () => {
-    navigate("/community/post"); // 클릭 시 이동
+    navigate(`/community/post/${post.postId}`);
   };
 
   return (
