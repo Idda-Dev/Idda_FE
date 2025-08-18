@@ -9,6 +9,7 @@ import NewPage from "./pages/NewPage";
 import PostItemPage from "./features/PostItem/pages/PostItemPage";
 import MyCouponsPage from "./features/MyCoupons/pages/MyCouponsPage";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -17,10 +18,12 @@ const router = createBrowserRouter([
       { index: true, element: <MainPage /> },
       { path: "/mission", element: <MissionPage /> },
       { path: "/community", element: <CommunityPage /> },
+      { path: "/community/post", element: <PostItemPage /> },
       { path: "/shop", element: <ShopPage /> },
       { path: "/test", element: <TestPage /> },
-      { path: "/new", element: <MyCouponsPage /> },
-      { path: "/community/posts/postitem", element: <PostItemPage /> },
+      { path: "/coupon", element: <MyCouponsPage /> },
+      { path: "/new", element: <NewPage /> }
+
     ],
   },
 ]);

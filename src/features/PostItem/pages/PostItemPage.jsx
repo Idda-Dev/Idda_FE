@@ -32,7 +32,7 @@ const PostItemPage = () => {
 
   return (
     <Container>
-      <Header title="다같이 한걸음" />
+      <Header title="다같이 한걸음" backPath={"/community"}/>
       <ScrollArea>
         <Profile />
         <Post />
