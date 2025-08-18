@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import CommunityHeader from "../features/Post/components/CommunityHeader";
+import Header from "../components/Header";
 import PostList from "../features/Post/components/PostList";
 import Nocation from "../features/Post/components/Nocation";
 
 const CommunityPage = () => {
   return (
     <Container>
-      <CommunityHeader />
+      <Header title="다같이 한걸음" />
       <Wrapper>
         <Nocation />
         <PostListWrapper>
@@ -19,23 +19,26 @@ const CommunityPage = () => {
 };
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   align-items: center;
   background-color: #f8faff;
-  padding-bottom: 2.5rem;
+  padding-top: 2rem;
 `;
 
 const Wrapper = styled.div`
   width: calc(74% + 2rem);
-  height: calc(100% - 52px - 2.5rem); /* 헤더 + nocation 높이 제외 */
+  height: calc(100% - 3.5rem);
+  padding-top: 52px; // 헤더 높이만큼 띄움
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 `;
+
 
 const PostListWrapper = styled.div`
   flex: 1; /* 남는 영역을 다 차지 */

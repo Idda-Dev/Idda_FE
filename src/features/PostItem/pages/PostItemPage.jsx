@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import TabBar from "../../../components/TabBar";
 import Profile from "../components/Profile";
 import CommentInput from "../components/CommentInput";
 import CommentList from "../components/CommentList";
 import Post from "../components/Post";
-import Header from "../components/Header";
+import Header from "../../../components/Header";
 import Liked from "../components/Liked";
 
-import PurpleCommunityIcon from "../assets/PurpleCommunityICon.png";
 
 const PostItemPage = () => {
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
@@ -34,7 +32,7 @@ const PostItemPage = () => {
 
   return (
     <Container>
-      <Header/>
+      <Header title="다같이 한걸음" />
       <ScrollArea>
         <Profile />
         <Post />
@@ -55,6 +53,7 @@ const PostItemPage = () => {
 
 
 const Container = styled.div`
+  position: relative;
   width: 100%;
   max-width: 800px;
   height: 100%;
@@ -68,6 +67,7 @@ const Container = styled.div`
 const ScrollArea = styled.div`
   /* 핵심: 남은 영역을 모두 차지하게 */
   flex: 1 1 auto;
+  padding-top: 3.5rem;
 
   width: 100%;
   overflow-y: auto;
@@ -75,7 +75,7 @@ const ScrollArea = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: .3rem;
+  gap: 0.3rem;
 
   /* %는 가로폭 기준이라 흔들릴 수 있어요. 인풋 높이(px)와 동일하게 */
   padding-bottom: 56px; 

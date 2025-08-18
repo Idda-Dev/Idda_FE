@@ -26,7 +26,7 @@ const Container = styled.div`
   height: 9%;
   padding: 0;
   margin: 0;
-  margin: 1.6rem 0 0 0; /* 위쪽만 10px */
+  margin: 2rem 0 0 0; /* 위쪽만 10px */
 `;
 
 const Wrapper = styled.div`
