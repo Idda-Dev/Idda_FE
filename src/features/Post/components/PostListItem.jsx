@@ -1,44 +1,37 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // ← 추가
+import { useNavigate } from 'react-router-dom'; 
 import styled from 'styled-components';
 import ProfileIcon from '../../PostItem/assets/ProfileIcon.png';
 import LikedIcon from "../../PostItem/assets/LikedIcon.png";
 import CommentIcon from "../../PostItem/assets/CommentIcon.png";
 
-const PostListItem = () => {
-  const navigate = useNavigate(); // ← 페이지 이동 함수
+const PostListItem = ({ post }) => {
+  const navigate = useNavigate();
 
-  const likedCount = 123; // 예시
-  const commentCount = 1250; // 예시
-
-  const formatCount = (count) => {
-    return count > 999 ? `999+` : count;
-  };
+  const formatCount = (count) => (count > 999 ? "999+" : count);
 
   const handleClick = () => {
-    navigate("/community/post"); // 클릭 시 이동할 경로
+    navigate("/community/post"); // 클릭 시 이동
   };
 
   return (
     <Wrapper onClick={handleClick}>
       <ContentBox>
         <TextBox>
-          <Title>근처 도서관에서 책 2권 빌리기</Title>
-          <Content>
-            도서관 마감시간에 다녀왔는데 사람이 적어서 좋았어요~~~ 다음에 먹을 책 가져옴ㅋㅋㅋㅋㅋㅋㅋㅋ
-          </Content>
+          <Title>{post.title}</Title>
+          <Content>{post.content}</Content>
         </TextBox>
-        <Image src={ProfileIcon} alt="본문 이미지" />
+        <Image src={post.photoUrl} alt="본문 이미지" />
       </ContentBox>
-      <OverlapImage src={ProfileIcon} alt="겹치는 이미지" />
+      <OverlapImage src={post.profileImageUrl} alt="겹치는 이미지" />
       <LikedBox>
         <Box>
           <Icon1 src={LikedIcon} />
-          <Count>{formatCount(likedCount)}</Count>
+          <Count>{formatCount(post.likes)}</Count>
         </Box>
         <Box>
           <Icon2 src={CommentIcon} />
-          <Count>{formatCount(commentCount)}</Count>
+          <Count>0</Count> {/* 댓글 수가 없으면 0 */}
         </Box>
       </LikedBox>
     </Wrapper>
