@@ -10,7 +10,7 @@ import PurpleShopIcon from "../assets/PurpleShopIcon.png"
 const ShopPage = () => {
   return (
     <Wrapper>
-      <Header title="솜뭉치 가게" />
+      <Header title="솜뭉치 가게"  backPath="/" />
       <CharacterProfile />
       <Box />
       <ShopListWrapper>

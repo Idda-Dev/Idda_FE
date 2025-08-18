@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // ← 추가
 import styled from 'styled-components';
 import Content1 from './Content1';
 import Content2 from './Content2';
 
 const ShopModal = ({ isOpen, onClose }) => {
   const [clicked, setClicked] = useState(false);
+  const navigate = useNavigate(); // ← 페이지 이동 함수
 
   // 모달 열릴 때마다 클릭 상태 초기화
   useEffect(() => {
@@ -20,13 +22,14 @@ const ShopModal = ({ isOpen, onClose }) => {
 
   const handleClickComplete = () => {
     console.log("완료 클릭!");
-    onClose(); // 모달 닫기
+    onClose();           // 모달 닫기
+    navigate("/coupon"); // /coupon 페이지로 이동
   };
 
   return (
     <Overlay onClick={onClose}>
       <ModalBox onClick={(e) => e.stopPropagation()}>
-        {clicked ?  <Content2/>: <Content1/>}
+        {clicked ? <Content2/> : <Content1/>}
         {!clicked ? (
           <Button onClick={handleClickConfirm}>구매하기</Button>
         ) : (
@@ -58,7 +61,7 @@ const ModalBox = styled.div`
   height: 13rem;
   background-color: #D1CDFF;
   border-radius: 16px;
-  padding: 2rem 2rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

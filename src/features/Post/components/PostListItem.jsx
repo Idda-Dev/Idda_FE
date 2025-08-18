@@ -1,11 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // ← 추가
 import styled from 'styled-components';
 import ProfileIcon from '../../PostItem/assets/ProfileIcon.png';
 import LikedIcon from "../../PostItem/assets/LikedIcon.png";
 import CommentIcon from "../../PostItem/assets/CommentIcon.png";
 
-
 const PostListItem = () => {
+  const navigate = useNavigate(); // ← 페이지 이동 함수
+
   const likedCount = 123; // 예시
   const commentCount = 1250; // 예시
 
@@ -13,8 +15,12 @@ const PostListItem = () => {
     return count > 999 ? `999+` : count;
   };
 
+  const handleClick = () => {
+    navigate("/community/post"); // 클릭 시 이동할 경로
+  };
+
   return (
-    <Wrapper>
+    <Wrapper onClick={handleClick}>
       <ContentBox>
         <TextBox>
           <Title>근처 도서관에서 책 2권 빌리기</Title>
@@ -50,6 +56,7 @@ const Wrapper = styled.div`
   background-color: #fff;
   box-shadow: 0px -1px 6px rgba(0, 0, 0, 0.06);
   overflow: hidden; /* <- 둥근 모서리 바깥으로 안 나가게 */
+  cursor: pointer;
 `;
 
 
