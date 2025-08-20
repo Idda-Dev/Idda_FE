@@ -7,11 +7,10 @@ import TabBar from "../components/TabBar.jsx";
 
 import CalendarModal from "../features/MissonCalendar/components/CalendarModal.jsx";
 
-import PupleMissionIcon from "../assets/PupleMissionIcon.png";
+import PurpleMissionIcon from "../assets/PurpleMissionIcon.png";
 import PrevIcon from "../features/MissonCalendar/assets/PrevIcon.png";
 import NextIcon from "../features/MissonCalendar/assets/NextIcon.png";
 
-import Photo from "../features/PostItem/assets/ProfileIcon.png";
 import Record from "../features/MissonCalendar/components/Record.jsx";
 
 // ui보려고 캘린더 크기조절되는거 걍 과거현재미래로 나눠둠 !
@@ -66,20 +65,23 @@ const MissonPage = () => {
 
         {isPast && (
           <RecordBox isPast={isPast}>
-            <Record/>
+            <Record />
           </RecordBox>
         )}
 
         {selectedDateType === "future" && (
           <ModalBox>
-              <CalendarModal isOpen={true} onClose={() => setSelectedDateType(null)}/>
+            <CalendarModal
+              isOpen={true}
+              onClose={() => setSelectedDateType(null)}
+            />
           </ModalBox>
         )}
 
         {!isPast && <Massege>한 걸음, 두 걸음, 같이 걸어요.</Massege>}
       </ContentWrapper>
 
-      <TabBar icons={{ mission: PupleMissionIcon }} />
+      <TabBar icons={{ mission: PurpleMissionIcon }} />
     </Container>
   );
 };
@@ -101,11 +103,11 @@ const ContentWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
-  position: fixed;        /* 화면에 고정 */
-  top: 6rem;              /* 상단에서 1rem */
-  left: 50%;              /* 화면 가로 중앙 */
+  position: fixed; /* 화면에 고정 */
+  top: 6rem; /* 상단에서 1rem */
+  left: 50%; /* 화면 가로 중앙 */
   transform: translateX(-50%); /* 중앙 정렬 보정 */
-  
+
   width: 60%;
   height: 2rem;
 
@@ -113,9 +115,8 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
-  z-index: 10;  /* 다른 요소 위에 표시 */
+  z-index: 10; /* 다른 요소 위에 표시 */
 `;
-
 
 const MonthBox = styled.div`
   position: relative;
@@ -187,12 +188,12 @@ const RecordBox = styled.div`
 `;
 
 const ModalBox = styled.div`
-  position: absolute;       // fixed 대신 absolute
+  position: absolute; // fixed 대신 absolute
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;

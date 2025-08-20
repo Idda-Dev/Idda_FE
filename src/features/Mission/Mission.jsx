@@ -8,6 +8,9 @@ import { useState } from "react";
 import CameraButton from "./assets/CameraButton.png";
 import WritingIcon from "./assets/WritingIcon.png";
 import ReMissionIcon from "./assets/ReMissionIcon.png";
+import MissionHeader from "./MissionHeader.jsx";
+import TabBar from "../../components/TabBar.jsx";
+import PurpleMissonIcon from "../../assets/PurpleMissionIcon.png";
 
 const Mission = () => {
   // 1. 사진첨부
@@ -46,110 +49,123 @@ const Mission = () => {
   const isFormValid = imagePreview && finalText && selected !== "공개 여부";
 
   return (
-    <MainContainer>
-      <Row style={{ justifyContent: "space-between", marginBottom: "20px" }}>
-        <TitleBox>
-          <img src={Star1} alt="Star" style={{ width: "20%" }} />
-          오늘의 미션
-        </TitleBox>
-        <img
-          src={CalendarIcon}
-          alt="CalendarIcon"
-          style={{ width: "12%", cursor: "pointer" }}
-        />
-      </Row>
-      <ImageWrapper>
-        <BackgroundImage src={MissionCard} alt="카드" />
-        <img
-          src={ReMissionIcon}
-          style={{
-            position: "absolute",
-            top: "12%",
-            left: "88%",
-            width: "6%",
-            cursor: "pointer",
-          }}
-        />
-        <TextOverlayBold>동네 골목길 10분 걷기</TextOverlayBold>
-        <TextOverlayRegular>{`중간에 돌아와도 괜찮아요. \n중요한 건 오늘도 나왔다는 거에요`}</TextOverlayRegular>
-        <CandyOverlay>5개</CandyOverlay>
-      </ImageWrapper>
-      <LightPurpleWrapper>
-        <TitleBox>
-          <img src={Star1} alt="Star" style={{ width: "20%" }} />
-          미션 인증
-        </TitleBox>
-        <WhiteWrapper>
-          <Label htmlFor="imageUpload">
-            {imagePreview ? (
-              <PreviewImage src={imagePreview} alt="업로드된 이미지" />
-            ) : (
-              <Placeholder>
-                <img src={CameraButton} style={{ width: "15%" }} />
-              </Placeholder>
-            )}
-          </Label>
-          <HiddenInput
-            id="imageUpload"
-            type="file"
-            accept="image/*"
-            onChange={handleChangeImage}
-          />
-          <Caption>
-            <Row style={{ gap: "4px" }}>
-              {finalText || "미션을 하며 스친 생각이나 기분을 기록해주세요."}
-              <img
-                src={WritingIcon}
-                style={{ cursor: "pointer", width: "6%" }}
-                onClick={() => setShowModal(true)}
+    <>
+      <Container>
+        <MissionHeader title={"90일의 솜뭉치"} />
+        <MainContainer>
+          <Row
+            style={{ justifyContent: "space-between", marginBottom: "20px" }}
+          >
+            <TitleBox>
+              <img src={Star1} alt="Star" style={{ width: "20%" }} />
+              오늘의 미션
+            </TitleBox>
+            <img
+              src={CalendarIcon}
+              alt="CalendarIcon"
+              style={{ width: "12%", cursor: "pointer" }}
+            />
+          </Row>
+          <ImageWrapper>
+            <BackgroundImage src={MissionCard} alt="카드" />
+            <img
+              src={ReMissionIcon}
+              style={{
+                position: "absolute",
+                top: "12%",
+                left: "88%",
+                width: "6%",
+                cursor: "pointer",
+              }}
+            />
+            <TextOverlayBold>동네 골목길 10분 걷기</TextOverlayBold>
+            <TextOverlayRegular>{`중간에 돌아와도 괜찮아요. \n중요한 건 오늘도 나왔다는 거에요`}</TextOverlayRegular>
+            <CandyOverlay>5개</CandyOverlay>
+          </ImageWrapper>
+          <LightPurpleWrapper>
+            <TitleBox>
+              <img src={Star1} alt="Star" style={{ width: "20%" }} />
+              미션 인증
+            </TitleBox>
+            <WhiteWrapper>
+              <Label htmlFor="imageUpload">
+                {imagePreview ? (
+                  <PreviewImage src={imagePreview} alt="업로드된 이미지" />
+                ) : (
+                  <Placeholder>
+                    <img src={CameraButton} style={{ width: "15%" }} />
+                  </Placeholder>
+                )}
+              </Label>
+              <HiddenInput
+                id="imageUpload"
+                type="file"
+                accept="image/*"
+                onChange={handleChangeImage}
               />
-            </Row>
-          </Caption>
-          {showModal && (
-            <ModalOverlay>
-              <ModalContent>
-                <ModalTitle>동네 골목길 10분 걷기</ModalTitle>
-                <hr
-                  style={{
-                    height: "1px",
-                    backgroundColor: "#000",
-                    border: "none",
-                  }}
-                />
-                <ModalTextarea
-                  placeholder="미션을 하며 느꼈던 감정을 기록해보세요!"
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                />
-              </ModalContent>
-              <SubmitButton onClick={handleModalSubmit}>등록하기</SubmitButton>
-            </ModalOverlay>
-          )}
-          <DropdownRight>
-            <DropdownContainer>
-              <SelectedBox onClick={() => setIsOpen((prev) => !prev)}>
-                {selected}
-                <Arrow isOpen={isOpen}>▾</Arrow>
-              </SelectedBox>
-              {isOpen && (
-                <Options>
-                  <Option onClick={() => handleSelect("비공개")}>비공개</Option>
-                  <Option onClick={() => handleSelect("공개")}>공개</Option>
-                </Options>
+              <Caption>
+                <Row style={{ gap: "4px" }}>
+                  {finalText ||
+                    "미션을 하며 스친 생각이나 기분을 기록해주세요."}
+                  <img
+                    src={WritingIcon}
+                    style={{ cursor: "pointer", width: "6%" }}
+                    onClick={() => setShowModal(true)}
+                  />
+                </Row>
+              </Caption>
+              {showModal && (
+                <ModalOverlay>
+                  <ModalContent>
+                    <ModalTitle>동네 골목길 10분 걷기</ModalTitle>
+                    <hr
+                      style={{
+                        height: "1px",
+                        backgroundColor: "#000",
+                        border: "none",
+                      }}
+                    />
+                    <ModalTextarea
+                      placeholder="미션을 하며 느꼈던 감정을 기록해보세요!"
+                      value={inputText}
+                      onChange={(e) => setInputText(e.target.value)}
+                    />
+                  </ModalContent>
+                  <SubmitButton onClick={handleModalSubmit}>
+                    등록하기
+                  </SubmitButton>
+                </ModalOverlay>
               )}
-            </DropdownContainer>
-          </DropdownRight>
-        </WhiteWrapper>
-        <SubmitButton disabled={!isFormValid}>등록하기</SubmitButton>
-      </LightPurpleWrapper>
-    </MainContainer>
+              <DropdownRight>
+                <DropdownContainer>
+                  <SelectedBox onClick={() => setIsOpen((prev) => !prev)}>
+                    {selected}
+                    <Arrow isOpen={isOpen}>▾</Arrow>
+                  </SelectedBox>
+                  {isOpen && (
+                    <Options>
+                      <Option onClick={() => handleSelect("비공개")}>
+                        비공개
+                      </Option>
+                      <Option onClick={() => handleSelect("공개")}>공개</Option>
+                    </Options>
+                  )}
+                </DropdownContainer>
+              </DropdownRight>
+            </WhiteWrapper>
+            <SubmitButton disabled={!isFormValid}>등록하기</SubmitButton>
+          </LightPurpleWrapper>
+        </MainContainer>
+        <TabBar icons={{ mission: PurpleMissonIcon }} />
+      </Container>
+    </>
   );
 };
 
 export default Mission;
 
 const MainContainer = styled.div`
-  padding: 3rem;
+  padding: 1.5rem 3rem;
 `;
 
 const TitleBox = styled.div`
@@ -394,4 +410,13 @@ const Option = styled.li`
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
+`;
+
+const Container = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 `;

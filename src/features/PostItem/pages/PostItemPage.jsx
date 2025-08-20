@@ -7,7 +7,6 @@ import Post from "../components/Post";
 import Header from "../../../components/Header";
 import Liked from "../components/Liked";
 
-
 const PostItemPage = () => {
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
@@ -32,7 +31,7 @@ const PostItemPage = () => {
 
   return (
     <Container>
-      <Header title="다같이 한걸음" backPath={"/community"}/>
+      <Header title="다같이 한걸음" backPath={"/community"} />
       <ScrollArea>
         <Profile />
         <Post />
@@ -50,15 +49,13 @@ const PostItemPage = () => {
   );
 };
 
-
-
 const Container = styled.div`
   position: relative;
   width: 100%;
   max-width: 800px;
   height: 100%;
   position: relative;
-  background-color: #F8FAFF;
+  background-color: #f8faff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,7 +75,7 @@ const ScrollArea = styled.div`
   gap: 0.3rem;
 
   /* %는 가로폭 기준이라 흔들릴 수 있어요. 인풋 높이(px)와 동일하게 */
-  padding-bottom: 56px; 
+  padding-bottom: 56px;
 `;
 
 const CommentInputWrapper = styled.div`
@@ -101,6 +98,5 @@ const CommentListWrapper = styled.div`
   width: 100%;
   overflow-y: auto;
 `;
-
 
 export default PostItemPage;
