@@ -11,8 +11,16 @@ import ReMissionIcon from "./assets/ReMissionIcon.png";
 import MissionHeader from "./MissionHeader.jsx";
 import TabBar from "../../components/TabBar.jsx";
 import PurpleMissonIcon from "../../assets/PurpleMissionIcon.png";
+import { useNavigate } from "react-router-dom";
 
 const Mission = () => {
+  // 0. 달력이동
+  const nav = useNavigate();
+
+  const handleMissionCalendarPage = () => {
+    nav("/mission/calendar");
+  };
+
   // 1. 사진첨부
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -26,6 +34,7 @@ const Mission = () => {
     };
     reader.readAsDataURL(file);
   };
+
   // 2. 글쓰기 및 모달
   const [showModal, setShowModal] = useState(false);
   const [inputText, setInputText] = useState("");
@@ -64,6 +73,7 @@ const Mission = () => {
               src={CalendarIcon}
               alt="CalendarIcon"
               style={{ width: "12%", cursor: "pointer" }}
+              onClick={handleMissionCalendarPage}
             />
           </Row>
           <ImageWrapper>
