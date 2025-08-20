@@ -208,6 +208,7 @@ const BackgroundImage = styled.img`
 
 // 카드 위 오버레이 관련
 const TextOverlayBold = styled.p`
+  width:100%;
   position: absolute;
   top: 25%;
   left: 50%;
@@ -218,6 +219,7 @@ const TextOverlayBold = styled.p`
 `;
 
 const TextOverlayRegular = styled.p`
+  width:100%;
   position: absolute;
   top: 45%;
   left: 50%;
@@ -256,13 +258,13 @@ const WhiteWrapper = styled.div`
   border-radius: 1rem;
   background: #fff;
   box-shadow: 6px 0 20px 0 rgba(0, 0, 0, 0.02);
-  padding: 3rem 1.3rem 1rem 1.3rem;
+  padding: 2rem 1.3rem 1rem 1.3rem;
 `;
 
 const Label = styled.label`
   display: block;
   width: 100%;
-  height: 10rem;
+  height: 8rem;
   cursor: pointer;
 `;
 
@@ -288,7 +290,8 @@ const PreviewImage = styled.img`
 
 // 2. 글쓰기 관련
 const Caption = styled.p`
-  font-size: 11px;
+  width:100%;
+  font-size: 9.5px;
   color: #444;
   letter-spacing: -0.5px;
   font-weight: 400;
@@ -370,7 +373,7 @@ const DropdownRight = styled.div`
 
 const DropdownContainer = styled.div`
   position: relative;
-  width: 70px;
+  width: 80px;
   font-size: 9px;
 `;
 

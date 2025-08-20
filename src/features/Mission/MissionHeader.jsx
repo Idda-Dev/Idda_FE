@@ -45,7 +45,7 @@ const Back = styled.img`
   cursor: pointer;
 `;
 
-const Title = styled.p`
+const Title = styled.div`
   font-size: 1rem;
   font-weight: 700;
   margin: 0;
