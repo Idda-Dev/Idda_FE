@@ -16,7 +16,7 @@ const router = createBrowserRouter([
       { index: true, element: <MainPage /> },
       { path: "/mission", element: <MissionPage /> },
       { path: "/community", element: <CommunityPage /> },
-      { path: "/community/post", element: <PostItemPage /> },
+      { path: "/community/post/:postId", element: <PostItemPage /> },
       { path: "/shop", element: <ShopPage /> },
       { path: "/coupon", element: <MyCouponsPage /> },
       { path: "/mission/calendar", element: <MissionCalendarPage /> },

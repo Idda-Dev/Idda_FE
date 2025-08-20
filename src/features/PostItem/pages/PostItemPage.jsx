@@ -6,66 +6,90 @@ import CommentList from "../components/CommentList";
 import Post from "../components/Post";
 import Header from "../../../components/Header";
 import Liked from "../components/Liked";
+import axios from "axios";
+import { post as mockPost } from "../../../mocks/post"; // ✅ 목데이터 import
 
-const PostItemPage = () => {
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const PostItemPage = ({ userId = 1, postId}) => {
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let initialHeight = window.innerHeight;
 
     const handleResize = () => {
-      // 키보드 감지: 현재 높이가 초기 높이보다 많이 줄었을때 키보드 감지 (앱화면에서)
       const heightDiff = initialHeight - window.innerHeight;
-      if (heightDiff > 150) {
-        setIsKeyboardOpen(true);
-      } else {
-        setIsKeyboardOpen(false);
-      }
+      setIsKeyboardOpen(heightDiff > 150);
     };
 
     window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        if (!BASE_URL) {
+          console.warn("⚠️ BASE_URL 없음 → 목데이터 사용");
+          setPost(mockPost);
+          return;
+        }
+
+        const res = await axios.get(
+          `${BASE_URL}/api/users/${userId}/missions/posts/${postId}`
+        );
+
+        setPost(res.data);
+      } catch (err) {
+        console.error("API 호출 실패 → 목데이터 사용:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [userId, postId]);
+
+  if (loading) return <div>로딩중...</div>;
+  if (!post) return <div>데이터가 없습니다.</div>;
 
   return (
     <Container>
       <Header title="다같이 한걸음" backPath={"/community"} />
       <ScrollArea>
-        <Profile />
-        <Post />
-        <Liked />
+        <Profile nickname={post.nickname} profileImageUrl={post.profileImageUrl} time={post.createdAt}/>
+        <Post title={post.title} content={post.content} photoUrl={post.photoUrl} />
+        <Liked heartCount={post.heartCount} commentCount={post.commentCount} />
         <CommentListWrapper>
-          <CommentList />
+          <CommentList postId={post.postId} />
         </CommentListWrapper>
       </ScrollArea>
 
       {/* CommentInput 고정 */}
       <CommentInputWrapper isKeyboardOpen={isKeyboardOpen}>
-        <CommentInput />
+        <CommentInput postId={post.postId} userId={userId}/>
       </CommentInputWrapper>
     </Container>
   );
 };
+export default PostItemPage;
 
 const Container = styled.div`
   position: relative;
   width: 100%;
   max-width: 800px;
   height: 100%;
-  position: relative;
-  background-color: #f8faff;
+  background-color: #F8FAFF;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const ScrollArea = styled.div`
-  /* 핵심: 남은 영역을 모두 차지하게 */
   flex: 1 1 auto;
   padding-top: 3.5rem;
-
   width: 100%;
   overflow-y: auto;
   display: flex;
@@ -73,8 +97,6 @@ const ScrollArea = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.3rem;
-
-  /* %는 가로폭 기준이라 흔들릴 수 있어요. 인풋 높이(px)와 동일하게 */
   padding-bottom: 56px;
 `;
 
@@ -82,10 +104,7 @@ const CommentInputWrapper = styled.div`
   position: ${({ isKeyboardOpen }) => (isKeyboardOpen ? "fixed" : "absolute")};
   bottom: 0;
   width: 100%;
-
-  /* 인풋 실제 높이를 px로 고정 */
   height: 3.5rem;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -99,4 +118,3 @@ const CommentListWrapper = styled.div`
   overflow-y: auto;
 `;
 
-export default PostItemPage;

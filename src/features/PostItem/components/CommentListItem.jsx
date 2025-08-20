@@ -1,30 +1,49 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ProfileIcon from "../assets/ProfileIcon.png";
 import ModalIcon from "../assets/ModalIcon.png";
 import CommentModal from './CommentModalPage';
 
-const CommentListItem = () => {
+// CommentListItem이 comment 객체와 userId를 props로 받습니다.
+const CommentListItem = ({ comment, userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // API 응답에 맞춰 'createdAt'을 사용합니다.
+  const { nickname, content, profileImageUrl, createdAt, memberId } = comment;
+
+  // 내 댓글인지 확인하는 변수
+  const isMyComment = memberId === userId;
+
+  // 날짜 형식 변경 함수 추가
+  const formatTime = (isoString) => {
+    const date = new Date(isoString);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${month}/${day} ${hours}:${minutes}`;
+  };
 
   return (
     <Container>
       <Wrapper>
-        <ProfileImage src={ProfileIcon} alt="프로필 이미지" />
-        <NickName>메에</NickName>
+        <ProfileImage src={profileImageUrl} alt="프로필 이미지" />
+        <NickName>{nickname}</NickName>
         <ModalButton onClick={() => setIsModalOpen(true)}>
           <img src={ModalIcon} alt="액션 버튼" />
         </ModalButton>
       </Wrapper>
 
-      <Content>이 책 재밌나여?</Content>
-      <Time>08/25 15:00</Time>
+      <Content>{content}</Content>
+      {/* 'createdAt' 데이터를 형식에 맞춰 표시 */}
+      <Time>{formatTime(createdAt)}</Time>
 
-      {/* 모달 */}
       <ModalContainer>
         <CommentModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+          isMyComment={isMyComment}
+          comment={comment}
+          currentUserId={userId}
         />
       </ModalContainer>
     </Container>
@@ -32,7 +51,6 @@ const CommentListItem = () => {
 };
 
 export default CommentListItem;
-
 
 const Container = styled.div`
   background-color: #F8FAFF;
@@ -50,58 +68,44 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  height: 1.6rem; /* 닉네임 높이에 맞춤 */
+  height: 1.6rem;
 `;
+
 const ModalButton = styled.button`
-  margin-left: auto; /* 오른쪽 끝으로 밀기 */
+  margin-left: auto;
   padding: 0;
   border: none;
   background: transparent;
   cursor: pointer;
-  height: 100%; /* Wrapper 높이에 맞춤 */
+  height: 100%;
   display: flex;
   align-items: center;
-
-  /* 클릭/터치 시 하이라이트 제거 */
   outline: none;
   box-shadow: none;
-  -webkit-tap-highlight-color: transparent;    
+  -webkit-tap-highlight-color: transparent;
 
   img {
-    height: 80%;        /* Wrapper 높이에 맞춤 */
-    aspect-ratio: 1 / 1; /* 항상 1:1 비율 */
-    object-fit: contain;  
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
-
-  &:active {
-    outline: none;
-    box-shadow: none;
+    height: 80%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
   }
 `;
 
-
-
 const ProfileImage = styled.img`
-  height: 100%;         /* Wrapper 높이에 맞춤 */
-  aspect-ratio: 1 / 1;  /* 항상 1:1 비율 */
-  object-fit: cover;    /* 중앙 기준으로 잘림 */
-  border-radius: 50%;   /* 원형 */
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 50%;
 `;
 
 const NickName = styled.div`
-  height: 100%;          /* Wrapper 높이에 맞춤 */
+  height: 100%;
   display: flex;
   align-items: center;
   border-radius: 16px;
   font-size: 0.75rem;
   white-space: nowrap;
 `;
-
 
 const Content = styled.p`
   font-size: 0.7rem;
@@ -122,8 +126,5 @@ const Time = styled.p`
 `;
 
 const ModalContainer = styled.div`
-  width: 100%
-;
-`
-
-
+  width: 100%;
+`;

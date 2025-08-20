@@ -2,16 +2,16 @@ import React from 'react'
 import styled from 'styled-components';
 import PostImage from "../assets/PostImage.png";
 
-const Post = () => {
+const Post = ({title, content, photoUrl}) => {
   return (
     <Container>
       <FixedTop>
-        <Image src={PostImage} alt="포스트 이미지"/>
-        <Title>근처 도서관에서 책 2권 빌리기</Title>
+        <Image src={photoUrl} alt="포스트 이미지"/>
+        <Title>{title}</Title>
       </FixedTop>
       <ScrollContent>
         <Content>
-          도서관 마감시간에 다녀왔는데 사람이 없어서 편하게 다닐 수 있어서 좋았어요.
+          {content}
           {/* 내용이 길어지면 여기서 스크롤 */}
         </Content>
       </ScrollContent>
