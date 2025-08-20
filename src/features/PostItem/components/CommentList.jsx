@@ -1,3 +1,4 @@
+// CommentList.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CommentListItem from "./CommentListItem";
@@ -6,9 +7,9 @@ import { comments as mockComments } from '../../../mocks/comments';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const CommentList = ({ postId }) => {
+const CommentList = ({ postId, userId = 1 }) => { 
   const [comments, setComments] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -18,9 +19,9 @@ const CommentList = ({ postId }) => {
           setComments(mockComments);
           return;
         }
-        const res = await axios.get(`${BASE_URL}/api/posts/${postId}/comments`);
-        setComments(res.data);
 
+        const res = await axios.get(`${BASE_URL}/api/users/${userId}/posts/${postId}/comments`);
+        setComments(res.data);
       } catch (err) {
         console.error("API 호출 실패:", err);
         setComments(mockComments);
@@ -32,7 +33,7 @@ const CommentList = ({ postId }) => {
     if (postId) {
       fetchComments();
     }
-  }, [postId]); // postId가 변경될 때마다 useEffect 재실행
+  }, [postId, userId]);
 
   if (loading) {
     return <div>댓글을 불러오는 중...</div>;
@@ -42,11 +43,10 @@ const CommentList = ({ postId }) => {
     <Wrapper>
       {comments.map((comment) => (
         <CommentListItem 
-        nickname={comment.nickname} 
-        content={comment.content} 
-        profileImageUrl={comment.profileImageUrl} 
-        createTime={comment.createdAt} 
-         />
+          key={comment.commentId} 
+          comment={comment} // ⭐️ comment 객체 전체를 전달
+          userId={userId} // userId도 함께 전달
+        />
       ))}
     </Wrapper>
   );

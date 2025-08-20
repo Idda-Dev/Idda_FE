@@ -1,18 +1,35 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import PencilIcon from '../assets/PencilIcon.png'; // 댓글 아이콘
+import PencilIcon from '../assets/PencilIcon.png'; 
+import axios from 'axios';
 
-const CommentInput = () => {
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+// userId와 postId를 props로 받습니다.
+const CommentInput = ({ postId, userId = 1 }) => {
   const [text, setText] = useState('');
 
   const handleChange = (e) => {
     setText(e.target.value);
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = async (e) => {
+    // Enter 키를 누르고, 입력된 텍스트가 공백이 아닐 때
     if (e.key === 'Enter' && text.trim() !== '') {
-      console.log('댓글 전송:', text); // 서버 전송 로직 가능
-      setText(''); // 입력 후 초기화
+      try {
+        const payload = {
+          content: text,
+        };
+        const res = await axios.post(`${BASE_URL}/api/users/${userId}/posts/${postId}/comments`, payload);
+        
+        console.log('댓글 전송 성공:', res.data);
+        setText(''); // 전송 후 입력 필드 초기화
+        
+        // 댓글 목록을 새로고침하는 로직 (선택 사항)
+        // 예: onCommentAdded() 함수를 props로 받아 실행
+      } catch (err) {
+        console.error("댓글 전송 실패:", err);
+      }
     }
   };
 
@@ -25,6 +42,7 @@ const CommentInput = () => {
           value={text}
           onChange={handleChange}
           onKeyPress={handleKeyPress}
+          placeholder="" 
         />
       </InputWrapper>
     </Container>
@@ -43,8 +61,8 @@ const InputWrapper = styled.div`
   position: relative;
   width: 100%;
   max-width: 600px;
-
-  &:focus-within ${'' /* 포커스 시 플레이스홀더 숨기기 */} {
+  
+  &:focus-within {
     div {
       display: none;
     }
@@ -81,4 +99,3 @@ const Input = styled.input`
 `;
 
 export default CommentInput;
-

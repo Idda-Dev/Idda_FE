@@ -1,6 +1,6 @@
 export const comments = [
     {
-        "memberId": 1,
+        "memberId": 3,
         "nickname":"maeeee",
         "profileImageUrl": "https://img.example/v1.jpg",
         "postId": 7,
@@ -10,7 +10,7 @@ export const comments = [
         "updatedAt": "2025-08-12T23:31:58.197653"
     },
     {
-        "memberId": 1,
+        "memberId": 4,
         "nickname":"maeeee2",
         "profileImageUrl": "https://img.example/v1.jpg",
         "postId": 7,
@@ -20,7 +20,7 @@ export const comments = [
         "updatedAt": "2025-08-12T23:32:56.94242"
     },
     {
-        "memberId": 1,
+        "memberId": 5,
         "nickname":"maeeee3",
         "profileImageUrl": "https://img.example/v1.jpg",
         "postId": 7,

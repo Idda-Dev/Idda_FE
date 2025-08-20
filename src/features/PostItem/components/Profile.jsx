@@ -59,10 +59,10 @@ const NickName = styled.div`
   display: inline-flex;          /* 텍스트 길이에 맞춰 폭 자동 조절 */
   align-items: center;           
   justify-content: center;       
-  padding: 4px 15px;          
+  padding: 0.5rem 1rem;          
   background-color: #D1CDFF;
   border-radius: 16px;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 550;
   margin: 0;
   width: fit-content;

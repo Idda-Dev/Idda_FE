@@ -84,7 +84,7 @@ const LikedButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px;
+  padding: 0.5rem;
   border-radius: 16px;
 
   &:focus,
@@ -94,8 +94,8 @@ const LikedButton = styled.button`
   }
 
   img {
-    width: 100%;
-    height: 90%;
+    width: 1rem;
+    height: 0.9rem;
   }
 `;
 
@@ -106,13 +106,13 @@ const CommentButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px;
+  padding: 0.5rem;
   border-radius: 16px;
   cursor: default;
 
   img {
-    width: 100%;
-    height: 100%;
+    width: 1rem;
+    height: 1rem;
   }
 `;
 

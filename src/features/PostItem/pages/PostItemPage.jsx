@@ -69,7 +69,7 @@ const PostItemPage = ({ userId = 1, postId}) => {
 
       {/* CommentInput 고정 */}
       <CommentInputWrapper isKeyboardOpen={isKeyboardOpen}>
-        <CommentInput postId={post.postId} />
+        <CommentInput postId={post.postId} userId={userId}/>
       </CommentInputWrapper>
     </Container>
   );
