@@ -12,6 +12,7 @@ import MissionHeader from "./MissionHeader.jsx";
 import TabBar from "../../components/TabBar.jsx";
 import PurpleMissonIcon from "../../assets/PurpleMissionIcon.png";
 import { useNavigate } from "react-router-dom";
+import BackIcon from "../../assets/BackIcon.png";
 
 const Mission = () => {
   // 0. 달력이동
@@ -127,7 +128,20 @@ const Mission = () => {
               {showModal && (
                 <ModalOverlay>
                   <ModalContent>
-                    <ModalTitle>동네 골목길 10분 걷기</ModalTitle>
+                    <Row
+                      style={{
+                        justifyContent: "space-between",
+                        alignItems: "start",
+                      }}
+                    >
+                      <ModalTitle>동네 골목길 10분 걷기</ModalTitle>
+                      <img
+                        src={BackIcon}
+                        alt="back"
+                        onClick={() => setShowModal(false)}
+                        style={{ cursor: "pointer", width: "9%" }}
+                      />
+                    </Row>
                     <hr
                       style={{
                         height: "1px",
@@ -208,7 +222,7 @@ const BackgroundImage = styled.img`
 
 // 카드 위 오버레이 관련
 const TextOverlayBold = styled.p`
-  width:100%;
+  width: 100%;
   position: absolute;
   top: 25%;
   left: 50%;
@@ -219,7 +233,7 @@ const TextOverlayBold = styled.p`
 `;
 
 const TextOverlayRegular = styled.p`
-  width:100%;
+  width: 100%;
   position: absolute;
   top: 45%;
   left: 50%;
@@ -290,7 +304,7 @@ const PreviewImage = styled.img`
 
 // 2. 글쓰기 관련
 const Caption = styled.p`
-  width:100%;
+  width: 100%;
   font-size: 9.5px;
   color: #444;
   letter-spacing: -0.5px;

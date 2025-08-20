@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import StarIcon from "../assets/StarIcon.png";
 import DefaultMissionIcon from "../assets/DefaultMissionIcon.png";
-import BackIcon from "../assets/ModalBackIcon.png";
+import BackIcon from "../../../assets/BackIcon.png";
 
 const CalendarModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
@@ -13,9 +13,11 @@ const CalendarModal = ({ isOpen, onClose }) => {
       <ContentBox onClick={(e) => e.stopPropagation()}>
         <Star src={StarIcon} alt="Star" />
         <DefaultMission src={DefaultMissionIcon} alt="Default Mission" />
-        <ContentText>모든 시도는 앞으로 나아가는 걸음이에요. 충분히 잘하고 있어요. :)</ContentText>
+        <ContentText>
+          모든 시도는 앞으로 나아가는 걸음이에요. 충분히 잘하고 있어요. :)
+        </ContentText>
         <BackButtonWrapper>
-            <BackButton src={BackIcon} alt="back" onClick={onClose} />
+          <BackButton src={BackIcon} alt="back" onClick={onClose} />
         </BackButtonWrapper>
       </ContentBox>
     </Overlay>
@@ -47,7 +49,7 @@ const ContentBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.7rem; /* 요소 사이 간격 */
-  background-color: #D1CDFF;
+  background-color: #d1cdff;
 `;
 
 const Star = styled.img`
@@ -57,10 +59,9 @@ const Star = styled.img`
 `;
 
 const DefaultMission = styled.img`
-  width: 100%;   // 가로 10rem
-  height: auto;   // 원본 비율 유지
+  width: 100%; // 가로 10rem
+  height: auto; // 원본 비율 유지
 `;
-
 
 const ContentText = styled.div`
   width: 100%;
@@ -69,9 +70,9 @@ const ContentText = styled.div`
   text-align: start;
   letter-spacing: -0.5px;
   line-height: 1.7rem;
-  text-decoration-line: underline;   
-  text-underline-offset: 0.4rem;           /* 글자와 밑줄 사이 간격 */
-  text-decoration-color: #444444;       /* 밑줄 색상 */
+  text-decoration-line: underline;
+  text-underline-offset: 0.4rem; /* 글자와 밑줄 사이 간격 */
+  text-decoration-color: #444444; /* 밑줄 색상 */
 `;
 
 const BackButton = styled.img`
@@ -87,4 +88,3 @@ const BackButtonWrapper = styled.div`
   margin-bottom: 0.3rem;
   padding: 0;
 `;
-
