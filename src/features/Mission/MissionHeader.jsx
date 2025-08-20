@@ -1,29 +1,31 @@
 import React from "react";
-import BackIcon from "../features/PostItem/assets/BackIcon.png";
+import BackIcon from "../../features/PostItem/assets/BackIcon.png";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import Star1 from "./assets/Star1.png";
+import { Row } from "../../components/CommonComponents";
 
-const Header = ({ title, backPath }) => {
+const MissionHeader = ({ title }) => {
   const navigate = useNavigate();
-
   const handleBack = () => {
-    if (backPath) {
-      navigate(backPath); // props로 받은 경로로 이동
-    } else {
-      navigate("/"); // 없으면 이전 페이지로
-    }
+    navigate("/");
   };
 
   return (
     <Container>
       <Back src={BackIcon} alt="뒤로가기" onClick={handleBack} />
-      <Title> {title}</Title>
+      <Title>
+        <Row style={{ gap: "4px" }}>
+          <img src={Star1} alt="Star" style={{ width: "15%" }} />
+          {title}
+        </Row>
+      </Title>
     </Container>
   );
 };
 
 const Container = styled.div`
-  position: absolute;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,4 +54,4 @@ const Title = styled.p`
   line-height: 20px;
 `;
 
-export default Header;
+export default MissionHeader;

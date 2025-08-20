@@ -118,4 +118,3 @@ const CommentListWrapper = styled.div`
   overflow-y: auto;
 `;
 
-
