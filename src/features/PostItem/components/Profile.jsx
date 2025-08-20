@@ -2,20 +2,28 @@ import React from 'react'
 import styled from 'styled-components'
 import ProfileIcon from "../assets/ProfileIcon.png"
 
-const Profile = () => {
+const Profile = ({ nickname, profileImageUrl, time }) => {
+  const formatTime = (isoString) => {
+    const date = new Date(isoString);
+
+    return `${date.getFullYear()}/${
+      String(date.getMonth() + 1).padStart(2, "0")
+    }/${String(date.getDate()).padStart(2, "0")} ${
+      String(date.getHours()).padStart(2, "0")
+    }:${String(date.getMinutes()).padStart(2, "0")}`;
+  };
+
   return (
     <Container>
-        <Wrapper>
-            <ProfileImage src={ProfileIcon} alt="프로필 이미지" />
-            <NickName>
-            앙망이
-            </NickName>
-
-        </Wrapper>
-        <Time>08/25 14:59</Time>
+      <Wrapper>
+        <ProfileImage src={profileImageUrl} alt="프로필 이미지" />
+        <NickName>{nickname}</NickName>
+      </Wrapper>
+      <Time>{formatTime(time)}</Time>
     </Container>
-  )
-}
+  );
+};
+
 
 const Container = styled.div`
   display: flex;

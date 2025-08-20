@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import PostListItem from "./PostListItem";
+import { community } from "../../../mocks/community"
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const PostList = ({setLocation}) => {
+const PostList = ({ setLocation }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,22 +14,23 @@ const PostList = ({setLocation}) => {
     const fetchPosts = async () => {
       try {
         if (!BASE_URL) {
-          console.warn("⚠️ BASE_URL이 설정되지 않았습니다. .env 파일을 확인하세요.");
-          setPosts([]); // BASE_URL 없으면 빈 배열 세팅
+          console.warn("⚠️ BASE_URL이 설정되지 않았습니다. → 목데이터 사용");
+          setPosts(community); // 목데이터 사용
+          if (community.length && setLocation) {
+            setLocation(community[0].location);
+          }
           return;
         }
 
         const res = await axios.get(`${BASE_URL}/api/missions/posts`);
-
         setPosts(res.data);
 
         if (res.data.length && setLocation) {
           setLocation(res.data[0].location);
-        } //로케이션 설정
-
+        }
       } catch (err) {
         console.error("API 호출 실패:", err);
-        setPosts([]);
+        setPosts([]); 
       } finally {
         setLoading(false);
       }

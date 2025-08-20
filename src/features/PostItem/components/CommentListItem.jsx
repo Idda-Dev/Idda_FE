@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ProfileIcon from "../assets/ProfileIcon.png";
 import ModalIcon from "../assets/ModalIcon.png";
 import CommentModal from './CommentModalPage';
 
-const CommentListItem = () => {
+const CommentListItem = ({nickname, content, profileImageUrl,createTime}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <Container>
       <Wrapper>
-        <ProfileImage src={ProfileIcon} alt="프로필 이미지" />
-        <NickName>메에</NickName>
+        <ProfileImage src={profileImageUrl} alt="프로필 이미지" />
+        <NickName>{nickname}</NickName>
         <ModalButton onClick={() => setIsModalOpen(true)}>
           <img src={ModalIcon} alt="액션 버튼" />
         </ModalButton>
       </Wrapper>
 
-      <Content>이 책 재밌나여?</Content>
-      <Time>08/25 15:00</Time>
+      <Content>{content}</Content>
+      <Time>{createTime}</Time>
 
-      {/* 모달 */}
       <ModalContainer>
         <CommentModal 
         isOpen={isModalOpen} 

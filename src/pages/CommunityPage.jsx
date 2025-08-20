@@ -6,7 +6,7 @@ import Nocation from "../features/Post/components/Nocation";
 
 
 const CommunityPage = () => {
-  const [location, setLocation] = useState("노량진동"); // 기본값
+  const [location, setLocation] = useState("동작구"); // 기본값
 
   return (
     <Container>

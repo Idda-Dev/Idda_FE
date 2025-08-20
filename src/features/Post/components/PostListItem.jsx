@@ -31,7 +31,7 @@ const PostListItem = ({ post }) => {
         </Box>
         <Box>
           <Icon2 src={CommentIcon} />
-          <Count>0</Count> {/* 댓글 수가 없으면 0 */}
+          <Count>{formatCount(post.comments)}</Count> 
         </Box>
       </LikedBox>
     </Wrapper>

@@ -1,6 +1,8 @@
 export const comments = [
     {
         "memberId": 1,
+        "nickname":"maeeee",
+        "profileImageUrl": "https://img.example/v1.jpg",
         "postId": 7,
         "commentId": 1,
         "content": "댓글입니다.",
@@ -9,6 +11,8 @@ export const comments = [
     },
     {
         "memberId": 1,
+        "nickname":"maeeee2",
+        "profileImageUrl": "https://img.example/v1.jpg",
         "postId": 7,
         "commentId": 2,
         "content": "댓글입니다.2",
@@ -17,6 +21,8 @@ export const comments = [
     },
     {
         "memberId": 1,
+        "nickname":"maeeee3",
+        "profileImageUrl": "https://img.example/v1.jpg",
         "postId": 7,
         "commentId": 3,
         "content": "댓글입니다.3",
@@ -25,6 +31,8 @@ export const comments = [
     },
     {
         "memberId": 1,
+        "nickname":"maeeee4",
+        "profileImageUrl": "https://img.example/v1.jpg",
         "postId": 7,
         "commentId": 4,
         "content": "댓글입니다.4",
