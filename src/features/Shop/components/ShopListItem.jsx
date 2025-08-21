@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Photo from "../assets/Photo.png";
 import Candy from "../assets/Candy.png";
-import ShopModal from '../components/ShopModal'; // 방금 만든 모달 import
+import ShopModal from '../components/ShopModal';
 
-const ShopListItem = () => {
+const ShopListItem = ({ item }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCountClick = () => {
@@ -16,16 +16,15 @@ const ShopListItem = () => {
       <Container>
         <PhotoBox src={Photo} />
         <Wrapper>
-          <Title>리얼안심탕수육</Title>
-          <Text>전메뉴 20% 할인</Text>
+          <Title>{item.storeName}</Title>
+          <Text>{item.title}</Text>
           <CandyWrapper>
             <Icon src={Candy} />
-            <Count onClick={handleCountClick}>20개</Count>
+            <Count onClick={handleCountClick}>{item.price}개</Count>
           </CandyWrapper>
         </Wrapper>
       </Container>
 
-      {/* 모달 연결 */}
       <ShopModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
