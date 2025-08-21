@@ -1,14 +1,53 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
+import axios from 'axios';
 import Header from '../../../components/Header';
 import Coupons from '../components/Coupons';
+import { mycoupons } from "../../../mocks/mycoupons";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// userId = 1 설정
+const userId = 1;
 
 const MyCouponsPage = () => {
-  const [activeTab, setActiveTab] = useState(1); // 1 or 2
+  const [activeTab, setActiveTab] = useState(1); // 1: 보유, 2: 완료/만료
+  const [coupons, setCoupons] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCoupons = async () => {
+      setLoading(true);
+      try {
+        let allCoupons = [];
+        if (!BASE_URL) {
+          console.warn("⚠️ BASE_URL이 설정되지 않았습니다. → 목데이터 사용");
+          allCoupons = mycoupons;
+        } else {
+          const res = await axios.get(`${BASE_URL}/api/users/${userId}/coupons`);
+          allCoupons = res.data;
+        }
+        setCoupons(allCoupons);
+      } catch (err) {
+        console.error("API 호출 실패:", err);
+        setCoupons(mycoupons); // Fallback to mock data
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCoupons();
+  }, []);
+
+  const claimedCoupons = coupons.filter(coupon => coupon.status === "CLAIMED");
+  const usedCoupons = coupons.filter(coupon => coupon.status === "USED");
+
+  if (loading) {
+    return <div>로딩중...</div>;
+  }
 
   return (
     <Container>
-      <Header title="내 쿠폰"  backPath="/shop" />
+      <Header title="내 쿠폰" backPath="/shop" />
 
       <ButtonGroup>
         <TabButton 
@@ -25,10 +64,13 @@ const MyCouponsPage = () => {
 
       <ContentWrapper>
         <InnerContent>
-            {activeTab === 1 ? <Coupons /> : <Coupons />}
+          {activeTab === 1 ? (
+            <Coupons items={claimedCoupons} activeTab={activeTab} />
+          ) : (
+            <Coupons items={usedCoupons} activeTab={activeTab} />
+          )}
         </InnerContent>
       </ContentWrapper>
-
     </Container>
   )
 }
@@ -81,7 +123,6 @@ const TabButton = styled.button`
   }
 `;
 
-
 const ContentWrapper = styled.div`
   flex: 1;
   width: 100%;
@@ -89,7 +130,7 @@ const ContentWrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  overflow: hidden; // 내부 컴포넌트가 패딩 침범 못하게
+  overflow: hidden; 
 `;
 
 const InnerContent = styled.div`

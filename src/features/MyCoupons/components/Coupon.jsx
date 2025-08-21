@@ -1,25 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Photo from "../../Shop/assets/Photo.png";
-import Candy from "../../Shop/assets/Candy.png";
+import QrModal from './QrModal';
 
-const Coupon = () => {
+const Coupon = ({ item, activeTab }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isUsedOrExpired = activeTab === 2;
 
+  const handleButtonClick = () => {
+    if (!isUsedOrExpired) {
+      setIsModalOpen(true);
+    } else {
+      console.log("사용불가");
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <>
       <Container>
         <PhotoBox src={Photo} />
         <Wrapper>
-          <Title>리얼안심탕수육</Title>
-          <Text>전메뉴 20% 할인</Text>
+          <Title>{item.storeName}</Title>
+          <Text>{item.title}</Text>
           <MiniWrapper>
-            <EndTime>~ 25.08.30</EndTime>
-            <Button>사용하기</Button>
+            <EndTime>~ {new Date(item.expiresAt).toLocaleDateString()}</EndTime>
+            <Button onClick={handleButtonClick} disabled={isUsedOrExpired} isUsedOrExpired={isUsedOrExpired}>
+              {isUsedOrExpired ? "사용불가" : "사용하기"}
+            </Button>
           </MiniWrapper>
         </Wrapper>
       </Container>
-
+      {isModalOpen && (
+        <QrModal
+          memberCouponId={item.memberCouponId}
+          onClose={handleCloseModal}
+        />
+      )}
     </>
   );
 };
@@ -78,21 +98,27 @@ const MiniWrapper = styled.p`
   gap: 0.5rem;
 `;
 
-const EndTime =styled.p`
-    font-size: 0.7rem;
-    margin: 0;
-    color: #444444;
-`
+const EndTime = styled.p`
+  font-size: 0.7rem;
+  margin: 0;
+  color: #444444;
+`;
 
-const Button = styled.div`
-  background-color: #D1CDFF;
+const Button = styled.button`
+  background-color: ${({ isUsedOrExpired }) => (isUsedOrExpired ? "#EEEEEE" : "#D1CDFF")};
   height: 1.7rem;
-  width: 4rem;
+  width: 4.7rem;
   border-radius: 16px;
+  border: none;
+  color: ${({ isUsedOrExpired }) => (isUsedOrExpired ? "#BDBDBD" : "black")};
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 0.7rem;
   font-weight: 550;
-  cursor: pointer;
+  cursor: ${({ isUsedOrExpired }) => (isUsedOrExpired ? "not-allowed" : "pointer")};
+  
+  &:focus {
+    outline: none;
+  }
 `;
