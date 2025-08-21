@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Nocation = ({ location }) => {
+const Location = ({ location }) => {
   return (
     <Wrapper>
       <MyNocation>{location}</MyNocation>
@@ -26,4 +26,4 @@ const MyNocation = styled.span`
   font-weight: 600;
 `; 
 
-export default Nocation;
+export default Location;

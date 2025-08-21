@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import PostList from "../features/Post/components/PostList";
-import Nocation from "../features/Post/components/Nocation";
+import Location from "../features/Post/components/Location";
 
 
 const CommunityPage = () => {
@@ -12,7 +12,7 @@ const CommunityPage = () => {
     <Container>
       <Header title="다같이 한걸음" backPath="/" />
       <Wrapper>
-        <Nocation location={location} />
+        <Location location={location} />
         <PostListWrapper>
           <PostList setLocation={setLocation} />
         </PostListWrapper>
