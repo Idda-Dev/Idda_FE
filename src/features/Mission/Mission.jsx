@@ -5,7 +5,6 @@ import CalendarIcon from "./assets/CalendarIcon.png";
 import MissionCard from "./assets/MissionCard.png";
 import { Row } from "../../components/CommonComponents";
 import { useState } from "react";
-import CameraButton from "./assets/CameraButton.png";
 import WritingIcon from "./assets/WritingIcon.png";
 import ReMissionIcon from "./assets/ReMissionIcon.png";
 import MissionHeader from "./MissionHeader.jsx";
