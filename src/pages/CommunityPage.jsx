@@ -1,10 +1,11 @@
-// src/pages/CommunityPage.jsx
 import React, { useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import PostList from "../features/Post/components/PostList";
 import Location from "../features/Post/components/Location";
-import { userinfo } from "../mocks/userinfo"; // userinfo mock 데이터 import
+import { userinfo } from "../mocks/userinfo"; 
+import TabBar from "../components/TabBar";
+import PurpleCommunityIcon from "../assets/PurpleCommunityIcon.png"
 
 const CommunityPage = () => {
   const [location, setLocation] = useState(userinfo.location);
@@ -19,6 +20,9 @@ const CommunityPage = () => {
           <PostList location={location} />
         </PostListWrapper>
       </Wrapper>
+      <TabBar
+      icons={{ community: PurpleCommunityIcon }} 
+      />
     </Container>
   );
 };
