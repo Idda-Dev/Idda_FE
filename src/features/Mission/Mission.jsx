@@ -13,6 +13,7 @@ import TabBar from "../../components/TabBar.jsx";
 import PurpleMissonIcon from "../../assets/PurpleMissionIcon.png";
 import { useNavigate } from "react-router-dom";
 import BackIcon from "../../assets/BackIcon.png";
+import ExampleImg from "./assets/ExampleImg.png";
 
 const Mission = () => {
   // 0. 달력이동
@@ -104,7 +105,11 @@ const Mission = () => {
                   <PreviewImage src={imagePreview} alt="업로드된 이미지" />
                 ) : (
                   <Placeholder>
-                    <img src={CameraButton} style={{ width: "15%" }} />
+                    <img
+                      src={ExampleImg}
+                      alt="예시이미지"
+                      style={{ width: "100%" }}
+                    />
                   </Placeholder>
                 )}
               </Label>
@@ -278,7 +283,7 @@ const WhiteWrapper = styled.div`
 const Label = styled.label`
   display: block;
   width: 100%;
-  height: 8rem;
+  height: 10rem;
   cursor: pointer;
 `;
 
@@ -290,10 +295,6 @@ const Placeholder = styled.div`
   width: 100%;
   height: 100%;
   background-color: #ccc;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 14px;
 `;
 
 const PreviewImage = styled.img`
