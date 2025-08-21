@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import ShopListItem from "./ShopListItem";
-import { coupons } from "../../../mocks/coupons"; // Update the path to your mock data
+import { coupons } from "../../../mocks/coupons";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -25,7 +25,7 @@ const ShopList = () => {
         console.error("API 호출 실패:", err);
         setItems(coupons); // Fallback to mock data
       } finally {
-        setLoading(false);
+        setLoading(false); // 로딩 상태를 최종적으로 false로 설정
       }
     };
 

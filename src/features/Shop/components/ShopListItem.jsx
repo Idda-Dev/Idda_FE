@@ -28,6 +28,7 @@ const ShopListItem = ({ item }) => {
       <ShopModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        item={item}
       />
     </>
   );
@@ -35,7 +36,6 @@ const ShopListItem = ({ item }) => {
 
 export default ShopListItem;
 
-/* ---------- Styled ---------- */
 const Container = styled.div`
   width: 100%;
   height: auto;
@@ -93,7 +93,7 @@ const Icon = styled.img`
   height: 2rem;
 `;
 
-const Count = styled.div`
+const Count = styled.p`
   background-color: #D1CDFF;
   height: 1.7rem;
   width: 4rem;

@@ -1,39 +1,77 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // ← 추가
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 import Content1 from './Content1';
 import Content2 from './Content2';
 
-const ShopModal = ({ isOpen, onClose }) => {
-  const [clicked, setClicked] = useState(false);
-  const navigate = useNavigate(); // ← 페이지 이동 함수
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// userId = 1 설정 
+const userId = 1;
 
-  // 모달 열릴 때마다 클릭 상태 초기화
+const ShopModal = ({ isOpen, onClose, item }) => {
+  const [clicked, setClicked] = useState(false);
+  const [purchaseSuccess, setPurchaseSuccess] = useState(false);
+  const navigate = useNavigate();
+
+  // 모달 열릴 때마다 상태 초기화
   useEffect(() => {
-    if (isOpen) setClicked(false);
+    if (isOpen) {
+      setClicked(false);
+      setPurchaseSuccess(false);
+    }
   }, [isOpen]);
 
   if (!isOpen) return null;
 
-  const handleClickConfirm = () => {
-    console.log("확인 클릭!");
-    setClicked(true);
+  const handleClickConfirm = async () => {
+    console.log("구매하기 클릭!");
+    
+    if (!BASE_URL) {
+      console.warn("⚠️ BASE_URL이 설정되지 않았습니다. → 목데이터 시뮬레이션");
+      const hasEnoughCandy = item.price <= 5; 
+      setPurchaseSuccess(hasEnoughCandy);
+      setClicked(true);
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${BASE_URL}/api/users/${userId}/coupons/${item.couponId}`);
+      
+      if (response.status === 201) {
+        console.log("201 Created: 쿠폰 구매 성공");
+        setPurchaseSuccess(true);
+      } else {
+        setPurchaseSuccess(true);
+      }
+    } catch (err) {
+      console.error("API 호출 실패:", err);
+      setPurchaseSuccess(false);
+    } finally {
+      setClicked(true);
+    }
   };
 
   const handleClickComplete = () => {
-    console.log("완료 클릭!");
-    onClose();           // 모달 닫기
-    navigate("/coupon"); // /coupon 페이지로 이동
+    onClose();
+    if (purchaseSuccess) {
+      navigate("/coupon");
+    }
   };
 
   return (
     <Overlay onClick={onClose}>
       <ModalBox onClick={(e) => e.stopPropagation()}>
-        {clicked ? <Content2/> : <Content1/>}
+        {clicked ? 
+          <Content2 isSuccess={purchaseSuccess} /> : 
+          <Content1 item={item} />
+        }
         {!clicked ? (
           <Button onClick={handleClickConfirm}>구매하기</Button>
         ) : (
-          <Button onClick={handleClickComplete}>내 쿠폰함 가기</Button>
+          <Button onClick={handleClickComplete}>
+            {purchaseSuccess ? "내 쿠폰함 가기" : "되돌아가기"}
+          </Button>
         )}
       </ModalBox>
     </Overlay>

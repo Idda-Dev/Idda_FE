@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from "axios";
-import CharacterIcon from "../assets/Photo.png";
 import Candy from "../assets/Candy.png";
 import { userinfo } from "../../../mocks/userinfo";
 
@@ -65,7 +64,6 @@ const CharacterProfile = () => {
 
 export default CharacterProfile;
 
-// 기존 스타일 그대로
 const Container = styled.div`
   height: 21%;
   width: 73%;
