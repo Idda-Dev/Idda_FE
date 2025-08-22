@@ -20,10 +20,11 @@ const Location = ({ location, setLocation }) => {
 
   return (
     <Wrapper>
-      <DropdownButton onClick={handleLocationClick}>
+      <DropdownButton onClick={handleLocationClick} isOpen={isDropdownOpen}>
         <span>{location}</span>
         <img src={dropdownIcon} alt="드롭다운 아이콘" />
       </DropdownButton>
+
 
       {/* isDropdownOpen 상태가 true일 때만 드롭다운 메뉴를 렌더링 */}
       {isDropdownOpen && (
@@ -41,51 +42,52 @@ const Location = ({ location, setLocation }) => {
 
 const Wrapper = styled.div`
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0 1rem;
+  display: inline-flex;   /* 버튼 크기만큼 Wrapper */
+  width: max-content;     /* 내용물(버튼) 크기에 맞춤 */
 `;
 
 const DropdownButton = styled.div`
-  display: flex; 
-  justify-content: space-between; /* 텍스트와 이미지를 양 끝으로 분리 */
-  align-items: center; /* 세로 중앙 정렬 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
   background-color: #D1CDFF;
-  padding: 0.3rem 1rem;
-  border-radius: 36px;
+  padding: 0.3rem 0.7rem;
+  border-radius: ${({ isOpen }) => (isOpen ? '16px 16px 0 0' : '16px')};
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
 
   img {
-    width: 0.9rem; /* 이미지 크기 조정 */
-    margin-left: 0.5rem; /* 텍스트와 이미지 사이 간격 */
+    width: 0.9rem;
+    margin-left: 0.4rem;
   }
 `;
+
 
 const DropdownList = styled.ul`
   position: absolute;
   top: 100%;
-  left: 1rem;
-  height: 10rem;
-  width: 5rem;
+  left: 0;
+  width: 100%; /* 버튼 너비 그대로 */
+  max-height: 11rem;
   overflow: auto;
   z-index: 10;
-  background-color: #F2F2F2;
-  border: none;
-  border-radius: 9px;
+  background-color: #ECEAFF;
+  border-radius: 0 0 16px 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 0.5rem 0 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
 `;
 
+
 const DropdownItem = styled.li`
-  padding: 0.5rem 1rem;
-  font-size: 0.7rem;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.75rem;
   font-weight: 550;
-  color: #7F7F7F;
+  text-align: center;
+  color: #2F0047;
   cursor: pointer;
   border-bottom: 1px solid #e0e0e0; /* 항목 아래에 경계선 추가 */
   &:hover {
