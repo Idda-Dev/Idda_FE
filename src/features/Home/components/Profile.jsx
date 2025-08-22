@@ -57,7 +57,7 @@ const Icon1Wrapper = styled.div`
   width: 2.3rem;
   height: 2.3rem;
   border-radius: 50%; 
-  padding: 1.2px; 
+  padding: 0.1rem; 
   background: linear-gradient(135deg, #2F0047, #D1CDFF); /* 왼쪽위 -> 오른쪽아래 */
   display: flex;
   justify-content: center;

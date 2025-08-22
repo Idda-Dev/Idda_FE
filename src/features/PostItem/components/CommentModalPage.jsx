@@ -103,9 +103,9 @@ const CommentModalPage = ({ isOpen, onClose, isMyComment, comment, userId, onCom
             </>
           ) : (
             <>
-              <ActionButtonTop>신고</ActionButtonTop>
+              <ActionButtonTop onClick={onClose}>신고</ActionButtonTop>
               <Divider />
-              <ActionButtonBottom>차단</ActionButtonBottom>
+              <ActionButtonBottom onClick={onClose}>차단</ActionButtonBottom>
             </>
           )}
         </DefaultButtonGroup>
