@@ -8,7 +8,7 @@ const Profile = ({user}) => {
   const now = new Date();
   const diffInMs = now - createdAt;
   const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
-  const togetherDays = diffInDays + 1;
+  const togetherDays = diffInDays;
 
   return (
     <Container>
