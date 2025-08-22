@@ -37,26 +37,24 @@ const QrModal = ({ memberCouponId, onClose }) => {
   }, [memberCouponId]);
 
   return (
-    <ModalOverlay onClick={onClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
-        <QrImageWrapper>
-          {loading ? (
-            <LoadingMessage>QR 코드를 불러오는 중...</LoadingMessage>
-          ) : error ? (
-            <ErrorMessage>{error}</ErrorMessage>
-          ) : qrUrl ? (
-            <QrImage src={qrUrl} alt="QR Code" />
-          ) : (
-            <ErrorMessage>QR 코드를 찾을 수 없습니다.</ErrorMessage>
-          )}
-        </QrImageWrapper>
-      </ModalContent>
-      <Use>
-        사용하기
-      </Use>
+  <ModalOverlay onClick={onClose}>
+    <ModalContent onClick={(e) => e.stopPropagation()}>
       <CloseButton src={BackIcon} onClick={onClose} />
-    </ModalOverlay>
-  );
+      <QrImageWrapper>
+        {loading ? (
+          <LoadingMessage>QR 코드를 불러오는 중...</LoadingMessage>
+        ) : error ? (
+          <ErrorMessage>{error}</ErrorMessage>
+        ) : qrUrl ? (
+          <QrImage src={qrUrl} alt="QR Code" />
+        ) : (
+          <ErrorMessage>QR 코드를 찾을 수 없습니다.</ErrorMessage>
+        )}
+      </QrImageWrapper>
+    </ModalContent>
+  </ModalOverlay>
+);
+
 };
 
 export default QrModal;
@@ -80,7 +78,7 @@ const ModalOverlay = styled.div`
 const ModalContent = styled.div`
   height: 13rem;
   width: 13rem;
-  margin-top: 6rem;
+  margin-top: 3rem;
   padding: 0;
   border-radius: 40px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -89,8 +87,24 @@ const ModalContent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
+  position: relative; /* CloseButton absolute 기준 */
 `;
+
+const CloseButton = styled.img`
+  position: absolute;
+  top: -2rem;   /* QrImageWrapper 바로 위 */
+  right: -0rem;
+  height: 1.3rem;
+  width: 1.3rem;
+  background-color: #D1CDFF;
+  border: none;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: 550;
+  cursor: pointer;
+  color: black;
+`;
+
 
 const QrImageWrapper = styled.div`
   width: 100%;
@@ -117,33 +131,10 @@ const QrImageWrapper = styled.div`
   }
 `;
 
-const Use = styled.div`
-  margin-top: 3rem;
-  width: 13rem;
-  padding: 0.75rem;
-  background-color: #D1CDFF;
-  border: none;
-  border-radius: 36px;
-  font-size: 1rem;
-  font-weight: 550;
-  color: black;
-  text-align: center;
-`;
-
-const CloseButton = styled.img`
-  margin-top: 5rem;
-  height: 1.5rem;
-  width: 1.5rem;
-  background-color: #D1CDFF;
-  border: none;
-  border-radius: 50%;
-  font-size: 1rem;
-  font-weight: 550;
-  cursor: pointer;
-  color: black;
-`;
 
 const QrImage = styled.img`
+  background-color: white;
+  padding: 0.6rem;
   width: 100%;
   height: 100%;
   object-fit: contain;
