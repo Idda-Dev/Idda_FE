@@ -6,7 +6,7 @@ import { community } from "../../../mocks/community"
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// `location` prop을 받도록 수정
+// `location` prop을 받도록
 const PostList = ({ location }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);

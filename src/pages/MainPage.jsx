@@ -1,31 +1,99 @@
-import React from "react";
-import { Column, Row } from "../components/CommonComponents";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import { userinfo } from "../mocks/userinfo"; 
 import TabBar from "../components/TabBar";
 import PurpleHomeIcon from "../assets/PurpleHomeIcon.png";
+import Profile from "../features/Home/components/Profile";
+import CandyCount from "../features/Home/components/CandyCount";
+import BackgroundImg from "../features/Home/assets/MainPageImage.png";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const MainPage = () => {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        if (!BASE_URL) {
+          console.warn("⚠️ BASE_URL이 설정되지 않았습니다. → 목데이터 사용");
+          setUserData(userinfo);
+        } else {
+          const res = await axios.get(`${BASE_URL}/api/users/1`);
+          setUserData(res.data);
+        }
+      } catch (err) {
+        console.error("API 호출 실패:", err);
+        setError("유저 정보를 불러오는 데 실패했습니다. 목데이터 사용");
+        setUserData(userinfo);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  if (loading) return <Message>로딩중...</Message>;
+  if (error) console.warn(error);
+
   return (
     <Container>
-      <div>
-        <Column>
-          <div>메인페이지입니다</div>
-        </Column>
-        <div style={{ height: "100%" }} />
-      </div>
-      <TabBar icons={{ home: PurpleHomeIcon }} />
+      <Background src={BackgroundImg} alt="배경 이미지" />
+      <Wrapper>
+        {userData && (
+          <>
+            <Profile user={userData} />
+            <CandyCount candy={userData.candy} />
+          </>
+        )}
+      </Wrapper>
+      <TabBar icons={{ home: PurpleHomeIcon }} backgroundColor="rgba(255, 255, 255, 0.9)" />
     </Container>
   );
 };
 
 export default MainPage;
 
-// 탭바 전용 컨테이너
+// Styled Components
 const Container = styled.div`
   width: 100%;
+  height: 100vh;
   margin: 0 auto;
   position: relative;
-  min-height: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  background-color: transparent;
+`;
+
+const Background = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  object-position: center;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 4rem;
+  gap: 1rem;
+  padding: 0 1.5rem;
+`;
+
+const Message = styled.div`
+  text-align: center;
+  margin-top: 2rem;
 `;
