@@ -31,7 +31,7 @@ const Wrapper = styled.div`
   padding-bottom: 1.5rem; /* 탭바 높이 */
 
   position: relative;
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
