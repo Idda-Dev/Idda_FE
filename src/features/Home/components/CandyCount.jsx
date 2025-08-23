@@ -42,7 +42,8 @@ const Count=styled.p`
     color: #2F0047;
     border-radius: 36px;
     margin: 0;
-    padding: 0.1rem 0.7rem; 
+    padding: 0.1rem 0.5rem; 
+    text-align: center;
     font-size: 0.8rem;
     font-weight: 550;
     display: inline-block;

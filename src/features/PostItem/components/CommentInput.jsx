@@ -1,32 +1,43 @@
+// src/components/CommentInput.jsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import PencilIcon from '../assets/PencilIcon.png'; 
+import PencilIcon from '../assets/PencilIcon.png';
 import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// userId와 postId를 props로 받습니다.
-const CommentInput = ({ postId, userId = 1 }) => {
+const CommentInput = ({ postId, userId, userNickname, userProfileImageUrl, onCommentAdded }) => {
   const [text, setText] = useState('');
 
-  const handleChange = (e) => {
-    setText(e.target.value);
-  };
+  const handleChange = (e) => setText(e.target.value);
 
   const handleKeyPress = async (e) => {
-    // Enter 키를 누르고, 입력된 텍스트가 공백이 아닐 때
     if (e.key === 'Enter' && text.trim() !== '') {
       try {
-        const payload = {
-          content: text,
-        };
-        const res = await axios.post(`${BASE_URL}/api/users/${userId}/posts/${postId}/comments`, payload);
-        
-        console.log('댓글 전송 성공:', res.data);
-        setText(''); // 전송 후 입력 필드 초기화
-        
-        // 댓글 목록을 새로고침하는 로직 (선택 사항)
-        // 예: onCommentAdded() 함수를 props로 받아 실행
+        const payload = { content: text };
+        const res = await axios.post(
+          `${BASE_URL}/api/users/${userId}/posts/${postId}/comments`,
+          payload
+        );
+
+        setText('');
+
+        const newCommentUri = res.headers['location'];
+        if (newCommentUri) {
+          const newCommentRes = await axios.get(`${BASE_URL}${newCommentUri}`);
+          if (onCommentAdded) onCommentAdded(newCommentRes.data);
+        } else if (onCommentAdded) {
+          // fallback: 서버에서 Location 헤더 안 주면 유저 정보로 댓글 생성
+          onCommentAdded({
+            commentId: Date.now(),
+            content: text,
+            memberId: userId,
+            nickname: userNickname,
+            profileImageUrl: userProfileImageUrl,
+            createdAt: new Date().toISOString(),
+            postId: postId
+          });
+        }
       } catch (err) {
         console.error("댓글 전송 실패:", err);
       }
@@ -42,12 +53,14 @@ const CommentInput = ({ postId, userId = 1 }) => {
           value={text}
           onChange={handleChange}
           onKeyPress={handleKeyPress}
-          placeholder="" 
+          placeholder=""
         />
       </InputWrapper>
     </Container>
   );
 };
+
+export default CommentInput;
 
 const Container = styled.div`
   width: 73%;
@@ -60,13 +73,6 @@ const Container = styled.div`
 const InputWrapper = styled.div`
   position: relative;
   width: 100%;
-  max-width: 600px;
-  
-  &:focus-within {
-    div {
-      display: none;
-    }
-  }
 `;
 
 const Placeholder = styled.div`
@@ -97,5 +103,3 @@ const Input = styled.input`
   outline: none;
   font-size: 0.8rem;
 `;
-
-export default CommentInput;
