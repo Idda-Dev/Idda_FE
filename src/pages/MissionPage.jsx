@@ -47,6 +47,7 @@ const MissionPage = () => {
     content: "",
     missionComment: "",
   });
+  const [alreadyVerified, setAlreadyVerified] = useState(false); // 인증 여부 확인
 
   useEffect(() => {
     const fetchMissionData = async () => {
@@ -62,6 +63,7 @@ const MissionPage = () => {
           content: response.data.content,
           missionComment: response.data.missionComment,
         });
+        setAlreadyVerified(response.data.verified); // 인증여부 확인
       } catch (error) {
         console.error("미션 데이터를 불러오는데 실패했습니다.", error);
       }
@@ -123,6 +125,7 @@ const MissionPage = () => {
       setImagePreview(null);
       setImageFile(null);
       setSelected("공개 여부");
+      setAlreadyVerified(true); // 등록 후 상태 반영
 
       // 화면 다시 불러오기 트리거
       setRefreshTrigger((prev) => !prev);
@@ -141,27 +144,36 @@ const MissionPage = () => {
             content={missionData.content}
             missionComment={missionData.missionComment}
           />
-          <ProofMission
-            data={{
-              imagePreview,
-              inputText,
-              finalText,
-              selected,
-              isOpen,
-              showModal,
-              missionContent: missionData?.content,
-              isFormValid,
-            }}
-            handlers={{
-              handleChangeImage,
-              handleModalSubmit,
-              handleSelect,
-              handleSubmit,
-              setShowModal,
-              setInputText,
-              setIsOpen,
-            }}
-          />
+          {alreadyVerified ? (
+            <div
+              style={{ fontSize: "14px", color: "#888", textAlign: "center" }}
+            >
+              ✅ 오늘의 미션은 이미 인증했어요! 내일 새로운 미션을 기다려주세요
+              ☁️
+            </div>
+          ) : (
+            <ProofMission
+              data={{
+                imagePreview,
+                inputText,
+                finalText,
+                selected,
+                isOpen,
+                showModal,
+                missionContent: missionData?.content,
+                isFormValid,
+              }}
+              handlers={{
+                handleChangeImage,
+                handleModalSubmit,
+                handleSelect,
+                handleSubmit,
+                setShowModal,
+                setInputText,
+                setIsOpen,
+              }}
+            />
+          )}
         </MainContainer>
         <TabBar icons={{ mission: PurpleMissonIcon }} />
       </Container>
