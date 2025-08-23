@@ -1,10 +1,10 @@
 import React from "react";
-import BackIcon from "../../features/PostItem/assets/BackIcon.png";
+import BackIcon from "../../PostItem/assets/BackIcon.png";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import Star1 from "./assets/Star1.png";
-import { Row } from "../../components/CommonComponents";
-
+import Star1 from "../assets/Star1.png";
+import { Row } from "../../../components/CommonComponents";
+Row;
 const MissionHeader = ({ title }) => {
   const navigate = useNavigate();
   const handleBack = () => {
