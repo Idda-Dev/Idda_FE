@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Row } from "../../../components/CommonComponents";
-import BackIcon from "../../../assets/BackIcon.png";
+import CancleIcon from "../../../assets/CancleIcon.png";
 
 const ModalMission = ({
   missionContent,
@@ -21,7 +21,7 @@ const ModalMission = ({
         >
           <ModalTitle>{missionContent}</ModalTitle>
           <img
-            src={BackIcon}
+            src={CancleIcon}
             alt="back"
             onClick={onClose}
             style={{ cursor: "pointer", width: "9%" }}
