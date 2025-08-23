@@ -72,7 +72,7 @@ const Wrapper = styled.div`
 `;
 
 const LikedButton = styled.button`
-  height: 100%;
+  height: 2rem;
   aspect-ratio: 1 / 1;
   background-color: ${({ $isLiked }) => ($isLiked ? "#D1CDFF" : "#ECEAFF")};
   border: none;
@@ -96,7 +96,7 @@ const LikedButton = styled.button`
 `;
 
 const CommentButton = styled.div`
-  height: 100%;
+  height: 2rem;
   aspect-ratio: 1 / 1;
   background-color: #eceaff;
   display: flex;

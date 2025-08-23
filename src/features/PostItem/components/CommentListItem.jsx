@@ -33,13 +33,17 @@ const CommentListItem = ({ comment, userId=1, onCommentChange }) => {
 
       <ModalContainer>
         <CommentModal 
-          isOpen={isModalOpen} 
-          onClose={() => setIsModalOpen(false)} 
-          isMyComment={isMyComment}
-          comment={comment}
-          userId={userId}
-          onCommentChange={onCommentChange} // 전달
-        />
+  isOpen={isModalOpen} 
+  onClose={() => setIsModalOpen(false)} 
+  isMyComment={isMyComment}
+  comment={comment}
+  userId={userId}
+  onCommentChange={(updatedOrDeleted, type) => {
+    if(onCommentChange) onCommentChange(updatedOrDeleted, type);
+    setIsModalOpen(false);
+  }}
+/>
+
       </ModalContainer>
     </Container>
   );

@@ -32,33 +32,33 @@ const CommentModalPage = ({ isOpen, onClose, isMyComment, comment, userId, onCom
   };
 
   const handleSaveEdit = async () => {
-    if (!editContent || editContent === comment.content) {
-      handleCancelEdit();
-      return; 
-    }
-    
-    try {
-      await axios.patch(`${BASE_URL}/api/users/${userId}/posts/${comment.postId}/comments/${comment.commentId}`, {
-  content: editContent
-});
-      if (onCommentChange) onCommentChange(); // 수정 후 전체 refresh
-      setView('default');
-      onClose();
-    } catch (err) {
-      console.error("댓글 수정 실패:", err);
-      setView('default');
-    }
-  };
+  if (!editContent || editContent === comment.content) return;
 
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`${BASE_URL}/api/users/${userId}/posts/${comment.postId}/comments/${comment.commentId}`);
-      if (onCommentChange) onCommentChange(comment.commentId); // 삭제된 ID 전달
-      onClose();
-    } catch (err) {
-      console.error("댓글 삭제 실패:", err);
-    }
-  };
+  try {
+    await axios.patch(`${BASE_URL}/api/users/${userId}/posts/${comment.postId}/comments/${comment.commentId}`, {
+      content: editContent
+    });
+
+    if (onCommentChange) onCommentChange(
+      { ...comment, content: editContent }, // 수정된 댓글
+      'update'
+    );
+    setView('default');
+  } catch (err) {
+    console.error("댓글 수정 실패:", err);
+  }
+};
+
+const handleDelete = async () => {
+  try {
+    await axios.delete(`${BASE_URL}/api/users/${userId}/posts/${comment.postId}/comments/${comment.commentId}`);
+    if (onCommentChange) onCommentChange(comment.commentId, 'delete');
+  } catch (err) {
+    console.error("댓글 삭제 실패:", err);
+  }
+};
+
+
 
   const renderContent = () => {
     if (view === 'edit') {

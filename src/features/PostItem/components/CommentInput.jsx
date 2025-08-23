@@ -1,4 +1,3 @@
-// src/components/CommentInput.jsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PencilIcon from '../assets/PencilIcon.png';
@@ -12,37 +11,42 @@ const CommentInput = ({ postId, userId, userNickname, userProfileImageUrl, onCom
   const handleChange = (e) => setText(e.target.value);
 
   const handleKeyPress = async (e) => {
-    if (e.key === 'Enter' && text.trim() !== '') {
-      try {
-        const payload = { content: text };
-        const res = await axios.post(
-          `${BASE_URL}/api/users/${userId}/posts/${postId}/comments`,
-          payload
-        );
+  if (e.key === 'Enter' && text.trim() !== '') {
+    const newCommentContent = text;
+    setText('');
 
-        setText('');
+    // 1️⃣ 임시 ID로 화면에 바로 반영
+    const tempComment = {
+      commentId: `temp-${Date.now()}`,
+      content: newCommentContent,
+      memberId: userId,
+      nickname: userNickname,
+      profileImageUrl: userProfileImageUrl,
+      createdAt: new Date().toISOString(),
+      postId: postId
+    };
+    if (onCommentAdded) onCommentAdded(tempComment);
 
-        const newCommentUri = res.headers['location'];
-        if (newCommentUri) {
-          const newCommentRes = await axios.get(`${BASE_URL}${newCommentUri}`);
-          if (onCommentAdded) onCommentAdded(newCommentRes.data);
-        } else if (onCommentAdded) {
-          // fallback: 서버에서 Location 헤더 안 주면 유저 정보로 댓글 생성
-          onCommentAdded({
-            commentId: Date.now(),
-            content: text,
-            memberId: userId,
-            nickname: userNickname,
-            profileImageUrl: userProfileImageUrl,
-            createdAt: new Date().toISOString(),
-            postId: postId
-          });
-        }
-      } catch (err) {
-        console.error("댓글 전송 실패:", err);
+    // 2️⃣ 서버에 POST 요청
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/api/users/${userId}/posts/${postId}/comments`,
+        { content: newCommentContent }
+      );
+
+      const location = res.headers['location'];
+      if (location) {
+        const newCommentRes = await axios.get(`${BASE_URL}${location}`);
+        // 3️⃣ 실제 서버 ID로 덮어쓰기
+        if (onCommentAdded) onCommentAdded(newCommentRes.data, true); 
       }
+    } catch (err) {
+      console.error("댓글 전송 실패:", err);
+      // 실패 시 temp 댓글 그대로 유지하거나 삭제 처리 가능
     }
-  };
+  }
+};
+
 
   return (
     <Container>
