@@ -12,14 +12,13 @@ import { useParams } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const PostItemPage = ({ userId = 1}) => {
+const PostItemPage = ({ userId = 1 }) => {
   const { postId } = useParams();
-  const numericPostId = Number(postId); // 문자열 → 숫자 변환
+  const numericPostId = Number(postId);
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log("postId:", numericPostId);
 
   useEffect(() => {
     let initialHeight = window.innerHeight;
@@ -73,14 +72,16 @@ const PostItemPage = ({ userId = 1}) => {
       </ScrollArea>
 
       {/* CommentInput 고정 */}
-      <CommentInputWrapper isKeyboardOpen={isKeyboardOpen}>
+      <CommentInputWrapper $isKeyboardOpen={isKeyboardOpen}>
         <CommentInput postId={post.postId} userId={userId}/>
       </CommentInputWrapper>
     </Container>
   );
 };
+
 export default PostItemPage;
 
+/* styled-components */
 const Container = styled.div`
   position: relative;
   width: 100%;
@@ -105,8 +106,9 @@ const ScrollArea = styled.div`
   padding-bottom: 56px;
 `;
 
+// Transient Prop 사용 ($)
 const CommentInputWrapper = styled.div`
-  position: ${({ isKeyboardOpen }) => (isKeyboardOpen ? "fixed" : "absolute")};
+  position: ${({ $isKeyboardOpen }) => ($isKeyboardOpen ? "fixed" : "absolute")};
   bottom: 0;
   width: 100%;
   height: 3.5rem;
@@ -122,4 +124,3 @@ const CommentListWrapper = styled.div`
   width: 100%;
   overflow-y: auto;
 `;
-

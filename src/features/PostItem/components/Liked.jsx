@@ -18,11 +18,9 @@ const Liked = ({ postId, userId = 1, heartCount, commentCount }) => {
       );
 
       if (res.data.liked) {
-        // 좋아요 눌림
         setLikedCount((prev) => prev + 1);
         setIsLiked(true);
       } else {
-        // 좋아요 취소됨
         setLikedCount((prev) => Math.max(prev - 1, 0));
         setIsLiked(false);
       }
@@ -31,14 +29,12 @@ const Liked = ({ postId, userId = 1, heartCount, commentCount }) => {
     }
   };
 
-  const formatCount = (count) => {
-    return count > 999 ? "999+" : count;
-  };
+  const formatCount = (count) => (count > 999 ? "999+" : count);
 
   return (
     <Container>
       <Wrapper>
-        <LikedButton onClick={handleLikeToggle} isLiked={isLiked}>
+        <LikedButton onClick={handleLikeToggle} $isLiked={isLiked}>
           <img src={LikedIcon} alt="like" />
         </LikedButton>
         <LikedCount>좋아요 {formatCount(likedCount)}</LikedCount>
@@ -78,7 +74,7 @@ const Wrapper = styled.div`
 const LikedButton = styled.button`
   height: 100%;
   aspect-ratio: 1 / 1;
-  background-color: ${({ isLiked }) => (isLiked ? "#D1CDFF" : "#ECEAFF")};
+  background-color: ${({ $isLiked }) => ($isLiked ? "#D1CDFF" : "#ECEAFF")};
   border: none;
   cursor: pointer;
   display: flex;
