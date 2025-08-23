@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 // 기본아이콘
 import HomeIcon from "../assets/HomeIcon.png";
@@ -29,10 +29,9 @@ const TabBar = ({ icons = {}, backgroundColor = "#E8F0FF" }) => {
   };
 
   return (
-    <Wrapper backgroundColor={backgroundColor}>
+    <Wrapper $backgroundColor={backgroundColor}>
       <TabButton onClick={() => navigate("/")}>
-        <TabIcon src={finalIcons.home} alt="홈" />
-        홈
+        <TabIcon src={finalIcons.home} alt="홈" />홈
       </TabButton>
       <TabButton onClick={() => navigate("/mission")}>
         <TabIcon src={finalIcons.mission} alt="미션" />
@@ -50,7 +49,6 @@ const TabBar = ({ icons = {}, backgroundColor = "#E8F0FF" }) => {
   );
 };
 
-
 const Wrapper = styled.div`
   position: absolute;
   padding: 1.5rem 3rem;
@@ -63,7 +61,7 @@ const Wrapper = styled.div`
   align-items: center;
   z-index: 100;
 
-  background-color: ${({ backgroundColor }) => backgroundColor};
+  background-color: ${({ $backgroundColor }) => $backgroundColor};
   border-radius: 16px 16px 0 0;
 `;
 
@@ -87,11 +85,10 @@ const TabButton = styled.button`
 const TabIcon = styled.img`
   width: 20px;
   height: 20px;
-  margin-bottom: 2px; 
+  margin-bottom: 2px;
 `;
 
 export default TabBar;
-
 
 // 페이지에서 아이콘, 배경색 변경
 
@@ -102,8 +99,8 @@ export default TabBar;
 //   return (
 //     <div>
 //       {/* 페이지 내용 */}
-//       <TapBar 
-//          icons={{ home: PurpleHomeIcon }} 
+//       <TapBar
+//          icons={{ home: PurpleHomeIcon }}
 //          backgroundColor="#FFF0E0"
 //        />
 //     </div>

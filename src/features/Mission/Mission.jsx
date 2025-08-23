@@ -26,17 +26,6 @@ const Mission = () => {
   // 1. 사진첨부
   const [imagePreview, setImagePreview] = useState(null);
 
-  const handleChangeImage = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
-
   // 2. 글쓰기 및 모달
   const [showModal, setShowModal] = useState(false);
   const [inputText, setInputText] = useState("");
@@ -62,6 +51,7 @@ const Mission = () => {
   // API
   const BASE_URL = import.meta.env.VITE_BASE_URL; // VITE_BASE_URL 불러오기
   const user_id = 1; // user_id 1로 고정
+  const [refreshTrigger, setRefreshTrigger] = useState(false); // 글 등록 후 화면 초기화
 
   // 1. 미션 정보
   const [missionData, setMissionData] = useState({
@@ -89,7 +79,70 @@ const Mission = () => {
     };
 
     fetchMissionData();
-  }, [BASE_URL]);
+  }, [BASE_URL, refreshTrigger]);
+
+  // 2. 인증 글 작성하기
+
+  const [imageFile, setImageFile] = useState(null); // 이미지 파일 상태 추가
+
+  const handleChangeImage = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setImageFile(file); // File 객체 저장
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result); // 미리보기용
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (!imageFile || !finalText || selected === "공개 여부") {
+        alert("모든 입력을 완료해주세요.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("content", finalText);
+      formData.append("public", selected === "공개" ? "true" : "false");
+      formData.append("file", imageFile);
+
+      const date = new Date().toISOString().split("T")[0];
+
+      // 먼저 오늘 날짜에 해당하는 missionId 가져오기
+      const missionIdResponse = await axios.get(
+        `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(
+          date
+        )}`
+      );
+      const missionId = missionIdResponse.data.missionId;
+
+      const postUrl = `${BASE_URL}/api/users/${user_id}/missions/${missionId}`;
+
+      await axios.post(postUrl, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      alert("미션 인증이 성공적으로 등록되었습니다!");
+      // 상태 초기화
+      setInputText("");
+      setFinalText("");
+      setImagePreview(null);
+      setImageFile(null);
+      setSelected("공개 여부");
+
+      // 🔥 화면 다시 불러오기 트리거
+      setRefreshTrigger((prev) => !prev);
+    } catch (error) {
+      console.error("미션 인증 등록 실패:", error);
+      alert("등록 중 오류가 발생했습니다.");
+    }
+  };
 
   return (
     <>
@@ -173,7 +226,7 @@ const Mission = () => {
                         alignItems: "start",
                       }}
                     >
-                      <ModalTitle>동네 골목길 10분 걷기</ModalTitle>
+                      <ModalTitle>{missionData.content}</ModalTitle>
                       <img
                         src={BackIcon}
                         alt="back"
@@ -216,7 +269,9 @@ const Mission = () => {
                 </DropdownContainer>
               </DropdownRight>
             </WhiteWrapper>
-            <SubmitButton disabled={!isFormValid}>등록하기</SubmitButton>
+            <SubmitButton disabled={!isFormValid} onClick={handleSubmit}>
+              등록하기
+            </SubmitButton>
           </LightPurpleWrapper>
         </MainContainer>
         <TabBar icons={{ mission: PurpleMissonIcon }} />
