@@ -61,7 +61,7 @@ const CharacterProfile = () => {
 export default CharacterProfile;
 
 const Container = styled.div`
-  height: 30%;
+  height: 27%;
   width: 100%;
   background: linear-gradient(to bottom, #2F0047, #624273);
   display: flex;
