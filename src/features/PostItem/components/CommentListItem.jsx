@@ -3,17 +3,12 @@ import styled from 'styled-components';
 import ModalIcon from "../assets/ModalIcon.png";
 import CommentModal from './CommentModalPage';
 
-// CommentListItem이 comment 객체와 userId를 props로 받습니다.
-const CommentListItem = ({ comment, userId }) => {
+const CommentListItem = ({ comment, userId=1, onCommentChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // API 응답에 맞춰 'createdAt'을 사용합니다.
   const { nickname, content, profileImageUrl, createdAt, memberId } = comment;
-
-  // 내 댓글인지 확인하는 변수
   const isMyComment = memberId === userId;
 
-  // 날짜 형식 변경 함수 추가
   const formatTime = (isoString) => {
     const date = new Date(isoString);
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -34,7 +29,6 @@ const CommentListItem = ({ comment, userId }) => {
       </Wrapper>
 
       <Content>{content}</Content>
-      {/* 'createdAt' 데이터를 형식에 맞춰 표시 */}
       <Time>{formatTime(createdAt)}</Time>
 
       <ModalContainer>
@@ -43,7 +37,8 @@ const CommentListItem = ({ comment, userId }) => {
           onClose={() => setIsModalOpen(false)} 
           isMyComment={isMyComment}
           comment={comment}
-          currentUserId={userId}
+          userId={userId}
+          onCommentChange={onCommentChange} // 전달
         />
       </ModalContainer>
     </Container>

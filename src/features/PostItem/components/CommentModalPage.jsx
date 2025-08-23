@@ -5,60 +5,47 @@ import axios from 'axios';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const CommentModalPage = ({ isOpen, onClose, isMyComment, comment, userId, onCommentChange }) => {
-  // 모달 내부의 현재 뷰를 관리하는 상태: 'default' 또는 'edit'
   const [view, setView] = useState('default');
   const [editContent, setEditContent] = useState(comment.content);
   const editInputRef = useRef(null);
 
   useEffect(() => {
-    // view가 'edit'으로 변경되었을 때만 실행
     if (view === 'edit' && editInputRef.current) {
-      // textarea에 포커스를 맞춥니다.
       editInputRef.current.focus();
-      // 커서를 텍스트의 끝으로 이동시킵니다.
       const length = editInputRef.current.value.length;
       editInputRef.current.setSelectionRange(length, length);
     }
   }, [view]);
 
   if (!isOpen) {
-    // 모달이 닫힐 때 뷰를 초기화
-    if (view !== 'default') {
-      setView('default');
-    }
+    if (view !== 'default') setView('default');
     return null;
   }
 
-  // '수정' 버튼 클릭 시 뷰를 'edit'로 변경
   const handleEditClick = () => {
-    setEditContent(comment.content); // 현재 댓글 내용으로 입력창 초기화
+    setEditContent(comment.content);
     setView('edit');
   };
 
-  // '취소' 버튼 클릭 시 뷰를 'default'로 되돌림
   const handleCancelEdit = () => {
     setView('default');
   };
 
-  // '저장' 버튼 클릭 시 댓글 수정 API 호출
   const handleSaveEdit = async () => {
     if (!editContent || editContent === comment.content) {
-      handleCancelEdit(); // 내용이 같거나 비어있으면 변경 없이 모달 닫기
+      handleCancelEdit();
       return; 
     }
     
     try {
-      await axios.put(`${BASE_URL}/api/users/${userId}/posts/${comment.postId}/comments/${comment.commentId}`, {
-        content: editContent
-      });
-      console.log('댓글 수정 성공');
-      // 댓글 목록을 새로고침하는 함수를 호출합니다.
-      if (onCommentChange) onCommentChange();
+      await axios.patch(`${BASE_URL}/api/users/${userId}/posts/${comment.postId}/comments/${comment.commentId}`, {
+  content: editContent
+});
+      if (onCommentChange) onCommentChange(); // 수정 후 전체 refresh
       setView('default');
       onClose();
     } catch (err) {
       console.error("댓글 수정 실패:", err);
-      // 실패 시에도 뷰는 되돌립니다.
       setView('default');
     }
   };
@@ -66,8 +53,7 @@ const CommentModalPage = ({ isOpen, onClose, isMyComment, comment, userId, onCom
   const handleDelete = async () => {
     try {
       await axios.delete(`${BASE_URL}/api/users/${userId}/posts/${comment.postId}/comments/${comment.commentId}`);
-      console.log('댓글 삭제 성공'); 
-      if (onCommentChange) onCommentChange();
+      if (onCommentChange) onCommentChange(comment.commentId); // 삭제된 ID 전달
       onClose();
     } catch (err) {
       console.error("댓글 삭제 실패:", err);
@@ -124,6 +110,9 @@ const CommentModalPage = ({ isOpen, onClose, isMyComment, comment, userId, onCom
 };
 
 export default CommentModalPage;
+
+// Styled-components 생략 (위 코드와 동일)
+
 
 const Overlay = styled.div`
   position: absolute;
