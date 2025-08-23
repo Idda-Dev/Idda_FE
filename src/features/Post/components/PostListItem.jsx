@@ -13,7 +13,7 @@ const PostListItem = ({ post }) => {
   const handleClick = () => {
     navigate(`/community/post/${post.postId}`);
   };
-
+  console.log(post)
   return (
     <Wrapper onClick={handleClick}>
       <ContentBox>
@@ -27,11 +27,11 @@ const PostListItem = ({ post }) => {
       <LikedBox>
         <Box>
           <Icon1 src={LikedIcon} />
-          <Count>{formatCount(post.likes)}</Count>
+          <Count>{formatCount(post.heartCount)}</Count>
         </Box>
         <Box>
           <Icon2 src={CommentIcon} />
-          <Count>{formatCount(post.comments)}</Count> 
+          <Count>{formatCount(post.commentCount)}</Count> 
         </Box>
       </LikedBox>
     </Wrapper>

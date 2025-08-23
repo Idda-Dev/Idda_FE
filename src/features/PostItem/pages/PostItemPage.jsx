@@ -8,13 +8,18 @@ import Header from "../../../components/Header";
 import Liked from "../components/Liked";
 import axios from "axios";
 import { post as mockPost } from "../../../mocks/post"; // ✅ 목데이터 import
+import { useParams } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const PostItemPage = ({ userId = 1, postId}) => {
+const PostItemPage = ({ userId = 1}) => {
+  const { postId } = useParams();
+  const numericPostId = Number(postId); // 문자열 → 숫자 변환
+
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  console.log("postId:", numericPostId);
 
   useEffect(() => {
     let initialHeight = window.innerHeight;
@@ -38,7 +43,7 @@ const PostItemPage = ({ userId = 1, postId}) => {
         }
 
         const res = await axios.get(
-          `${BASE_URL}/api/users/${userId}/missions/posts/${postId}`
+          `${BASE_URL}/api/missions/users/${userId}/posts/${numericPostId}`
         );
 
         setPost(res.data);
