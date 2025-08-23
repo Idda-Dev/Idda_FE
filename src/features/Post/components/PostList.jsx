@@ -13,33 +13,33 @@ const PostList = ({ location }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        let fetchedPosts;
-        if (!BASE_URL) {
-          console.warn("⚠️ BASE_URL이 설정되지 않았습니다. → 목데이터 사용");
-          // 목데이터를 location 값에 따라 필터링
-          fetchedPosts = community.filter(post => post.location === location);
-        } else {
-          // 쿼리 스트링을 포함한 API 호출
-          const res = await axios.get(`${BASE_URL}/api/missions/posts?location=${location}`);
-          fetchedPosts = res.data;
-        }
-        setPosts(fetchedPosts);
-      } catch (err) {
-        console.error("API 호출 실패:", err);
-        setError("게시물을 불러오는 데 실패했습니다.");
-        setPosts([]);
-      } finally {
-        setLoading(false);
+  const fetchPosts = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      let fetchedPosts;
+      if (!BASE_URL) {
+        console.warn("⚠️ BASE_URL이 설정되지 않았습니다. → 목데이터 사용");
+        fetchedPosts = community
+          .filter(post => post.location === location)
+          .sort((a, b) => b.heartCount - a.heartCount); // 💡 내림차순 정렬
+      } else {
+        const res = await axios.get(`${BASE_URL}/api/missions/posts?location=${location}`);
+        fetchedPosts = res.data.sort((a, b) => b.heartCount - a.heartCount); // 💡 내림차순 정렬
       }
-    };
+      setPosts(fetchedPosts);
+    } catch (err) {
+      console.error("API 호출 실패:", err);
+      setError("게시물을 불러오는 데 실패했습니다.");
+      setPosts([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    // location이 변경될 때마다 fetchPosts 함수 호출
-    fetchPosts();
-  }, [location]); // 의존성 배열에 location 추가
+  fetchPosts();
+}, [location]);
+
 
   if (loading) return <Message>로딩중...</Message>;
   if (error) return <Message>{error}</Message>;
