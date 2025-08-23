@@ -4,7 +4,7 @@ import Star1 from "./assets/Star1.png";
 import CalendarIcon from "./assets/CalendarIcon.png";
 import MissionCard from "./assets/MissionCard.png";
 import { Row } from "../../components/CommonComponents";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import WritingIcon from "./assets/WritingIcon.png";
 import ReMissionIcon from "./assets/ReMissionIcon.png";
 import MissionHeader from "./MissionHeader.jsx";
@@ -13,6 +13,7 @@ import PurpleMissonIcon from "../../assets/PurpleMissionIcon.png";
 import { useNavigate } from "react-router-dom";
 import BackIcon from "../../assets/BackIcon.png";
 import ExampleImg from "./assets/ExampleImg.png";
+import axios from "axios";
 
 const Mission = () => {
   // 0. 달력이동
@@ -58,6 +59,38 @@ const Mission = () => {
   // 4. 등록하기 버튼 활성화
   const isFormValid = imagePreview && finalText && selected !== "공개 여부";
 
+  // API
+  const BASE_URL = import.meta.env.VITE_BASE_URL; // VITE_BASE_URL 불러오기
+  const user_id = 1; // user_id 1로 고정
+
+  // 1. 미션 정보
+  const [missionData, setMissionData] = useState({
+    content: "",
+    missionComment: "",
+  });
+
+  useEffect(() => {
+    const fetchMissionData = async () => {
+      try {
+        const date = new Date(); // 현재 날짜
+        const formattedDate = date.toISOString().split("T")[0];
+        const response = await axios.get(
+          `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(
+            formattedDate
+          )}`
+        );
+        setMissionData({
+          content: response.data.content,
+          missionComment: response.data.missionComment,
+        });
+      } catch (error) {
+        console.error("미션 데이터를 불러오는데 실패했습니다.", error);
+      }
+    };
+
+    fetchMissionData();
+  }, [BASE_URL]);
+
   return (
     <>
       <Container>
@@ -89,8 +122,10 @@ const Mission = () => {
                 cursor: "pointer",
               }}
             />
-            <TextOverlayBold>동네 골목길 10분 걷기</TextOverlayBold>
-            <TextOverlayRegular>{`중간에 돌아와도 괜찮아요. \n중요한 건 오늘도 나왔다는 거에요`}</TextOverlayRegular>
+            <TextOverlayBold>{missionData.content}</TextOverlayBold>
+            <TextOverlayRegular>
+              {missionData.missionComment}
+            </TextOverlayRegular>
             <CandyOverlay>5개</CandyOverlay>
           </ImageWrapper>
           <LightPurpleWrapper>
@@ -168,7 +203,7 @@ const Mission = () => {
                 <DropdownContainer>
                   <SelectedBox onClick={() => setIsOpen((prev) => !prev)}>
                     {selected}
-                    <Arrow isOpen={isOpen}>▾</Arrow>
+                    <Arrow $isOpen={isOpen}>▾</Arrow>
                   </SelectedBox>
                   {isOpen && (
                     <Options>
@@ -303,7 +338,7 @@ const PreviewImage = styled.img`
 `;
 
 // 2. 글쓰기 관련
-const Caption = styled.p`
+const Caption = styled.div`
   width: 100%;
   font-size: 9.5px;
   color: #444;
@@ -404,7 +439,7 @@ const SelectedBox = styled.div`
 
 const Arrow = styled.span`
   font-size: 12px;
-  transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "none")};
+  transform: ${(props) => (props.$isOpen ? "rotate(180deg)" : "none")};
   transition: 0.2s;
   color: #666;
 `;
