@@ -48,8 +48,8 @@ const MainPage = () => {
       <Wrapper>
         {userData && (
           <>
+           <CandyCount candy={userData.candy} />
             <Profile user={userData} />
-            <CandyCount candy={userData.candy} />
           </>
         )}
       </Wrapper>
@@ -60,10 +60,9 @@ const MainPage = () => {
 
 export default MainPage;
 
-// Styled Components
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
   position: relative;
   overflow: hidden;
@@ -87,8 +86,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  margin-top: 4rem;
+  align-items: center;
+  margin-top: 3rem;
   gap: 1rem;
   padding: 0 1.5rem;
 `;
