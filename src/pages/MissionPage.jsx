@@ -52,8 +52,10 @@ const MissionPage = () => {
   useEffect(() => {
     const fetchMissionData = async () => {
       try {
-        const date = new Date(); // 현재 날짜
-        const formattedDate = date.toISOString().split("T")[0];
+        // ✅ KST 기준 날짜 계산
+        const now = new Date();
+        const kstDate = new Date(now.getTime() + 9 * 60 * 60 * 1000); // UTC+9
+        const formattedDate = kstDate.toISOString().split("T")[0]; // YYYY-MM-DD
         const response = await axios.get(
           `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(
             formattedDate
