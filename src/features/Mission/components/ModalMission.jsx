@@ -19,6 +19,7 @@ const ModalMission = ({
             alignItems: "start",
           }}
         >
+          <div style={{ width: "25px" }} />
           <ModalTitle>{missionContent}</ModalTitle>
           <img
             src={CancleIcon}
@@ -78,7 +79,6 @@ const ModalTitle = styled.div`
   font-weight: 700;
   line-height: 20px;
   letter-spacing: 0.3px;
-  margin-bottom: 14px;
 `;
 
 const ModalTextarea = styled.textarea`
