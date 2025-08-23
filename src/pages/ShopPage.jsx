@@ -12,7 +12,6 @@ const ShopPage = () => {
     <Wrapper>
       <Header title="솜뭉치 가게" backPath="/" />
       <CharacterProfile />
-      <Box />
       <ShopListWrapper>
         <ShopList />
       </ShopListWrapper>
