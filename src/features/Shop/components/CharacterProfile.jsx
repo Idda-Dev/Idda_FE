@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from "axios";
 import Candy from "../assets/Candy.png";
+import ProfileImg from "../assets/ProfileImg.png"
 import { userinfo } from "../../../mocks/userinfo";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -40,21 +41,16 @@ const CharacterProfile = () => {
     fetchUserInfo();
   }, [userId]); 
 
-  if (loading) {
-    return <div>로딩중...</div>;
-  }
-  
-  if (!userInfo) {
-      return <div>사용자 정보를 불러올 수 없습니다.</div>;
-  }
+  if (loading) return <div>로딩중...</div>;
+  if (!userInfo) return <div>사용자 정보를 불러올 수 없습니다.</div>;
 
   return (
     <Container>
-      <Profile src={userInfo.profileImageUrl} />
+      <Profile src={ProfileImg} />
       <Content>
         <Wrapper>
           <Icon src={Candy} />
-          <MyCandy>보유 솜사탕 {userInfo.candy}개</MyCandy>
+          <MyCandy>{userInfo.candy}개</MyCandy>
         </Wrapper>
         <Button onClick={goToCoupon}>내 쿠폰함 가기</Button>
       </Content>
@@ -65,50 +61,59 @@ const CharacterProfile = () => {
 export default CharacterProfile;
 
 const Container = styled.div`
-  height: 21%;
-  width: 73%;
-  background-color: #2F0047;
-  border-radius: 16px;
+  height: 27%;
+  width: 100%;
+  background: linear-gradient(to bottom, #2F0047, #624273);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  margin-top: 2rem;
-  padding: 0 1.5rem;
+  align-items: flex-end; /* 이미지가 아래로 나오도록 */
+  margin-bottom: 2rem; /* 프로필 이미지 아래로 튀어나오는 공간 확보 */
+  padding: 0 1rem;
+  position: relative;
 `;
 
 const Profile = styled.img`
-  height: 5.8rem;
-  width: 5.8rem;
+  width: 16rem;
+  height: auto;
   border-radius: 50%;
+  position: relative;
+  bottom: -2rem; /* 보라색 영역 아래로 튀어나오게 */
+  z-index: 2;
 `;
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-end;
-  height: 5.8rem;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+  position: relative;
+  top: -1.5rem; /* 위로 올라가도록 조정 */
+  right: 0.5rem;
 `;
+
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  height: 100%;
+  width: 5.5rem;
+  height: 1.5rem;
+  background-color: white;
   align-items: center; 
-  gap:0.4rem;
+  border-radius: 16px;
 `;
 
 const Icon = styled.img`
-  height: 1.6rem;
+  height: 1.5rem;
   width: auto;
 `;
 
 const MyCandy = styled.p`
   font-size: 0.65rem;
   font-weight: 550;
-  color: white;
+  color: black;
+  margin-left: 0.3rem;
 `;
 
 const Button = styled.button`
@@ -118,13 +123,12 @@ const Button = styled.button`
   font-size: 0.6rem;
   font-weight: 550;
   cursor: pointer;
-  width: 70%; 
+  width: 5.5rem; 
   height: 1.5rem; 
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.8rem 0;
   border: none;
   outline: none;
 

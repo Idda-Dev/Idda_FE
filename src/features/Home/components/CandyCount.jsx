@@ -17,7 +17,7 @@ export default CandyCount;
 const Container=styled.div`
     background-color: rgba(0, 0, 0, 0.6);
     height:2.6rem;
-    width: 16.2rem;
+    width: 14.2rem;
     border-radius: 36px;
     z-index: 1;
     padding: 0.5rem;

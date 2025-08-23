@@ -6,13 +6,13 @@ import ShopList from "../features/Shop/components/ShopList";
 import CharacterProfile from "../features/Shop/components/CharacterProfile";
 import styled from "styled-components";
 import PurpleShopIcon from "../assets/PurpleShopIcon.png";
+import WhiteIcon from "../features/Shop/assets/WhiteIcon.png"
 
 const ShopPage = () => {
   return (
     <Wrapper>
-      <Header title="솜뭉치 가게" backPath="/" />
+      <Header title="솜뭉치 가게" backPath="/" backgroundColor="#2F0047" color="#FFFFFF" backIcon={WhiteIcon}/>
       <CharacterProfile />
-      <Box />
       <ShopListWrapper>
         <ShopList />
       </ShopListWrapper>
