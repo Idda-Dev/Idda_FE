@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Photo from "../assets/Photo.png";
 import Candy from "../assets/Candy.png";
 import ShopModal from '../components/ShopModal';
 
@@ -14,12 +13,12 @@ const ShopListItem = ({ item }) => {
   return (
     <>
       <Container>
-        <PhotoBox src={item.storeImageUrl} />
+        <PhotoBox src={item.storeImageUrl} alt={item.storeName} />
         <Wrapper>
           <Title>{item.storeName}</Title>
           <Text>{item.title}</Text>
           <CandyWrapper>
-            <Icon src={Candy} />
+            <Icon src={Candy} alt="Candy Icon" />
             <Count onClick={handleCountClick}>{item.price}개</Count>
           </CandyWrapper>
         </Wrapper>
@@ -36,18 +35,17 @@ const ShopListItem = ({ item }) => {
 
 export default ShopListItem;
 
+// Styled Components
 const Container = styled.div`
   width: 100%;
-  height: auto;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   border-bottom: 1px solid #D1CDFF;
+  padding: 1rem 0;
 `;
 
 const PhotoBox = styled.img`
   height: 5.5rem;
-  margin: 1rem 0;
   aspect-ratio: 1/1;
   object-fit: cover;
   border-radius: 3px;
@@ -57,34 +55,30 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: flex-start;
   height: 5.5rem;
   width: 10.8rem;
-  margin: 1rem 0;
 `;
 
-const Title = styled.p`
-  margin: 0;
-  text-align: start;
+const Title = styled.div`
   font-size: 0.9rem;
+  font-weight: 600;
   letter-spacing: 0.3px;
   line-height: 20px;
-  font-weight: 550;
 `;
 
-const Text = styled.p`
-  margin: 0;
-  text-align: start;
+const Text = styled.div`
   font-size: 0.7rem;
+  letter-spacing: 0.3px;
   line-height: 20px;
+  margin-bottom:0.8rem ;
 `;
 
-const CandyWrapper = styled.p`
+const CandyWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  width: 100%;
   justify-content: flex-end;
   align-items: center;
-  margin-top: 0.8rem;
-  margin-bottom: 0;
   gap: 0.2rem;
 `;
 
@@ -93,7 +87,7 @@ const Icon = styled.img`
   height: 1.6rem;
 `;
 
-const Count = styled.p`
+const Count = styled.div`
   background-color: #D1CDFF;
   height: 1.7rem;
   width: 4rem;

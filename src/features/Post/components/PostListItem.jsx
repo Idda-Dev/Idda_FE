@@ -13,7 +13,7 @@ const PostListItem = ({ post }) => {
   const handleClick = () => {
     navigate(`/community/post/${post.postId}`, { state: { memberId: post.memberId } });
   };
-  console.log(post)
+
   return (
     <Wrapper onClick={handleClick}>
       <ContentBox>
@@ -21,16 +21,16 @@ const PostListItem = ({ post }) => {
           <Title>{post.title}</Title>
           <Content>{post.content}</Content>
         </TextBox>
-        <Image src={post.photoUrl} alt="본문 이미지" />
+        {post.photoUrl && <Image src={post.photoUrl} alt="본문 이미지" />}
       </ContentBox>
-      <OverlapImage src={post.profileImageUrl} alt="겹치는 이미지" />
+      {post.profileImageUrl && <OverlapImage src={post.profileImageUrl} alt="겹치는 이미지" />}
       <LikedBox>
         <Box>
-          <Icon1 src={LikedIcon} />
+          <Icon src={LikedIcon} />
           <Count>{formatCount(post.heartCount)}</Count>
         </Box>
         <Box>
-          <Icon2 src={CommentIcon} />
+          <Icon src={CommentIcon} />
           <Count>{formatCount(post.commentCount)}</Count> 
         </Box>
       </LikedBox>
@@ -38,7 +38,9 @@ const PostListItem = ({ post }) => {
   );
 };
 
+export default PostListItem;
 
+// Styled Components
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
@@ -48,29 +50,26 @@ const Wrapper = styled.div`
   border-radius: 8px;
   background-color: #fff;
   box-shadow: 0px -1px 6px rgba(0, 0, 0, 0.06);
-  overflow: hidden; /* <- 둥근 모서리 바깥으로 안 나가게 */
+  overflow: hidden;
   cursor: pointer;
 `;
-
 
 const ContentBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   height: 5.5rem;
-  padding: 0 1.3rem ;
-  padding-top: 1rem;
+  padding: 1rem 1.3rem 0 1.3rem;
 `;
 
-const TextBox = styled.p`
+const TextBox = styled.div`  /* <p> -> <div> 변경 */
   width: 70%;
   height: 4rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin: 0;
-  gap:0.2rem;
+  gap: 0.2rem;
 `;
 
 const Title = styled.p`
@@ -81,9 +80,9 @@ const Title = styled.p`
   letter-spacing: -0.5px;
   line-height: 20px;
   width: 100%;
-  white-space: nowrap;        /* 줄바꿈 금지 */
-  overflow: hidden;           /* 넘치는 텍스트 숨김 */
-  text-overflow: ellipsis;    /* ... 표시 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Content = styled.p`
@@ -93,14 +92,13 @@ const Content = styled.p`
   margin: 0;
   letter-spacing: -0.5px;
   line-height: 1.2em;
-  max-height: 2.4em;          /* 2줄까지만 보이도록 */
+  max-height: 2.4em;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2;      /* 2줄로 제한 */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
 `;
-
 
 const Image = styled.img`
   width: 3.5rem;
@@ -110,17 +108,17 @@ const Image = styled.img`
 
 const LikedBox = styled.div`
   display: flex;
-  justify-content: flex-end; /* 오른쪽 끝 정렬 */
+  justify-content: flex-end;
   align-items: center;
   padding: 0.5rem 1.3rem;
   background-color: #ECEAFF;
-  gap: 1rem; /* Box 간 간격 */
+  gap: 1rem;
 `;
 
 const OverlapImage = styled.img`
   position: absolute;
-  top: calc(100% - 3.4rem); /* Content와 Count 경계선 위로 살짝 올리기 */
-  left: 10%; /* 왼쪽으로 조금 위치 조정 */
+  top: calc(100% - 3.4rem);
+  left: 10%;
   width: 2.6rem;
   height: 2.6rem;
   border-radius: 50%;
@@ -128,20 +126,14 @@ const OverlapImage = styled.img`
   object-fit: cover;
 `;
 
-
 const Box = styled.div`
   display: flex;
-  align-items: center; /* 세로 가운데 정렬 */
-  justify-content: space-between; /* 이미지와 카운트 사이 스페이스 */
-  height: 100%;
-  gap: 0.3rem; /* 이미지와 숫자 간 간격 */
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem;
 `;
-const Icon1 = styled.img`
-  width: 1.1rem;
-  height: 1.1rem;
-  object-fit: contain;
-`;
-const Icon2 = styled.img`
+
+const Icon = styled.img`
   width: 1.2rem;
   height: 1.2rem;
   object-fit: contain;
@@ -151,4 +143,3 @@ const Count = styled.span`
   font-size: 0.75rem;
   color: #7F7F7F;
 `;
-export default PostListItem;

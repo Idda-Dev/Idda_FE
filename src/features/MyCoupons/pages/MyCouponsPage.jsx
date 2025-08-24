@@ -51,12 +51,12 @@ const MyCouponsPage = () => {
 
       <ButtonGroup>
         <TabButton 
-          active={activeTab === 1} 
+          $active={activeTab === 1} 
           onClick={() => setActiveTab(1)}>
           보유
         </TabButton>
         <TabButton 
-          active={activeTab === 2} 
+          $active={activeTab === 2} 
           onClick={() => setActiveTab(2)}>
           완료/만료
         </TabButton>
@@ -101,8 +101,8 @@ const TabButton = styled.button`
   background: transparent;
   border: none;
   border-bottom: 0.2rem solid
-    ${({ active }) => (active ? "black" : "#D1CDFF")}; 
-  color: ${({ active }) => (active ? "black" : "#7F7F7F")};
+    ${({ $active }) => ($active ? "black" : "#D1CDFF")}; 
+  color: ${({ $active }) => ($active ? "black" : "#7F7F7F")};
   cursor: pointer;
 
   border-radius: 0; 
@@ -112,8 +112,8 @@ const TabButton = styled.button`
   }
 
   &:hover {
-    border-bottom-color: ${({ active }) => (active ? "black" : "#D1CDFF")};
-    color: ${({ active }) => (active ? "black" : "#7F7F7F")};
+    border-bottom-color: ${({ $active }) => ($active ? "black" : "#D1CDFF")};
+    color: ${({ $active }) => ($active ? "black" : "#7F7F7F")};
     background: transparent; 
   }
 

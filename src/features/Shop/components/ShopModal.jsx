@@ -25,7 +25,6 @@ const ShopModal = ({ isOpen, onClose, item }) => {
   if (!isOpen) return null;
 
   const handleClickConfirm = async () => {
-    console.log("구매하기 클릭!");
     
     if (!BASE_URL) {
       console.warn("⚠️ BASE_URL이 설정되지 않았습니다. → 목데이터 시뮬레이션");
@@ -39,7 +38,6 @@ const ShopModal = ({ isOpen, onClose, item }) => {
       const response = await axios.post(`${BASE_URL}/api/users/${userId}/coupons/${item.couponId}`);
       
       if (response.status === 201) {
-        console.log("201 Created: 쿠폰 구매 성공");
         setPurchaseSuccess(true);
       } else {
         setPurchaseSuccess(true);
