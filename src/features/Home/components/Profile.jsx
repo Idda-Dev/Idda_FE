@@ -17,7 +17,8 @@ const Profile = ({user}) => {
     1: "한뭉치",
     2: "두뭉치",
     3: "세뭉치",
-    4: "네뭉치"
+    4: "네뭉치",
+    5: "솜뭉치"
   };
 
   return (
@@ -162,11 +163,18 @@ const Wrapper3=styled.div`
   justify-content: flex-end;
   background-color: rgba(0, 0, 0, 0.2);
 `
-const Icon2=styled.img`
-    width: 1rem;
-    height: 1rem;
-    cursor: pointer;   
-`
+const Icon2 = styled.img`
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+
+  &:active {
+    transform: scale(0.85);
+  }
+`;
+
+
 
 const Text=styled.p`
   margin: 0;
