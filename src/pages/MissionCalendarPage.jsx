@@ -31,6 +31,9 @@ const MissonCalendarPage = () => {
   // 오늘 글 여부
   const [hasTodayRecord, setHasTodayRecord] = useState(initialHasTodayRecord);
 
+  // ⬇️ 추가: 모달 오픈 상태 (미션 안 한 '과거' 날짜 클릭 시만 사용)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleBackIcon = () => {
     nav(-1);
   };
@@ -103,32 +106,46 @@ const MissonCalendarPage = () => {
   const [recordData, setRecordData] = useState(null); // 기록 데이터 저장
 
   const handleDateClick = async (day, type) => {
+    // day 없으면 클릭 무시
+    if (!day) return;
+
+    // 미래 날짜는 아무 동작도 하지 않음
+    if (type === "future") return;
+
+    // 클릭한 날짜 문자열(KST, YYYY-MM-DD)
+    const dateObj = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      day
+    );
+    const dateStr = toYMD_KST(dateObj); // 유틸 함수 재사용
+
+    // 과거 & 미달성(=나비 없음) → 모달만 오픈하고 API 호출 스킵 (404 방지)
+    if (type === "past" && !achievementDateSet.has(dateStr)) {
+      setIsModalOpen(true);
+      setSelectedDateType(null); // 기록 패널 열지 않음
+      setRecordData(null);
+      return;
+    }
+
+    // 여기서부터는 '오늘'이거나 '과거+달성한 날'만 API 호출
     setSelectedDateType(type);
 
-    if (type === "past" || type === "today") {
-      const dateObj = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        day
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/api/users/${user_id}/missions/posts`,
+        { params: { date: dateStr } }
       );
-      const dateStr = `${dateObj.getFullYear()}-${String(
-        dateObj.getMonth() + 1
-      ).padStart(2, "0")}-${String(dateObj.getDate()).padStart(2, "0")}`;
-
-      try {
-        const res = await axios.get(
-          `${BASE_URL}/api/users/${user_id}/missions/posts`,
-          { params: { date: dateStr } }
-        );
-        setRecordData({ ...res.data, date: dateStr });
-      } catch (err) {
-        if (err.response?.status === 404) {
-          console.warn(`기록 없음: ${dateStr}`);
-          setRecordData(null); // 기록 없음일 경우 null 저장
-        } else {
-          console.error("기록 불러오기 실패", err);
-          setRecordData(null);
-        }
+      setRecordData({ ...res.data, date: dateStr });
+    } catch (err) {
+      // 만약 서버 데이터와 달라 404가 뜰 수도 있으니, 콘솔 소음 없이 안전 처리
+      if (err.response?.status === 404) {
+        setRecordData(null);
+        // 과거인데 서버에 기록이 없으면(엣지) 모달도 띄워서 UX 일관성 유지
+        if (type === "past") setIsModalOpen(true);
+      } else {
+        console.error("기록 불러오기 실패", err);
+        setRecordData(null);
       }
     }
   };
@@ -214,11 +231,11 @@ const MissonCalendarPage = () => {
             )}
           </RecordBox>
         )}
-        {selectedDateType === "future" && (
+        {isModalOpen && (
           <ModalBox>
             <CalendarModal
               isOpen={true}
-              onClose={() => setSelectedDateType(null)}
+              onClose={() => setIsModalOpen(false)}
             />
           </ModalBox>
         )}
