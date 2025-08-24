@@ -134,7 +134,7 @@ const WhiteWrapper = styled.div`
   border-radius: 1rem;
   background: #fff;
   box-shadow: 6px 0 20px 0 rgba(0, 0, 0, 0.02);
-  padding: 2rem 1.3rem 1rem 1.3rem;
+  padding: 1.3rem 1.3rem 1rem 1.3rem;
 `;
 
 const Label = styled.label`
@@ -163,7 +163,7 @@ const PreviewImage = styled.img`
 // 2. 글쓰기 관련
 const Caption = styled.div`
   width: 100%;
-  font-size: 9.5px;
+  font-size: 0.69rem;
   color: #444;
   letter-spacing: -0.5px;
   font-weight: 400;
@@ -174,7 +174,8 @@ const Caption = styled.div`
   text-decoration-thickness: auto;
   text-underline-offset: 50%; /* 6px */
   text-underline-position: from-font;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 15px;
 `;
 
 const SubmitButton = styled.div`
