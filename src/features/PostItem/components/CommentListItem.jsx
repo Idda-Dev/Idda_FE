@@ -10,13 +10,16 @@ const CommentListItem = ({ comment, userId=1, onCommentChange }) => {
   const isMyComment = memberId === userId;
 
   const formatTime = (isoString) => {
-    const date = new Date(isoString);
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${month}/${day} ${hours}:${minutes}`;
-  };
+  const date = new Date(isoString);
+  // 한국 시간 UTC+9
+  const koreaOffset = 9 * 60; // 9시간
+  const local = new Date(date.getTime() + koreaOffset * 60 * 1000);
+  const month = (local.getMonth() + 1).toString().padStart(2, '0');
+  const day = local.getDate().toString().padStart(2, '0');
+  const hours = local.getHours().toString().padStart(2, '0');
+  const minutes = local.getMinutes().toString().padStart(2, '0');
+  return `${month}/${day} ${hours}:${minutes}`;
+};
 
   return (
     <Container>
@@ -33,16 +36,16 @@ const CommentListItem = ({ comment, userId=1, onCommentChange }) => {
 
       <ModalContainer>
         <CommentModal 
-  isOpen={isModalOpen} 
-  onClose={() => setIsModalOpen(false)} 
-  isMyComment={isMyComment}
-  comment={comment}
-  userId={userId}
-  onCommentChange={(updatedOrDeleted, type) => {
-    if(onCommentChange) onCommentChange(updatedOrDeleted, type);
-    setIsModalOpen(false);
-  }}
-/>
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+          isMyComment={isMyComment}
+          comment={comment}
+          userId={userId}
+          onCommentChange={(updatedOrDeleted, type) => {
+            if(onCommentChange) onCommentChange(updatedOrDeleted, type);
+            setIsModalOpen(false);
+          }}
+        />
 
       </ModalContainer>
     </Container>

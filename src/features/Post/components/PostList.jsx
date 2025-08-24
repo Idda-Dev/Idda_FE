@@ -56,7 +56,7 @@ const PostList = ({ location }) => {
 
 const Container = styled.div`
   height: 92%;
-  padding: 1rem 1rem;
+  padding: 0.5rem 1rem 1rem 1rem;
 `;
 
 const Message = styled.div`
