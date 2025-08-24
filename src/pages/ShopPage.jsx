@@ -4,7 +4,7 @@ import TabBar from "../components/TabBar";
 import ShopList from "../features/Shop/components/ShopList";
 import CharacterProfile from "../features/Shop/components/CharacterProfile";
 import styled from "styled-components";
-import PurpleShopIcon from "../assets/../assets/PurpleShopIcon.png";
+import PurpleShopIcon from "../assets/PurpleShopIcon.png";
 import WhiteIcon from "../features/Shop/assets/WhiteIcon.png";
 
 const ShopPage = () => {
