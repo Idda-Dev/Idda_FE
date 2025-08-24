@@ -13,7 +13,6 @@ const Record = ({ postId, title, content, photoUrl, date }) => {
   const weekday = dateObj.toLocaleDateString("ko-KR", { weekday: "short" });
   const formattedDate = `${y}.${m}.${d} (${weekday})`;
 
-  console.log(`포스트 아이디 : ${postId}`);
 
   const nav = useNavigate();
 
