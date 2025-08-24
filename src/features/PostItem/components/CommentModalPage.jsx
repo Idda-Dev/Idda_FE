@@ -1,16 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
-
+import React, { useState, useRef, useEffect } from "react";
+import styled from "styled-components";
+import axios from "axios";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const CommentModalPage = ({ isOpen, onClose, isMyComment, comment, userId, onCommentChange }) => {
-  const [view, setView] = useState('default');
+const CommentModalPage = ({
+  isOpen,
+  onClose,
+  isMyComment,
+  comment,
+  userId,
+  onCommentChange,
+}) => {
+  const [view, setView] = useState("default");
   const [editContent, setEditContent] = useState(comment.content);
   const editInputRef = useRef(null);
 
   useEffect(() => {
-    if (view === 'edit' && editInputRef.current) {
+    if (view === "edit" && editInputRef.current) {
       editInputRef.current.focus();
       const length = editInputRef.current.value.length;
       editInputRef.current.setSelectionRange(length, length);
@@ -18,54 +24,49 @@ const CommentModalPage = ({ isOpen, onClose, isMyComment, comment, userId, onCom
   }, [view]);
 
   if (!isOpen) {
-    if (view !== 'default') setView('default');
+    if (view !== "default") setView("default");
     return null;
   }
 
   const handleEditClick = () => {
     setEditContent(comment.content);
-    setView('edit');
+    setView("edit");
   };
 
-  const handleCancelEdit = () => {
-    setView('default');
-  };
+  const handleCancelEdit = () => setView("default");
 
   const handleSaveEdit = async () => {
-  if (!editContent || editContent === comment.content) return;
+    const next = editContent?.trim();
+    if (!next || next === comment.content) return;
+    try {
+      await axios.patch(
+        `${BASE_URL}/api/users/${userId}/posts/${comment.postId}/comments/${comment.commentId}`,
+        { content: next }
+      );
+      onCommentChange?.({ ...comment, content: next }, "update");
+      setView("default");
+    } catch (err) {
+      console.error("댓글 수정 실패:", err);
+    }
+  };
 
-  try {
-    await axios.patch(`${BASE_URL}/api/users/${userId}/posts/${comment.postId}/comments/${comment.commentId}`, {
-      content: editContent
-    });
-
-    if (onCommentChange) onCommentChange(
-      { ...comment, content: editContent }, // 수정된 댓글
-      'update'
-    );
-    setView('default');
-  } catch (err) {
-    console.error("댓글 수정 실패:", err);
-  }
-};
-
-const handleDelete = async () => {
-  try {
-    await axios.delete(`${BASE_URL}/api/users/${userId}/posts/${comment.postId}/comments/${comment.commentId}`);
-    if (onCommentChange) onCommentChange(comment.commentId, 'delete');
-  } catch (err) {
-    console.error("댓글 삭제 실패:", err);
-  }
-};
-
-
+  const handleDelete = async () => {
+    try {
+      await axios.delete(
+        `${BASE_URL}/api/users/${userId}/posts/${comment.postId}/comments/${comment.commentId}`
+      );
+      onCommentChange?.(comment.commentId, "delete");
+    } catch (err) {
+      console.error("댓글 삭제 실패:", err);
+    }
+  };
 
   const renderContent = () => {
-    if (view === 'edit') {
+    if (view === "edit") {
       return (
         <EditView>
           <EditTitle>댓글 수정</EditTitle>
-          <EditInput 
+          <EditInput
             ref={editInputRef}
             value={editContent}
             onChange={(e) => setEditContent(e.target.value)}
@@ -85,7 +86,9 @@ const handleDelete = async () => {
             <>
               <ActionButtonTop onClick={handleEditClick}>수정</ActionButtonTop>
               <Divider />
-              <ActionButtonBottom onClick={handleDelete}>삭제</ActionButtonBottom>
+              <ActionButtonBottom onClick={handleDelete}>
+                삭제
+              </ActionButtonBottom>
             </>
           ) : (
             <>
@@ -101,8 +104,8 @@ const handleDelete = async () => {
   };
 
   return (
-    <Overlay isEditView={view === 'edit'} onClick={onClose}>
-      <Modal isEditView={view === 'edit'} onClick={(e) => e.stopPropagation()}>
+    <Overlay isEditView={view === "edit"} onClick={onClose}>
+      <Modal isEditView={view === "edit"} onClick={(e) => e.stopPropagation()}>
         {renderContent()}
       </Modal>
     </Overlay>
@@ -113,29 +116,28 @@ export default CommentModalPage;
 
 // Styled-components 생략 (위 코드와 동일)
 
-
 const Overlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
-  align-items: ${props => props.isEditView ? 'center' : 'flex-end'};
+  align-items: ${(props) => (props.isEditView ? "center" : "flex-end")};
   z-index: 999;
 `;
 
 const Modal = styled.div`
-  width: ${props => props.isEditView ? '60%' : '280px'};
+  width: ${(props) => (props.isEditView ? "60%" : "280px")};
   height: auto;
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  margin-bottom: ${props => props.isEditView ? '0' : '1rem'};
+  margin-bottom: ${(props) => (props.isEditView ? "0" : "1rem")};
 `;
 
 const DefaultView = styled.div`
@@ -168,10 +170,10 @@ const EditInput = styled.textarea`
   padding: 0 1.5rem 1rem;
   border: 1px solid transparent;
   font-size: 0.8rem;
-  box-sizing: border-box; 
-  resize: none; 
-  outline: none; 
-  caret-color: #B1AAFF;
+  box-sizing: border-box;
+  resize: none;
+  outline: none;
+  caret-color: #b1aaff;
   &:focus {
     outline: none;
   }
@@ -201,9 +203,13 @@ const CommonButton = styled.button`
   cursor: pointer;
   background-color: #fff;
   color: #000;
-  
-  &:hover { background-color: #F0F0F0; }
-  &:focus { outline: none; }
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+  &:focus {
+    outline: none;
+  }
 `;
 
 const ActionButtonTop = styled(CommonButton)`
@@ -222,12 +228,12 @@ const ActionButtonBottom = styled(CommonButton)`
 
 const Divider = styled.div`
   height: 1px;
-  background-color: #6F69B0;
+  background-color: #6f69b0;
 `;
 
 const BottomButton = styled(CommonButton)`
   margin: 1rem 0 1rem 0;
-  color: #6F69B0;
+  color: #6f69b0;
 `;
 
 const EditButton1 = styled.button`
@@ -235,10 +241,12 @@ const EditButton1 = styled.button`
   border: none;
   border-radius: 16px;
   cursor: pointer;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   color: #444444;
   font-size: 0.75rem;
-  &:focus { outline: none; }
+  &:focus {
+    outline: none;
+  }
 `;
 
 const EditButton2 = styled.button`
@@ -246,8 +254,10 @@ const EditButton2 = styled.button`
   border: none;
   border-radius: 16px;
   cursor: pointer;
-  background-color: #B1AAFF;
+  background-color: #b1aaff;
   color: white;
   font-size: 0.75rem;
-  &:focus { outline: none; }
+  &:focus {
+    outline: none;
+  }
 `;

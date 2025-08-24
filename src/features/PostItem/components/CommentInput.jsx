@@ -1,63 +1,81 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import PencilIcon from '../assets/PencilIcon.png';
-import axios from 'axios';
+import React, { useState } from "react";
+import styled from "styled-components";
+import PencilIcon from "../assets/PencilIcon.png";
+import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const CommentInput = ({ postId, userId, userNickname, userProfileImageUrl, onCommentAdded }) => {
-  const [text, setText] = useState('');
+const CommentInput = ({ postId, userId, onCommentAdded, refreshComments }) => {
+  const [text, setText] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const [isComposing, setIsComposing] = useState(false);
 
   const handleChange = (e) => setText(e.target.value);
 
-  const handleKeyPress = async (e) => {
-  if (e.key === 'Enter' && text.trim() !== '') {
-    const newCommentContent = text;
-    setText('');
+  const handleCompositionStart = () => setIsComposing(true);
+  const handleCompositionEnd = () => setIsComposing(false);
 
-    // 1️⃣ 임시 ID로 화면에 바로 반영
-    const tempComment = {
-      commentId: `temp-${Date.now()}`,
-      content: newCommentContent,
-      memberId: userId,
-      nickname: userNickname,
-      profileImageUrl: userProfileImageUrl,
-      createdAt: new Date().toISOString(),
-      postId: postId
-    };
-    if (onCommentAdded) onCommentAdded(tempComment);
-
-    // 2️⃣ 서버에 POST 요청
+  const submit = async () => {
+    const content = text.trim();
+    if (!content || submitting) return;
+    setSubmitting(true);
     try {
+      // 1) 서버에 먼저 저장
       const res = await axios.post(
         `${BASE_URL}/api/users/${userId}/posts/${postId}/comments`,
-        { content: newCommentContent }
+        { content }
       );
 
-      const location = res.headers['location'];
-      if (location) {
-        const newCommentRes = await axios.get(`${BASE_URL}${location}`);
-        // 3️⃣ 실제 서버 ID로 덮어쓰기
-        if (onCommentAdded) onCommentAdded(newCommentRes.data, true); 
+      await refreshComments?.();
+
+      // 2) 생성 결과 획득 (body 우선, 없으면 Location으로 GET)
+      let newComment = res.data;
+      const location = res.headers?.location || res.headers?.Location;
+      if (!newComment && location) {
+        const r = await axios.get(`${BASE_URL}${location}`);
+        newComment = r.data;
       }
+
+      // 3) 부모에 알림 (실 ID로 바로 목록에 추가)
+      if (newComment) onCommentAdded?.(newComment);
+
+      // 4) 입력 초기화
+      setText("");
     } catch (err) {
       console.error("댓글 전송 실패:", err);
-      // 실패 시 temp 댓글 그대로 유지하거나 삭제 처리 가능
+      // 필요하면 토스트/알럿
+    } finally {
+      setSubmitting(false);
     }
-  }
-};
+  };
 
+  const handleKeyDown = async (e) => {
+    if (e.key === "Enter" && !isComposing) {
+      // ✅ IME 조합 중이면 무시
+      e.preventDefault();
+      await submit();
+    }
+  };
 
   return (
     <Container>
       <InputWrapper>
-        {!text && <Placeholder>댓글을 입력하세요.<Icon src={PencilIcon} alt="댓글 아이콘" /></Placeholder>}
+        {!text && !submitting && (
+          <Placeholder>
+            댓글을 입력하세요.
+            <Icon src={PencilIcon} alt="댓글 아이콘" />
+          </Placeholder>
+        )}
         <Input
           type="text"
           value={text}
           onChange={handleChange}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           placeholder=""
+          disabled={submitting}
+          onCompositionStart={handleCompositionStart}
+          onCompositionEnd={handleCompositionEnd}
         />
       </InputWrapper>
     </Container>
@@ -65,7 +83,6 @@ const CommentInput = ({ postId, userId, userNickname, userProfileImageUrl, onCom
 };
 
 export default CommentInput;
-
 const Container = styled.div`
   width: 73%;
   display: flex;
@@ -101,9 +118,9 @@ const Icon = styled.img`
 
 const Input = styled.input`
   width: 70%;
-  padding: 0.5rem 2rem; 
+  padding: 0.5rem 2rem;
   border-radius: 36px;
-  border: 1px solid #6F69B0;
+  border: 1px solid #6f69b0;
   outline: none;
   font-size: 0.8rem;
 `;
