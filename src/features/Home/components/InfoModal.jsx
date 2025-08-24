@@ -82,7 +82,7 @@ const CloseButton = styled.button`
   }
 
   &:active {
-    transform: scale(0.85); /* 클릭 시 딸깍 효과 */
+    transform: scale(0.85); 
   }
 `;
 
