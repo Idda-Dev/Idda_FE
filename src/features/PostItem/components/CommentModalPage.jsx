@@ -104,8 +104,8 @@ const CommentModalPage = ({
   };
 
   return (
-    <Overlay isEditView={view === "edit"} onClick={onClose}>
-      <Modal isEditView={view === "edit"} onClick={(e) => e.stopPropagation()}>
+    <Overlay $isEditView={view === "edit"} onClick={onClose}>
+      <Modal $isEditView={view === "edit"} onClick={(e) => e.stopPropagation()}>
         {renderContent()}
       </Modal>
     </Overlay>
@@ -114,8 +114,7 @@ const CommentModalPage = ({
 
 export default CommentModalPage;
 
-// Styled-components 생략 (위 코드와 동일)
-
+// Styled-components
 const Overlay = styled.div`
   position: absolute;
   top: 0;
@@ -125,19 +124,19 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
-  align-items: ${(props) => (props.isEditView ? "center" : "flex-end")};
+  align-items: ${(props) => (props.$isEditView ? "center" : "flex-end")};
   z-index: 999;
 `;
 
 const Modal = styled.div`
-  width: ${(props) => (props.isEditView ? "60%" : "280px")};
+  width: ${(props) => (props.$isEditView ? "60%" : "280px")};
   height: auto;
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  margin-bottom: ${(props) => (props.isEditView ? "0" : "1rem")};
+  margin-bottom: ${(props) => (props.$isEditView ? "0" : "1rem")};
 `;
 
 const DefaultView = styled.div`
