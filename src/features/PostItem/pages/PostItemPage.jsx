@@ -49,7 +49,7 @@ const PostItemPage = () => {
           setPost(mockPost);
           return;
         }
-        const res = await axios.get(`${BASE_URL}/api/missions/users/${userInfo.memberId}/posts/${numericPostId}`);
+        const res = await axios.get(`${BASE_URL}/api/missions/users/${post.memberId}/posts/${numericPostId}`);
         setPost(res.data);
       } catch (err) {
         console.warn("게시글 API 실패 → fallback 사용", err);
@@ -59,7 +59,7 @@ const PostItemPage = () => {
       }
     };
     fetchPost();
-  }, [numericPostId, userInfo]);
+  }, [numericPostId,post]);
 
   // 댓글 조회 
   const fetchComments = async () => {

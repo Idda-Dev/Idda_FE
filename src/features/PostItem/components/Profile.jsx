@@ -5,7 +5,6 @@ import ProfileIcon from "../assets/ProfileIcon.png"
 const Profile = ({ nickname, profileImageUrl, time }) => {
   const formatTime = (isoString) => {
     const date = new Date(isoString);
-    console.log("Profile props:", nickname, profileImageUrl, time);
 
     return `${date.getFullYear()}/${
       String(date.getMonth() + 1).padStart(2, "0")
