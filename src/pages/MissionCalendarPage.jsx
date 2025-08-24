@@ -296,7 +296,8 @@ const Wrapper = styled.div`
 const MonthBox = styled.div`
   position: relative;
   height: 100%;
-  width: 15%;
+  width: 8rem;
+  flex-shrink: 0;
   border-radius: 36px;
   background-color: #b1aaff;
   background-repeat: no-repeat;
@@ -312,7 +313,7 @@ const MonthLabel = styled.div`
   transform: translate(-50%, -50%);
   font-size: 0.9rem;
   color: black;
-  pointer-events: none;
+  font-weight: 700;
 `;
 
 const ArrowButton = styled.button`
