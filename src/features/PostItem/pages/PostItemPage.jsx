@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
@@ -43,7 +43,7 @@ const PostItemPage = () => {
       }
     };
     fetchUserInfo();
-  }, []);
+  }, [userInfo.memberId]);
 
   // 게시글 조회
   useEffect(() => {
@@ -65,10 +65,10 @@ const PostItemPage = () => {
       }
     };
     fetchPost();
-  }, [numericPostId]);
+  }, [memberId, numericPostId]);
 
   // 댓글 조회
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       if (!BASE_URL) {
         setComments(mockComments);
@@ -82,11 +82,11 @@ const PostItemPage = () => {
       console.warn("댓글 API 실패 → fallback 사용", err);
       setComments(mockComments);
     }
-  };
+  }, [numericPostId]);
 
   useEffect(() => {
     fetchComments();
-  }, [numericPostId]);
+  }, [fetchComments]);
 
   // 키보드 체크
   useEffect(() => {
