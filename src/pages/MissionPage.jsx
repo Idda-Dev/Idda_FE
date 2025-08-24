@@ -52,7 +52,7 @@ const MissionPage = () => {
   useEffect(() => {
     const fetchMissionData = async () => {
       try {
-        // ✅ KST 기준 날짜 계산
+        // KST 기준 날짜 계산
         const now = new Date();
         const kstDate = new Date(now.getTime() + 9 * 60 * 60 * 1000); // UTC+9
         const formattedDate = kstDate.toISOString().split("T")[0]; // YYYY-MM-DD
@@ -140,7 +140,7 @@ const MissionPage = () => {
   return (
     <div style={{ width: "100%", height: "100%", backgroundColor: "#F8FAFF" }}>
       <Container>
-        <MissionHeader title={"90일의 솜뭉치"} />
+        <MissionHeader title={"이불 밖은 따뜻해"} />
         <MainContainer>
           <TodayMission
             content={missionData.content}
