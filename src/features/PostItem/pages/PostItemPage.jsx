@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 
 import Profile from "../components/Profile";
@@ -18,6 +18,8 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const PostItemPage = () => {
   const { postId } = useParams();
+  const location = useLocation();
+  const memberId = location.state?.memberId; 
   const numericPostId = Number(postId);
 
   const [loading, setLoading] = useState(true);
@@ -49,7 +51,7 @@ const PostItemPage = () => {
           setPost(mockPost);
           return;
         }
-        const res = await axios.get(`${BASE_URL}/api/missions/users/${post.memberId}/posts/${numericPostId}`);
+        const res = await axios.get(`${BASE_URL}/api/missions/users/${memberId}/posts/${numericPostId}`);
         setPost(res.data);
       } catch (err) {
         console.warn("게시글 API 실패 → fallback 사용", err);
@@ -59,7 +61,7 @@ const PostItemPage = () => {
       }
     };
     fetchPost();
-  }, [numericPostId,post]);
+  }, [numericPostId]);
 
   // 댓글 조회 
   const fetchComments = async () => {
