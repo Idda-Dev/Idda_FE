@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import ButterflyIcon from "../assets/ButterflyIcon.png";
-import ButterflyIcon2 from "../assets/ButterflyIcon2.png"; // ⬅️ 추가 (경로 확인)
+import ButterflyIcon2 from "../assets/ButterflyIcon2.png";
 
 const Calendar = ({
   year,

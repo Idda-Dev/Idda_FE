@@ -5,12 +5,12 @@ import StarIcon from "../assets/StarIcon.png";
 import BookMarkIcon from "../assets/BookMarkIcon.png";
 
 const Record = ({ postId, title, content, photoUrl, date }) => {
-  const formattedDate = new Date(date).toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    weekday: "short",
-  }); // 예: 2025.08.23 (토)
+  const dateObj = new Date(date);
+  const y = dateObj.getFullYear();
+  const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+  const d = String(dateObj.getDate()).padStart(2, "0");
+  const weekday = dateObj.toLocaleDateString("ko-KR", { weekday: "short" });
+  const formattedDate = `${y}.${m}.${d} (${weekday})`;
 
   console.log(`포스트 아이디 : ${postId}`);
 
@@ -23,7 +23,9 @@ const Record = ({ postId, title, content, photoUrl, date }) => {
           <BookMark src={BookMarkIcon} alt="bookmark" />
         </TimeWrapper>
       </Wrapper>
-      <Img src={photoUrl} alt="미션 인증 이미지" />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Img src={photoUrl} alt="미션 인증 이미지" />
+      </div>
       <Title>{title}</Title>
       <Content>{content}</Content>
     </Container>
@@ -79,7 +81,8 @@ const Time = styled.div`
 `;
 const Img = styled.img`
   padding-top: 0.4rem;
-  height: 50%;
+  width: 50%;
+  flex-shrink: 0;
 `;
 const Title = styled.div`
   margin: 0;

@@ -14,6 +14,7 @@ import CalendarBackIcon from "../features/MissonCalendar/assets/CalendarBackIcon
 import Record from "../features/MissonCalendar/components/Record.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import NotyetInform from "../features/MissonCalendar/components/NotyetInform.jsx";
 
 // ui보려고 캘린더 크기조절되는거 걍 과거현재미래로 나눠둠 !
 
@@ -106,29 +107,39 @@ const MissonCalendarPage = () => {
   const [recordData, setRecordData] = useState(null); // 기록 데이터 저장
 
   const handleDateClick = async (day, type) => {
-    // day 없으면 클릭 무시
     if (!day) return;
 
     // 미래 날짜는 아무 동작도 하지 않음
     if (type === "future") return;
 
-    // 클릭한 날짜 문자열(KST, YYYY-MM-DD)
     const dateObj = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
       day
     );
-    const dateStr = toYMD_KST(dateObj); // 유틸 함수 재사용
+    const dateStr = toYMD_KST(dateObj);
 
-    // 과거 & 미달성(=나비 없음) → 모달만 오픈하고 API 호출 스킵 (404 방지)
+    // 과거 + 미달성(나비 없음) → 모달만 오픈, API 호출 스킵
     if (type === "past" && !achievementDateSet.has(dateStr)) {
       setIsModalOpen(true);
-      setSelectedDateType(null); // 기록 패널 열지 않음
+      setSelectedDateType(null);
       setRecordData(null);
       return;
     }
 
-    // 여기서부터는 '오늘'이거나 '과거+달성한 날'만 API 호출
+    // 오늘 + 미달성 → API 호출 스킵하고 메시지 표시용 상태만
+    const todayStr = toYMD_KST(new Date());
+    if (
+      type === "today" &&
+      dateStr === todayStr &&
+      !(hasTodayRecord || achievementDateSet.has(todayStr))
+    ) {
+      setSelectedDateType("today");
+      setRecordData(null); // 메시지 표시용
+      return;
+    }
+
+    // 여기서부터는 '오늘(달성됨)' 또는 '과거(달성됨)'만 API 호출
     setSelectedDateType(type);
 
     try {
@@ -138,10 +149,10 @@ const MissonCalendarPage = () => {
       );
       setRecordData({ ...res.data, date: dateStr });
     } catch (err) {
-      // 만약 서버 데이터와 달라 404가 뜰 수도 있으니, 콘솔 소음 없이 안전 처리
       if (err.response?.status === 404) {
+        // 혹시 서버 데이터와 불일치 시에도 콘솔 소음 없이 안전 처리
         setRecordData(null);
-        // 과거인데 서버에 기록이 없으면(엣지) 모달도 띄워서 UX 일관성 유지
+        // 과거인데 서버에 기록이 없으면 UX 통일 위해 모달
         if (type === "past") setIsModalOpen(true);
       } else {
         console.error("기록 불러오기 실패", err);
@@ -225,9 +236,13 @@ const MissonCalendarPage = () => {
                 date={recordData.date}
               />
             ) : (
-              <p style={{ fontSize: "0.8rem", color: "#888" }}>
-                해당 날짜에는 작성한 글이 없습니다.
-              </p>
+              <div style={{ fontSize: "0.8rem", color: "#888" }}>
+                {isTodaySelected ? (
+                  <NotyetInform />
+                ) : (
+                  "해당 날짜에는 작성한 글이 없습니다."
+                )}
+              </div>
             )}
           </RecordBox>
         )}
@@ -363,6 +378,6 @@ const ModalBox = styled.div`
 `;
 
 const Massege = styled.p`
-  font-size: 9px;
+  font-size: 0.7rem;
   color: #444444;
 `;
