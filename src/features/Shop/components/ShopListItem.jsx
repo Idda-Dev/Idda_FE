@@ -85,12 +85,12 @@ const CandyWrapper = styled.p`
   align-items: center;
   margin-top: 0.8rem;
   margin-bottom: 0;
-  gap: 0.5rem;
+  gap: 0.2rem;
 `;
 
 const Icon = styled.img`
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 1.6rem;
 `;
 
 const Count = styled.p`
