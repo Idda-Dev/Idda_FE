@@ -230,6 +230,7 @@ const MissonCalendarPage = () => {
             {recordData ? (
               <Record
                 postId={recordData.postId}
+                memberId={user_id}
                 title={recordData.title}
                 content={recordData.content}
                 photoUrl={recordData.photoUrl}

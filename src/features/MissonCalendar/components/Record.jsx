@@ -15,7 +15,6 @@ const Record = ({ postId, memberId, title, content, photoUrl, date }) => {
   const nav = useNavigate();
 
   const handleMoveCommunity = () => {
-    // postId와 memberId를 함께 state로 전달
     nav(`/community/post/${postId}`, { state: { memberId } });
   };
 
