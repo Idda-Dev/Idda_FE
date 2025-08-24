@@ -124,8 +124,8 @@ const CandyOverlay = styled.div`
   width: 88px;
   height: 30px;
   position: absolute;
-  top: 75%;
-  left: 78%;
-  font-size: 10px;
-  font-weight: 400;
+  top: 74%;
+  left: 76%;
+  font-size: 12px;
+  font-weight: 500;
 `;
