@@ -7,12 +7,18 @@ import CalendarIcon from "../assets/CalendarIcon.png";
 import MissionCard from "../assets/MissionCard.png";
 import ReMissionIcon from "../assets/ReMissionIcon.png";
 
-const TodayMission = ({ content, missionComment }) => {
+const TodayMission = ({
+  content,
+  missionComment,
+  onRefresh,
+  isRefreshing,
+  alreadyVerified,
+}) => {
   // 미션 달력으로 이동
   const nav = useNavigate();
 
   const handleMissionCalendarPage = () => {
-    nav("/mission/calendar");
+    nav("/mission/calendar", { state: { hasTodayRecord: !!alreadyVerified } });
   };
 
   return (
@@ -31,14 +37,25 @@ const TodayMission = ({ content, missionComment }) => {
       </Row>
       <ImageWrapper>
         <BackgroundImage src={MissionCard} alt="카드" />
+        {/* ✅ 새로고침 버튼 */}
         <img
           src={ReMissionIcon}
+          alt="새 미션 받기"
+          title={isRefreshing ? "새 미션 불러오는 중..." : "새 미션 받기"}
           style={{
             position: "absolute",
             top: "12%",
             left: "88%",
             width: "6%",
-            cursor: "pointer",
+            cursor: isRefreshing ? "not-allowed" : "pointer",
+            opacity: isRefreshing ? 0.6 : 1,
+          }}
+          onClick={isRefreshing ? undefined : onRefresh}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (!isRefreshing && (e.key === "Enter" || e.key === " "))
+              onRefresh();
           }}
         />
         <TextOverlayBold>{content}</TextOverlayBold>

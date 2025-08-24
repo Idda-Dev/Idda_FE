@@ -9,7 +9,7 @@ const Calendar = ({
   month,
   onDateClick,
   hide,
-  achievementDates,
+  achievementDateSet,
   hasTodayRecord,
 }) => {
   const today = new Date();
@@ -61,15 +61,15 @@ const Calendar = ({
     );
   };
 
-  // 달성일 조회
+  const pad2 = (n) => String(n).padStart(2, "0");
+
+  // 달성일 조회: 셀의 yyyy-mm-dd 문자열을 만들어 Set.has()로 판별
   const isAchievementDay = (day) => {
-    return achievementDates.some(
-      (dateObj) =>
-        dateObj.getFullYear() === year &&
-        dateObj.getMonth() === month &&
-        dateObj.getDate() === day
-    );
+    if (!day) return false;
+    const cellStr = `${year}-${pad2(month + 1)}-${pad2(day)}`;
+    return achievementDateSet.has(cellStr);
   };
+
   return (
     <Grid>
       {calendarCells.map((day, idx) => {

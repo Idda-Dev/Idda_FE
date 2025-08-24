@@ -12,7 +12,7 @@ import NextIcon from "../features/MissonCalendar/assets/NextIcon.png";
 import CalendarBackIcon from "../features/MissonCalendar/assets/CalendarBackIcon.png";
 
 import Record from "../features/MissonCalendar/components/Record.jsx";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // ui보려고 캘린더 크기조절되는거 걍 과거현재미래로 나눠둠 !
@@ -22,6 +22,14 @@ const MissonCalendarPage = () => {
   const [selectedDateType, setSelectedDateType] = useState(null);
 
   const nav = useNavigate();
+
+  const location = useLocation();
+
+  // ⬇️ MissionPage에서 넘긴 값 (없으면 false)
+  const initialHasTodayRecord = location.state?.hasTodayRecord ?? false;
+
+  // 오늘 글 여부
+  const [hasTodayRecord, setHasTodayRecord] = useState(initialHasTodayRecord);
 
   const handleBackIcon = () => {
     nav(-1);
@@ -43,12 +51,24 @@ const MissonCalendarPage = () => {
 
   const isPast = selectedDateType === "past";
   const isTodaySelected = selectedDateType === "today";
-  const showRecord = isPast || isTodaySelected; // ⬅️ 추가
+  const showRecord = isPast || isTodaySelected; // 과거, 오늘 확인용
 
   // API
-  const [achievementDates, setAchievementDates] = useState([]); // 성취한 날짜 저장
+  const [achievementDateSet, setAchievementDateSet] = useState(new Set());
   const BASE_URL = import.meta.env.VITE_BASE_URL; // VITE_BASE_URL 불러오기
   const user_id = 1; // user_id 1로 고정
+
+  // 유틸: 어떤 입력이 오든 KST 기준 YYYY-MM-DD 문자열로 변환
+  const toYMD_KST = (input) => {
+    // 이미 'YYYY-MM-DD'면 그대로 사용 (타임존 영향 없음)
+    if (/^\d{4}-\d{2}-\d{2}$/.test(input)) return input;
+
+    const d = new Date(input); // ISO 등은 여기서 로컬(KST)로 읽힘
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  };
 
   // 1. 미션 달성일 나비 아이콘 렌더링
   useEffect(() => {
@@ -63,13 +83,16 @@ const MissonCalendarPage = () => {
             },
           }
         );
+
+        // (예상) res.data = { dates: ["2025-08-18", "2025-08-20T12:34:56Z", ...] }
         const { dates } = res.data;
 
-        // 문자열 배열을 Date 객체 배열로 변환 (편의상)
-        const parsedDates = dates.map((d) => new Date(d));
-        setAchievementDates(parsedDates);
+        // 모두 KST기준 YYYY-MM-DD 문자열로 통일
+        const normalized = dates.map(toYMD_KST);
+        setAchievementDateSet(new Set(normalized));
       } catch (err) {
         console.error("달성 기록 불러오기 실패:", err);
+        setAchievementDateSet(new Set());
       }
     };
 
@@ -110,10 +133,10 @@ const MissonCalendarPage = () => {
     }
   };
 
-  const [hasTodayRecord, setHasTodayRecord] = useState(false); // ⬅️ 오늘 글 여부
-
-  // 📌 마운트 시 오늘 기록도 확인
+  // 📌 마운트 시 오늘 기록도 확인 (hasTodayRecord가 true일 때만!)
   useEffect(() => {
+    if (!hasTodayRecord) return; // ⬅️ 가드: 오늘 글이 없다고 알면 API 호출 자체를 스킵
+
     const checkTodayRecord = async () => {
       const today = new Date();
       const todayStr = `${today.getFullYear()}-${String(
@@ -126,10 +149,10 @@ const MissonCalendarPage = () => {
           { params: { date: todayStr } }
         );
         setRecordData({ ...res.data, date: todayStr });
-        setHasTodayRecord(true); // 오늘 기록 있음
+        setHasTodayRecord(true); // 유지
       } catch (err) {
         if (err.response?.status === 404) {
-          setHasTodayRecord(false); // 오늘 기록 없음
+          setHasTodayRecord(false);
         } else {
           console.error("오늘 기록 불러오기 실패", err);
         }
@@ -137,7 +160,7 @@ const MissonCalendarPage = () => {
     };
 
     checkTodayRecord();
-  }, [BASE_URL]);
+  }, [BASE_URL, hasTodayRecord]); // ⬅️ hasTodayRecord가 true일 때만 동작
 
   return (
     <Container>
@@ -170,7 +193,7 @@ const MissonCalendarPage = () => {
             month={currentDate.getMonth()}
             onDateClick={handleDateClick}
             hide={showRecord} // 글씨와 원 크기 제어
-            achievementDates={achievementDates}
+            achievementDateSet={achievementDateSet}
             hasTodayRecord={hasTodayRecord}
           />
         </CalendarBox>

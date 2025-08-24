@@ -74,7 +74,40 @@ const MissionPage = () => {
     fetchMissionData();
   }, [BASE_URL, refreshTrigger]);
 
-  // 2. 미션 인증 글 작성
+  // 2. 미션 새로고침
+  const [isRefreshing, setIsRefreshing] = useState(false); // 새로고침 로딩 상태
+  // ✅ 새 미션 요청 (PUT)
+  const handleRefreshMission = async () => {
+    try {
+      setIsRefreshing(true);
+      const res = await axios.put(
+        `${BASE_URL}/api/users/${user_id}/missions/refresh`
+      );
+
+      // 화면에 즉시 반영
+      setMissionData({
+        content: res.data.content,
+        missionComment: res.data.missionComment,
+      });
+
+      // “오늘 인증했음” 상태는 새 미션이니 다시 인증 가능하도록 false로
+      setAlreadyVerified(false);
+
+      // 작성 중이던 입력/이미지 등도 리셋(원하면 유지해도 됨)
+      setInputText("");
+      setFinalText("");
+      setImagePreview(null);
+      setImageFile(null);
+      setSelected("공개 여부");
+    } catch (e) {
+      console.error("미션 새로고침 실패:", e);
+      alert("새 미션을 가져오지 못했어요. 잠시 후 다시 시도해주세요.");
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // 3. 미션 인증 글 작성
   const [imageFile, setImageFile] = useState(null); // 이미지 파일 상태 추가
 
   const handleChangeImage = (e) => {
@@ -145,6 +178,9 @@ const MissionPage = () => {
           <TodayMission
             content={missionData.content}
             missionComment={missionData.missionComment}
+            onRefresh={handleRefreshMission} // ✅ 내려줌
+            isRefreshing={isRefreshing} // ✅ 로딩 상태 내려줌(선택)
+            alreadyVerified={alreadyVerified} // ⬅️ 추가
           />
           {alreadyVerified ? (
             <div
