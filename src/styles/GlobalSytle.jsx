@@ -24,19 +24,6 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Pretendard', sans-serif;
   }
 
-  .InitProcess, .Ttokttok, .MyPage, .MainProcess {
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    text-align: center;
-    margin: 0;
-    min-height: 100vh;
-    background-color: #F5F6F6;
-    overflow-y: auto;
-    padding-bottom: 100px;
-  }
 
   &::-webkit-scrollbar {
     width: 0px;
