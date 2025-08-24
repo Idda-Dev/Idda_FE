@@ -378,6 +378,6 @@ const ModalBox = styled.div`
 `;
 
 const Massege = styled.p`
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: #444444;
 `;

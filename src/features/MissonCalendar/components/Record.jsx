@@ -81,8 +81,10 @@ const Time = styled.div`
 `;
 const Img = styled.img`
   padding-top: 0.4rem;
-  width: 50%;
-  flex-shrink: 0;
+  width: 100%; /* 원하는 가로 크기 */
+  height: 120px; /* 원하는 세로 크기 */
+  object-fit: cover; /* 비율 무시하고 영역을 꽉 채움 */
+  border-radius: 10px;
 `;
 const Title = styled.div`
   margin: 0;
