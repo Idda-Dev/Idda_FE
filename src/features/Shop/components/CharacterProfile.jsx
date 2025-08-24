@@ -97,15 +97,18 @@ const Content = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
   width: 5.5rem;
   height: 1.5rem;
   background-color: white;
   align-items: center; 
   border-radius: 16px;
+  padding-right: 0.6rem;
 `;
 
 const Icon = styled.img`
-  height: 1.5rem;
+  height: 1.4rem;
+  right: 1rem;
   width: auto;
 `;
 
@@ -113,7 +116,6 @@ const MyCandy = styled.p`
   font-size: 0.65rem;
   font-weight: 550;
   color: black;
-  margin-left: 0.3rem;
 `;
 
 const Button = styled.button`

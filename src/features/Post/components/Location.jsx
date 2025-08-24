@@ -3,30 +3,27 @@ import styled from 'styled-components';
 import { seouldistricts } from '../../../mocks/seouldistricts';
 import dropdownIcon from '../assets/DownIcon.png'; 
 
-// 드롭다운에 표시할 위치 목록
 const locations = seouldistricts;
 
 const Location = ({ location, setLocation }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const handleLocationClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleSelectLocation = (newLocation) => {
-    // 선택된 지역으로 상태를 업데이트하고, 드롭다운을 닫기
     setLocation(newLocation);
     setIsDropdownOpen(false);
   };
 
   return (
     <Wrapper>
-      <DropdownButton onClick={handleLocationClick} isOpen={isDropdownOpen}>
+      <DropdownButton $isOpen={isDropdownOpen} onClick={handleLocationClick}>
         <span>{location}</span>
         <img src={dropdownIcon} alt="드롭다운 아이콘" />
       </DropdownButton>
 
-
-      {/* isDropdownOpen 상태가 true일 때만 드롭다운 메뉴를 렌더링 */}
       {isDropdownOpen && (
         <DropdownList>
           {locations.map((loc, index) => (
@@ -40,10 +37,13 @@ const Location = ({ location, setLocation }) => {
   );
 };
 
+export default Location;
+
+// Styled Components
 const Wrapper = styled.div`
   position: relative;
-  display: inline-flex;   /* 버튼 크기만큼 Wrapper */
-  width: max-content;     /* 내용물(버튼) 크기에 맞춤 */
+  display: inline-flex;
+  width: max-content;
 `;
 
 const DropdownButton = styled.div`
@@ -52,7 +52,7 @@ const DropdownButton = styled.div`
   justify-content: flex-start;
   background-color: #D1CDFF;
   padding: 0.3rem 0.7rem;
-  border-radius: ${({ isOpen }) => (isOpen ? '16px 16px 0 0' : '16px')};
+  border-radius: ${({ $isOpen }) => ($isOpen ? '16px 16px 0 0' : '16px')};
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
@@ -64,12 +64,11 @@ const DropdownButton = styled.div`
   }
 `;
 
-
 const DropdownList = styled.ul`
   position: absolute;
   top: 100%;
   left: 0;
-  width: 100%; /* 버튼 너비 그대로 */
+  width: 100%;
   max-height: 11rem;
   overflow: auto;
   z-index: 10;
@@ -81,7 +80,6 @@ const DropdownList = styled.ul`
   list-style: none;
 `;
 
-
 const DropdownItem = styled.li`
   padding: 0.5rem 0.7rem;
   font-size: 0.75rem;
@@ -89,13 +87,13 @@ const DropdownItem = styled.li`
   text-align: center;
   color: #2F0047;
   cursor: pointer;
-  border-bottom: 1px solid #e0e0e0; /* 항목 아래에 경계선 추가 */
+  border-bottom: 1px solid #e0e0e0;
+
   &:hover {
     background-color: #f0f0f0;
   }
+
   &:last-child {
-    border-bottom: none; /* 마지막 항목의 경계선 제거 */
+    border-bottom: none;
   }
 `;
-
-export default Location;
