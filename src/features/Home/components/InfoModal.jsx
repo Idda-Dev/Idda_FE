@@ -74,7 +74,18 @@ const CloseButton = styled.button`
   font-size: 1.2rem;
   color: white;
   cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &:active {
+    transform: scale(0.85); /* 클릭 시 딸깍 효과 */
+  }
 `;
+
 
 const ContentWrapper = styled.div`
   margin-top: 2rem; 
