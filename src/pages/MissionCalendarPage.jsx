@@ -59,7 +59,7 @@ const MissonCalendarPage = () => {
 
   // API
   const [achievementDateSet, setAchievementDateSet] = useState(new Set());
-  const BASE_URL = import.meta.env.VITE_BASE_URL; // VITE_BASE_URL 불러오기
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL; // VITE_API_BASE_URL 불러오기
   const user_id = 1; // user_id 1로 고정
 
   // 유틸: 어떤 입력이 오든 KST 기준 YYYY-MM-DD 문자열로 변환

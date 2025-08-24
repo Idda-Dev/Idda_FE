@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import StarIcon from "../assets/StarIcon.png";
 import BookMarkIcon from "../assets/BookMarkIcon.png";
+import { useNavigate } from "react-router-dom";
 
 const Record = ({ postId, title, content, photoUrl, date }) => {
   const dateObj = new Date(date);
@@ -14,8 +15,14 @@ const Record = ({ postId, title, content, photoUrl, date }) => {
 
   console.log(`포스트 아이디 : ${postId}`);
 
+  const nav = useNavigate();
+
+  const handleMoveCommunity = () => {
+    nav(`/community/post/${postId}`);
+  };
+
   return (
-    <Container>
+    <Container onClick={handleMoveCommunity}>
       <Wrapper>
         <Star src={StarIcon} />
         <TimeWrapper>
@@ -44,6 +51,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   gap: 0.6rem;
+  cursor: pointer;
 `;
 const TimeWrapper = styled.div`
   display: flex;

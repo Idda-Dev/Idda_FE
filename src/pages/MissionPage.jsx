@@ -38,7 +38,7 @@ const MissionPage = () => {
   const isFormValid = imagePreview && finalText && selected !== "공개 여부";
 
   // API
-  const BASE_URL = import.meta.env.VITE_BASE_URL; // VITE_BASE_URL 불러오기
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL; // VITE_API_BASE_URL 불러오기
   const user_id = 1; // user_id 1로 고정
   const [refreshTrigger, setRefreshTrigger] = useState(false); // 글 등록 후 화면 초기화
 
