@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-
 import StarIcon from "../assets/StarIcon.png";
 import BookMarkIcon from "../assets/BookMarkIcon.png";
 import { useNavigate } from "react-router-dom";
 
-const Record = ({ postId, title, content, photoUrl, date }) => {
+const Record = ({ postId, memberId, title, content, photoUrl, date }) => {
   const dateObj = new Date(date);
   const y = dateObj.getFullYear();
   const m = String(dateObj.getMonth() + 1).padStart(2, "0");
@@ -13,11 +12,11 @@ const Record = ({ postId, title, content, photoUrl, date }) => {
   const weekday = dateObj.toLocaleDateString("ko-KR", { weekday: "short" });
   const formattedDate = `${y}.${m}.${d} (${weekday})`;
 
-
   const nav = useNavigate();
 
   const handleMoveCommunity = () => {
-    nav(`/community/post/${postId}`);
+    // postId와 memberId를 함께 state로 전달
+    nav(`/community/post/${postId}`, { state: { memberId } });
   };
 
   return (
