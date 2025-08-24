@@ -28,8 +28,8 @@ const NotyetInform = () => {
   return (
     <div>
       <Wrapper>
-        <Row style={{ justifyContent: "center", gap: "5px" }}>
-          <img src={Star2} alt="보라별" style={{ width: "7%" }} />
+        <Row style={{ justifyContent: "center", gap: "8px" }}>
+          <img src={Star2} alt="보라별" style={{ width: "6%" }} />
           <TodayText>{todayStr}</TodayText>
         </Row>
         <LightPurpleBox>
@@ -50,7 +50,7 @@ export default NotyetInform;
 
 const Wrapper = styled.div`
   display: flex;
-  gap: 27px;
+  gap: 20px;
   flex-direction: column;
 `;
 
@@ -64,7 +64,7 @@ const TodayText = styled.div`
 
 const LightPurpleBox = styled.div`
   display: flex;
-  width: 288px;
+  width: 100%;
   height: 142px;
   padding: 50px 40px;
   justify-content: center;
