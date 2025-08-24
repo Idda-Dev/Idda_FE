@@ -2,8 +2,16 @@ import React from "react";
 import styled from "styled-components";
 
 import ButterflyIcon from "../assets/ButterflyIcon.png";
+import ButterflyIcon2 from "../assets/ButterflyIcon2.png"; // ⬅️ 추가 (경로 확인)
 
-const Calendar = ({ year, month, onDateClick, hide, achievementDates }) => {
+const Calendar = ({
+  year,
+  month,
+  onDateClick,
+  hide,
+  achievementDates,
+  hasTodayRecord,
+}) => {
   const today = new Date();
 
   const firstDay = new Date(year, month, 1);
@@ -74,24 +82,28 @@ const Calendar = ({ year, month, onDateClick, hide, achievementDates }) => {
           : null;
 
         const isAchieved = day && isThisMonth(idx) && isAchievementDay(day);
+        const isPrevMonthTail = idx === prevLastDayIndex;
+        const isTodayCell = day && isToday(day);
 
         return (
           <DayCell key={idx} onClick={() => day && onDateClick(day, type)}>
             <StatusContainer>
               {day &&
-                (isToday(day) ? (
-                  <CircleIcon color="#B1AAFF" hide={hide} />
-                ) : idx === prevLastDayIndex ? (
+                (isTodayCell ? (
+                  <CircleIcon color="#B1AAFF" hide={hide}>
+                    {(isAchieved || hasTodayRecord) && (
+                      <AchievementImage src={ButterflyIcon2} alt="오늘 달성" />
+                    )}
+                  </CircleIcon>
+                ) : isPrevMonthTail ? (
                   <CircleIcon color="#f2f2f2" hide={hide} />
-                ) : (
-                  isThisMonth(idx) && (
-                    <CircleIcon color="#CDDDFF" hide={hide}>
-                      {isAchieved && (
-                        <AchievementImage src={ButterflyIcon} alt="달성" />
-                      )}
-                    </CircleIcon>
-                  )
-                ))}
+                ) : isThisMonth(idx) ? (
+                  <CircleIcon color="#CDDDFF" hide={hide}>
+                    {isAchieved && (
+                      <AchievementImage src={ButterflyIcon} alt="달성" />
+                    )}
+                  </CircleIcon>
+                ) : null)}
             </StatusContainer>
             <IconBackground>
               <DateText hide={hide}>{day}</DateText>

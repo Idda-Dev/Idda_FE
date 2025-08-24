@@ -42,6 +42,8 @@ const MissonCalendarPage = () => {
   const monthLabel = `${currentDate.getMonth() + 1}월`;
 
   const isPast = selectedDateType === "past";
+  const isTodaySelected = selectedDateType === "today";
+  const showRecord = isPast || isTodaySelected; // ⬅️ 추가
 
   // API
   const [achievementDates, setAchievementDates] = useState([]); // 성취한 날짜 저장
@@ -80,7 +82,7 @@ const MissonCalendarPage = () => {
   const handleDateClick = async (day, type) => {
     setSelectedDateType(type);
 
-    if (type === "past") {
+    if (type === "past" || type === "today") {
       const dateObj = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth(),
@@ -108,6 +110,35 @@ const MissonCalendarPage = () => {
     }
   };
 
+  const [hasTodayRecord, setHasTodayRecord] = useState(false); // ⬅️ 오늘 글 여부
+
+  // 📌 마운트 시 오늘 기록도 확인
+  useEffect(() => {
+    const checkTodayRecord = async () => {
+      const today = new Date();
+      const todayStr = `${today.getFullYear()}-${String(
+        today.getMonth() + 1
+      ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/api/users/${user_id}/missions/posts`,
+          { params: { date: todayStr } }
+        );
+        setRecordData({ ...res.data, date: todayStr });
+        setHasTodayRecord(true); // 오늘 기록 있음
+      } catch (err) {
+        if (err.response?.status === 404) {
+          setHasTodayRecord(false); // 오늘 기록 없음
+        } else {
+          console.error("오늘 기록 불러오기 실패", err);
+        }
+      }
+    };
+
+    checkTodayRecord();
+  }, [BASE_URL]);
+
   return (
     <Container>
       <img
@@ -133,17 +164,18 @@ const MissonCalendarPage = () => {
             <Arrow src={NextIcon} alt="다음 달" />
           </NextButton>
         </Wrapper>
-        <CalendarBox isPast={isPast}>
+        <CalendarBox isPast={showRecord}>
           <Calendar
             year={currentDate.getFullYear()}
             month={currentDate.getMonth()}
             onDateClick={handleDateClick}
-            hide={isPast} // 글씨와 원 크기 제어
+            hide={showRecord} // 글씨와 원 크기 제어
             achievementDates={achievementDates}
+            hasTodayRecord={hasTodayRecord}
           />
         </CalendarBox>
-        {isPast && (
-          <RecordBox isPast={isPast}>
+        {showRecord && (
+          <RecordBox isPast={showRecord}>
             {recordData ? (
               <Record
                 postId={recordData.postId}
@@ -167,7 +199,7 @@ const MissonCalendarPage = () => {
             />
           </ModalBox>
         )}
-        {!isPast && <Massege>한 걸음, 두 걸음, 같이 걸어요.</Massege>}
+        {!showRecord && <Massege>한 걸음, 두 걸음, 같이 걸어요.</Massege>}
       </ContentWrapper>
       <TabBar icons={{ mission: PurpleMissionIcon }} />
     </Container>

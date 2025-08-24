@@ -85,6 +85,7 @@ const Title = styled.div`
   margin: 0;
   text-align: start;
   font-size: 0.9rem;
+  font-weight: 700;
   display: -webkit-box; /* 플렉스 박스 대신 클램핑용 박스 */
   -webkit-line-clamp: 1; /* 최대 2줄 */
   -webkit-box-orient: vertical; /* 세로 방향 */
