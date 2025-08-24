@@ -113,10 +113,12 @@ const PostItemPage = () => {
   return (
     <Container>
       <Header title="다같이 한걸음" backPath={"/community"} />
-      <ScrollArea>
+      <FixedArea>
         <Profile nickname={post.nickname} profileImageUrl={post.profileImageUrl} time={post.createdAt} />
         <Post title={post.title} content={post.content} photoUrl={post.photoUrl} />
         <Liked heartCount={post.heartCount} commentCount={post.commentCount} postId={numericPostId}/>
+        </FixedArea>
+        <ScrollArea>
         <CommentList 
           comments={comments} 
           userId={userInfo.memberId} 
@@ -153,9 +155,17 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const FixedArea=styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  gap: 0.4rem;
+`
+
 const ScrollArea = styled.div`
   flex: 1 1 auto;
-  padding-top: 3.5rem;
   width: 100%;
   overflow-y: auto;
   display: flex;

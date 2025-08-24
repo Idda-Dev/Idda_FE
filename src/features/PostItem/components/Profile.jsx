@@ -5,6 +5,7 @@ import ProfileIcon from "../assets/ProfileIcon.png"
 const Profile = ({ nickname, profileImageUrl, time }) => {
   const formatTime = (isoString) => {
     const date = new Date(isoString);
+    console.log("Profile props:", nickname, profileImageUrl, time);
 
     return `${date.getFullYear()}/${
       String(date.getMonth() + 1).padStart(2, "0")
@@ -31,10 +32,10 @@ const Container = styled.div`
   justify-content: space-between; /* 위쪽: Wrapper, 아래쪽: Time */
   align-items: flex-start; 
   width: 74%;
-  height: 9%;
+  height: 4rem;
   padding: 0;
   margin: 0;
-  margin: 2rem 0 0 0; /* 위쪽만 10px */
+  margin: 5rem 0 0 0;
 `;
 
 const Wrapper = styled.div`
