@@ -187,7 +187,7 @@ const MissonCalendarPage = () => {
             <Arrow src={NextIcon} alt="다음 달" />
           </NextButton>
         </Wrapper>
-        <CalendarBox isPast={showRecord}>
+        <CalendarBox $isPast={showRecord}>
           <Calendar
             year={currentDate.getFullYear()}
             month={currentDate.getMonth()}
@@ -198,7 +198,7 @@ const MissonCalendarPage = () => {
           />
         </CalendarBox>
         {showRecord && (
-          <RecordBox isPast={showRecord}>
+          <RecordBox $isPast={showRecord}>
             {recordData ? (
               <Record
                 postId={recordData.postId}
@@ -311,19 +311,19 @@ const PrevButton = styled(ArrowButton)``;
 const NextButton = styled(ArrowButton)``;
 
 const CalendarBox = styled.div`
-  padding: ${({ isPast }) => (isPast ? "2rem 3rem 0.5rem 3rem" : "3rem")};
-  width: ${({ isPast }) => (isPast ? "90%" : "95%")};
+  padding: ${({ $isPast }) => ($isPast ? "2rem 3rem 0.5rem 3rem" : "3rem")};
+  width: ${({ $isPast }) => ($isPast ? "90%" : "95%")};
   max-width: 480px;
-  height: ${({ isPast }) => (isPast ? "17rem" : "28rem")};
+  height: ${({ $isPast }) => ($isPast ? "17rem" : "28rem")};
   display: flex;
   margin-top: 3rem;
-  margin-bottom: ${({ isPast }) => (isPast ? "1rem" : "0")};
+  margin-bottom: ${({ $isPast }) => ($isPast ? "1rem" : "0")};
   justify-content: center;
   background-color: white;
 `;
 
 const RecordBox = styled.div`
-  width: ${({ isPast }) => (isPast ? "66%" : "100%")};
+  width: ${({ $isPast }) => ($isPast ? "66%" : "100%")};
   height: 17rem;
   display: flex;
   justify-content: center;

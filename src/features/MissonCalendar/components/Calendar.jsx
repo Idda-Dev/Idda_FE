@@ -90,15 +90,15 @@ const Calendar = ({
             <StatusContainer>
               {day &&
                 (isTodayCell ? (
-                  <CircleIcon color="#B1AAFF" hide={hide}>
+                  <CircleIcon color="#B1AAFF" $hide={hide}>
                     {(isAchieved || hasTodayRecord) && (
                       <AchievementImage src={ButterflyIcon2} alt="오늘 달성" />
                     )}
                   </CircleIcon>
                 ) : isPrevMonthTail ? (
-                  <CircleIcon color="#f2f2f2" hide={hide} />
+                  <CircleIcon color="#f2f2f2" $hide={hide} />
                 ) : isThisMonth(idx) ? (
-                  <CircleIcon color="#CDDDFF" hide={hide}>
+                  <CircleIcon color="#CDDDFF" $hide={hide}>
                     {isAchieved && (
                       <AchievementImage src={ButterflyIcon} alt="달성" />
                     )}
@@ -106,7 +106,7 @@ const Calendar = ({
                 ) : null)}
             </StatusContainer>
             <IconBackground>
-              <DateText hide={hide}>{day}</DateText>
+              <DateText $hide={hide}>{day}</DateText>
             </IconBackground>
           </DayCell>
         );
@@ -144,8 +144,8 @@ const StatusContainer = styled.div`
 `;
 
 const CircleIcon = styled.div`
-  width: ${({ hide }) => (hide ? "1.5rem" : "1.8rem")};
-  height: ${({ hide }) => (hide ? "1.5rem" : "1.8rem")};
+  width: ${({ $hide }) => ($hide ? "1.5rem" : "1.8rem")};
+  height: ${({ $hide }) => ($hide ? "1.5rem" : "1.8rem")};
   background-color: ${({ color }) => color || "#CDDDFF"};
   border-radius: 50%;
   transition: all 0.2s ease;
@@ -160,7 +160,7 @@ const IconBackground = styled.div`
 `;
 
 const DateText = styled.div`
-  font-size: ${({ hide }) => (hide ? "0" : "0.9rem")};
+  font-size: ${({ $hide }) => ($hide ? "0" : "0.9rem")};
   font-weight: 540;
   color: #a4a4a4;
   transition: font-size 0.2s ease;
