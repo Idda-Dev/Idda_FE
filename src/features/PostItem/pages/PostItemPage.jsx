@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 
 import Profile from "../components/Profile";
@@ -18,6 +18,8 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const PostItemPage = () => {
   const { postId } = useParams();
+  const location = useLocation();
+  const memberId = location.state?.memberId; 
   const numericPostId = Number(postId);
 
   const [loading, setLoading] = useState(true);
@@ -49,7 +51,7 @@ const PostItemPage = () => {
           setPost(mockPost);
           return;
         }
-        const res = await axios.get(`${BASE_URL}/api/missions/users/${userInfo.memberId}/posts/${numericPostId}`);
+        const res = await axios.get(`${BASE_URL}/api/missions/users/${memberId}/posts/${numericPostId}`);
         setPost(res.data);
       } catch (err) {
         console.warn("게시글 API 실패 → fallback 사용", err);
@@ -59,7 +61,7 @@ const PostItemPage = () => {
       }
     };
     fetchPost();
-  }, [numericPostId, userInfo]);
+  }, [numericPostId]);
 
   // 댓글 조회 
   const fetchComments = async () => {
@@ -113,10 +115,12 @@ const PostItemPage = () => {
   return (
     <Container>
       <Header title="다같이 한걸음" backPath={"/community"} />
-      <ScrollArea>
+      <FixedArea>
         <Profile nickname={post.nickname} profileImageUrl={post.profileImageUrl} time={post.createdAt} />
         <Post title={post.title} content={post.content} photoUrl={post.photoUrl} />
         <Liked heartCount={post.heartCount} commentCount={post.commentCount} postId={numericPostId}/>
+        </FixedArea>
+        <ScrollArea>
         <CommentList 
           comments={comments} 
           userId={userInfo.memberId} 
@@ -153,9 +157,17 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const FixedArea=styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  gap: 0.4rem;
+`
+
 const ScrollArea = styled.div`
   flex: 1 1 auto;
-  padding-top: 3.5rem;
   width: 100%;
   overflow-y: auto;
   display: flex;
