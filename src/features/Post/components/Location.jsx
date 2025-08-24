@@ -90,7 +90,7 @@ const DropdownItem = styled.li`
   border-bottom: 1px solid #e0e0e0;
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: #D1CDFF;
   }
 
   &:last-child {

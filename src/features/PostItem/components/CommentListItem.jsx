@@ -86,12 +86,19 @@ const ModalButton = styled.button`
   box-shadow: none;
   -webkit-tap-highlight-color: transparent;
 
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
   img {
     height: 80%;
     aspect-ratio: 1 / 1;
     object-fit: contain;
   }
 `;
+
 
 const ProfileImage = styled.img`
   height: 100%;

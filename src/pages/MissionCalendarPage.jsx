@@ -314,7 +314,7 @@ const MonthLabel = styled.div`
   transform: translate(-50%, -50%);
   font-size: 0.9rem;
   color: black;
-  font-weight: 700;
+  font-weight: 600;
 `;
 
 const ArrowButton = styled.button`

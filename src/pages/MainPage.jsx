@@ -108,6 +108,7 @@ const Icon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  
 `;
 
 const Coupon = styled.img`
