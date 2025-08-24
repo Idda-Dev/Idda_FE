@@ -9,14 +9,22 @@ import CalendarModal from "../features/MissonCalendar/components/CalendarModal.j
 import PurpleMissionIcon from "../assets/PurpleMissionIcon.png";
 import PrevIcon from "../features/MissonCalendar/assets/PrevIcon.png";
 import NextIcon from "../features/MissonCalendar/assets/NextIcon.png";
+import CalendarBackIcon from "../features/MissonCalendar/assets/CalendarBackIcon.png";
 
 import Record from "../features/MissonCalendar/components/Record.jsx";
+import { useNavigate } from "react-router-dom";
 
 // ui보려고 캘린더 크기조절되는거 걍 과거현재미래로 나눠둠 !
 
 const MissonCalendarPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDateType, setSelectedDateType] = useState(null);
+
+  const nav = useNavigate();
+
+  const handleBackIcon = () => {
+    nav(-1);
+  };
 
   const handlePrevMonth = () => {
     const year = currentDate.getFullYear();
@@ -40,6 +48,17 @@ const MissonCalendarPage = () => {
 
   return (
     <Container>
+      <img
+        src={CalendarBackIcon}
+        style={{
+          width: "10%",
+          cursor: "pointer",
+          position: "absolute",
+          left: "10%",
+          top: "5%",
+        }}
+        onClick={handleBackIcon}
+      />
       <ContentWrapper>
         <Wrapper>
           <PrevButton onClick={handlePrevMonth} aria-label="이전 달">
@@ -52,7 +71,6 @@ const MissonCalendarPage = () => {
             <Arrow src={NextIcon} alt="다음 달" />
           </NextButton>
         </Wrapper>
-
         <CalendarBox isPast={isPast}>
           <Calendar
             year={currentDate.getFullYear()}
@@ -61,13 +79,11 @@ const MissonCalendarPage = () => {
             hide={isPast} // 글씨와 원 크기 제어
           />
         </CalendarBox>
-
         {isPast && (
           <RecordBox isPast={isPast}>
             <Record />
           </RecordBox>
         )}
-
         {selectedDateType === "future" && (
           <ModalBox>
             <CalendarModal
@@ -76,10 +92,8 @@ const MissonCalendarPage = () => {
             />
           </ModalBox>
         )}
-
         {!isPast && <Massege>한 걸음, 두 걸음, 같이 걸어요.</Massege>}
       </ContentWrapper>
-
       <TabBar icons={{ mission: PurpleMissionIcon }} />
     </Container>
   );
