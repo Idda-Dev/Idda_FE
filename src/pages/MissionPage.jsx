@@ -9,6 +9,7 @@ import MissionHeader from "../features/Mission/components/MissionHeader";
 import TodayMission from "../features/Mission/components/TodayMission";
 import ProofMission from "../features/Mission/components/ProofMission";
 import TabBar from "../components/TabBar";
+import AlreadyWrittenMission from "../features/Mission/components/AlreadyWrittenMission";
 
 TabBar;
 const MissionPage = () => {
@@ -183,12 +184,7 @@ const MissionPage = () => {
             alreadyVerified={alreadyVerified} // ⬅️ 추가
           />
           {alreadyVerified ? (
-            <div
-              style={{ fontSize: "14px", color: "#888", textAlign: "center" }}
-            >
-              ✅ 오늘의 미션은 이미 인증했어요! 내일 새로운 미션을 기다려주세요
-              ☁️
-            </div>
+            <AlreadyWrittenMission />
           ) : (
             <ProofMission
               data={{

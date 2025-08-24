@@ -12,7 +12,7 @@ import NextIcon from "../features/MissonCalendar/assets/NextIcon.png";
 import CalendarBackIcon from "../features/MissonCalendar/assets/CalendarBackIcon.png";
 
 import Record from "../features/MissonCalendar/components/Record.jsx";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import NotyetInform from "../features/MissonCalendar/components/NotyetInform.jsx";
 
@@ -23,14 +23,6 @@ const MissonCalendarPage = () => {
   const [selectedDateType, setSelectedDateType] = useState(null);
 
   const nav = useNavigate();
-
-  const location = useLocation();
-
-  // ⬇️ MissionPage에서 넘긴 값 (없으면 false)
-  const initialHasTodayRecord = location.state?.hasTodayRecord ?? false;
-
-  // 오늘 글 여부
-  const [hasTodayRecord, setHasTodayRecord] = useState(initialHasTodayRecord);
 
   // ⬇️ 추가: 모달 오픈 상태 (미션 안 한 '과거' 날짜 클릭 시만 사용)
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -108,8 +100,6 @@ const MissonCalendarPage = () => {
 
   const handleDateClick = async (day, type) => {
     if (!day) return;
-
-    // 미래 날짜는 아무 동작도 하지 않음
     if (type === "future") return;
 
     const dateObj = new Date(
@@ -119,7 +109,7 @@ const MissonCalendarPage = () => {
     );
     const dateStr = toYMD_KST(dateObj);
 
-    // 과거 + 미달성(나비 없음) → 모달만 오픈, API 호출 스킵
+    // 과거 + 미달성(나비 없음) → 모달
     if (type === "past" && !achievementDateSet.has(dateStr)) {
       setIsModalOpen(true);
       setSelectedDateType(null);
@@ -127,19 +117,19 @@ const MissonCalendarPage = () => {
       return;
     }
 
-    // 오늘 + 미달성 → API 호출 스킵하고 메시지 표시용 상태만
+    // 오늘 + 미달성 → 안내 메시지
     const todayStr = toYMD_KST(new Date());
+
     if (
       type === "today" &&
       dateStr === todayStr &&
-      !(hasTodayRecord || achievementDateSet.has(todayStr))
+      !achievementDateSet.has(todayStr)
     ) {
       setSelectedDateType("today");
-      setRecordData(null); // 메시지 표시용
+      setRecordData(null);
       return;
     }
 
-    // 여기서부터는 '오늘(달성됨)' 또는 '과거(달성됨)'만 API 호출
     setSelectedDateType(type);
 
     try {
@@ -150,9 +140,7 @@ const MissonCalendarPage = () => {
       setRecordData({ ...res.data, date: dateStr });
     } catch (err) {
       if (err.response?.status === 404) {
-        // 혹시 서버 데이터와 불일치 시에도 콘솔 소음 없이 안전 처리
         setRecordData(null);
-        // 과거인데 서버에 기록이 없으면 UX 통일 위해 모달
         if (type === "past") setIsModalOpen(true);
       } else {
         console.error("기록 불러오기 실패", err);
@@ -160,35 +148,6 @@ const MissonCalendarPage = () => {
       }
     }
   };
-
-  // 📌 마운트 시 오늘 기록도 확인 (hasTodayRecord가 true일 때만!)
-  useEffect(() => {
-    if (!hasTodayRecord) return; // ⬅️ 가드: 오늘 글이 없다고 알면 API 호출 자체를 스킵
-
-    const checkTodayRecord = async () => {
-      const today = new Date();
-      const todayStr = `${today.getFullYear()}-${String(
-        today.getMonth() + 1
-      ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
-
-      try {
-        const res = await axios.get(
-          `${BASE_URL}/api/users/${user_id}/missions/posts`,
-          { params: { date: todayStr } }
-        );
-        setRecordData({ ...res.data, date: todayStr });
-        setHasTodayRecord(true); // 유지
-      } catch (err) {
-        if (err.response?.status === 404) {
-          setHasTodayRecord(false);
-        } else {
-          console.error("오늘 기록 불러오기 실패", err);
-        }
-      }
-    };
-
-    checkTodayRecord();
-  }, [BASE_URL, hasTodayRecord]); // ⬅️ hasTodayRecord가 true일 때만 동작
 
   return (
     <Container>
@@ -222,7 +181,6 @@ const MissonCalendarPage = () => {
             onDateClick={handleDateClick}
             hide={showRecord} // 글씨와 원 크기 제어
             achievementDateSet={achievementDateSet}
-            hasTodayRecord={hasTodayRecord}
           />
         </CalendarBox>
         {showRecord && (

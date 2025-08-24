@@ -4,14 +4,7 @@ import styled from "styled-components";
 import ButterflyIcon from "../assets/ButterflyIcon.png";
 import ButterflyIcon2 from "../assets/ButterflyIcon2.png";
 
-const Calendar = ({
-  year,
-  month,
-  onDateClick,
-  hide,
-  achievementDateSet,
-  hasTodayRecord,
-}) => {
+const Calendar = ({ year, month, onDateClick, hide, achievementDateSet }) => {
   const today = new Date();
 
   const firstDay = new Date(year, month, 1);
@@ -91,7 +84,7 @@ const Calendar = ({
               {day &&
                 (isTodayCell ? (
                   <CircleIcon color="#B1AAFF" $hide={hide}>
-                    {(isAchieved || hasTodayRecord) && (
+                    {isAchieved && (
                       <AchievementImage src={ButterflyIcon2} alt="오늘 달성" />
                     )}
                   </CircleIcon>
