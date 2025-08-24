@@ -22,7 +22,7 @@ const Coupon = ({ item, activeTab }) => {
   return (
     <>
       <Container>
-        <PhotoBox src={Photo} />
+        <PhotoBox src={item.storeImageUrl} />
         <Wrapper>
           <Title>{item.storeName}</Title>
           <Text>{item.title}</Text>
