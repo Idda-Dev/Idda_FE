@@ -21,7 +21,7 @@ const Record = ({ postId, memberId, title, content, photoUrl, date }) => {
   return (
     <Container onClick={handleMoveCommunity}>
       <Wrapper>
-        <Star src={StarIcon} />
+        <Star src={StarIcon} style={{ width: "8%" }} />
         <TimeWrapper>
           <Time>{formattedDate}</Time>
           <BookMark src={BookMarkIcon} alt="bookmark" />
