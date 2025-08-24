@@ -1,8 +1,9 @@
-// Calendar.jsx
 import React from "react";
 import styled from "styled-components";
 
-const Calendar = ({ year, month, onDateClick, hide }) => {
+import ButterflyIcon from "../assets/ButterflyIcon.png";
+
+const Calendar = ({ year, month, onDateClick, hide, achievementDates }) => {
   const today = new Date();
 
   const firstDay = new Date(year, month, 1);
@@ -32,7 +33,11 @@ const Calendar = ({ year, month, onDateClick, hide }) => {
     if (index === prevLastDayIndex) dateObj = new Date(year, month - 1, day);
     else dateObj = new Date(year, month, day);
 
-    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const todayDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
     return dateObj < todayDate;
   };
 
@@ -43,27 +48,50 @@ const Calendar = ({ year, month, onDateClick, hide }) => {
 
   const isFutureDay = (day) => {
     const dateObj = new Date(year, month, day);
-    return dateObj > new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    return (
+      dateObj > new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    );
   };
 
+  // 달성일 조회
+  const isAchievementDay = (day) => {
+    return achievementDates.some(
+      (dateObj) =>
+        dateObj.getFullYear() === year &&
+        dateObj.getMonth() === month &&
+        dateObj.getDate() === day
+    );
+  };
   return (
     <Grid>
       {calendarCells.map((day, idx) => {
-        const type =
-          isToday(day) ? "today" :
-          isThisMonth(idx) && isPastDay(day, idx) ? "past" :
-          isFutureDay(day) ? "future" : null;
+        const type = isToday(day)
+          ? "today"
+          : isThisMonth(idx) && isPastDay(day, idx)
+          ? "past"
+          : isFutureDay(day)
+          ? "future"
+          : null;
+
+        const isAchieved = day && isThisMonth(idx) && isAchievementDay(day);
 
         return (
           <DayCell key={idx} onClick={() => day && onDateClick(day, type)}>
             <StatusContainer>
-              {day && (
-                isToday(day) ? (
+              {day &&
+                (isToday(day) ? (
                   <CircleIcon color="#B1AAFF" hide={hide} />
                 ) : idx === prevLastDayIndex ? (
                   <CircleIcon color="#f2f2f2" hide={hide} />
-                ) : isThisMonth(idx) && <CircleIcon color="#CDDDFF" hide={hide} />
-              )}
+                ) : (
+                  isThisMonth(idx) && (
+                    <CircleIcon color="#CDDDFF" hide={hide}>
+                      {isAchieved && (
+                        <AchievementImage src={ButterflyIcon} alt="달성" />
+                      )}
+                    </CircleIcon>
+                  )
+                ))}
             </StatusContainer>
             <IconBackground>
               <DateText hide={hide}>{day}</DateText>
@@ -122,6 +150,13 @@ const IconBackground = styled.div`
 const DateText = styled.div`
   font-size: ${({ hide }) => (hide ? "0" : "0.9rem")};
   font-weight: 540;
-  color: #A4A4A4;
+  color: #a4a4a4;
   transition: font-size 0.2s ease;
+`;
+
+const AchievementImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
 `;

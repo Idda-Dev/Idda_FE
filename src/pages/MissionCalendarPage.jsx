@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Calendar from "../features/MissonCalendar/components/Calendar";
@@ -13,6 +13,7 @@ import CalendarBackIcon from "../features/MissonCalendar/assets/CalendarBackIcon
 
 import Record from "../features/MissonCalendar/components/Record.jsx";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // ui보려고 캘린더 크기조절되는거 걍 과거현재미래로 나눠둠 !
 
@@ -46,6 +47,37 @@ const MissonCalendarPage = () => {
 
   const isPast = selectedDateType === "past";
 
+  // API
+  const [achievementDates, setAchievementDates] = useState([]); // 성취한 날짜 저장
+  const BASE_URL = import.meta.env.VITE_BASE_URL; // VITE_BASE_URL 불러오기
+  const user_id = 1; // user_id 1로 고정
+
+  // 1. 미션 달성일 나비 아이콘 렌더링
+  useEffect(() => {
+    const fetchAchievements = async () => {
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/api/users/${user_id}/missions/achievements`,
+          {
+            params: {
+              year: currentDate.getFullYear(),
+              month: currentDate.getMonth() + 1,
+            },
+          }
+        );
+        const { dates } = res.data;
+
+        // 문자열 배열을 Date 객체 배열로 변환 (편의상)
+        const parsedDates = dates.map((d) => new Date(d));
+        setAchievementDates(parsedDates);
+      } catch (err) {
+        console.error("달성 기록 불러오기 실패:", err);
+      }
+    };
+
+    fetchAchievements();
+  }, [currentDate, BASE_URL]);
+
   return (
     <Container>
       <img
@@ -77,6 +109,7 @@ const MissonCalendarPage = () => {
             month={currentDate.getMonth()}
             onDateClick={handleDateClick}
             hide={isPast} // 글씨와 원 크기 제어
+            achievementDates={achievementDates}
           />
         </CalendarBox>
         {isPast && (
