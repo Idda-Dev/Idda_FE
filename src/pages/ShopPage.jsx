@@ -1,17 +1,22 @@
 import React from "react";
 import Header from "../components/Header";
 import TabBar from "../components/TabBar";
-import Box from "../features/Shop/components/Box";
 import ShopList from "../features/Shop/components/ShopList";
 import CharacterProfile from "../features/Shop/components/CharacterProfile";
 import styled from "styled-components";
 import PurpleShopIcon from "../assets/PurpleShopIcon.png";
-import WhiteIcon from "../features/Shop/assets/WhiteIcon.png"
+import WhiteIcon from "../features/Shop/assets/WhiteIcon.png";
 
 const ShopPage = () => {
   return (
     <Wrapper>
-      <Header title="솜뭉치 가게" backPath="/" backgroundColor="#2F0047" color="#FFFFFF" backIcon={WhiteIcon}/>
+      <Header
+        title="솜뭉치 가게"
+        backPath="/"
+        backgroundColor="#2F0047"
+        color="#FFFFFF"
+        backIcon={WhiteIcon}
+      />
       <CharacterProfile />
       <ShopListWrapper>
         <ShopList />
