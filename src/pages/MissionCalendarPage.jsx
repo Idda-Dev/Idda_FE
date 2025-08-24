@@ -1,5 +1,4 @@
-// MissonPage.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Calendar from "../features/MissonCalendar/components/Calendar";
@@ -10,14 +9,35 @@ import CalendarModal from "../features/MissonCalendar/components/CalendarModal.j
 import PurpleMissionIcon from "../assets/PurpleMissionIcon.png";
 import PrevIcon from "../features/MissonCalendar/assets/PrevIcon.png";
 import NextIcon from "../features/MissonCalendar/assets/NextIcon.png";
+import CalendarBackIcon from "../features/MissonCalendar/assets/CalendarBackIcon.png";
 
 import Record from "../features/MissonCalendar/components/Record.jsx";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import NotyetInform from "../features/MissonCalendar/components/NotyetInform.jsx";
 
 // ui보려고 캘린더 크기조절되는거 걍 과거현재미래로 나눠둠 !
 
 const MissonCalendarPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDateType, setSelectedDateType] = useState(null);
+
+  const nav = useNavigate();
+
+  const location = useLocation();
+
+  // ⬇️ MissionPage에서 넘긴 값 (없으면 false)
+  const initialHasTodayRecord = location.state?.hasTodayRecord ?? false;
+
+  // 오늘 글 여부
+  const [hasTodayRecord, setHasTodayRecord] = useState(initialHasTodayRecord);
+
+  // ⬇️ 추가: 모달 오픈 상태 (미션 안 한 '과거' 날짜 클릭 시만 사용)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleBackIcon = () => {
+    nav(-1);
+  };
 
   const handlePrevMonth = () => {
     const year = currentDate.getFullYear();
@@ -33,14 +53,156 @@ const MissonCalendarPage = () => {
 
   const monthLabel = `${currentDate.getMonth() + 1}월`;
 
-  const handleDateClick = (day, type) => {
-    setSelectedDateType(type);
+  const isPast = selectedDateType === "past";
+  const isTodaySelected = selectedDateType === "today";
+  const showRecord = isPast || isTodaySelected; // 과거, 오늘 확인용
+
+  // API
+  const [achievementDateSet, setAchievementDateSet] = useState(new Set());
+  const BASE_URL = import.meta.env.VITE_BASE_URL; // VITE_BASE_URL 불러오기
+  const user_id = 1; // user_id 1로 고정
+
+  // 유틸: 어떤 입력이 오든 KST 기준 YYYY-MM-DD 문자열로 변환
+  const toYMD_KST = (input) => {
+    // 이미 'YYYY-MM-DD'면 그대로 사용 (타임존 영향 없음)
+    if (/^\d{4}-\d{2}-\d{2}$/.test(input)) return input;
+
+    const d = new Date(input); // ISO 등은 여기서 로컬(KST)로 읽힘
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
   };
 
-  const isPast = selectedDateType === "past";
+  // 1. 미션 달성일 나비 아이콘 렌더링
+  useEffect(() => {
+    const fetchAchievements = async () => {
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/api/users/${user_id}/missions/achievements`,
+          {
+            params: {
+              year: currentDate.getFullYear(),
+              month: currentDate.getMonth() + 1,
+            },
+          }
+        );
+
+        // (예상) res.data = { dates: ["2025-08-18", "2025-08-20T12:34:56Z", ...] }
+        const { dates } = res.data;
+
+        // 모두 KST기준 YYYY-MM-DD 문자열로 통일
+        const normalized = dates.map(toYMD_KST);
+        setAchievementDateSet(new Set(normalized));
+      } catch (err) {
+        console.error("달성 기록 불러오기 실패:", err);
+        setAchievementDateSet(new Set());
+      }
+    };
+
+    fetchAchievements();
+  }, [currentDate, BASE_URL]);
+
+  // 2. 달력에서 작성한 글 조회
+  const [recordData, setRecordData] = useState(null); // 기록 데이터 저장
+
+  const handleDateClick = async (day, type) => {
+    if (!day) return;
+
+    // 미래 날짜는 아무 동작도 하지 않음
+    if (type === "future") return;
+
+    const dateObj = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      day
+    );
+    const dateStr = toYMD_KST(dateObj);
+
+    // 과거 + 미달성(나비 없음) → 모달만 오픈, API 호출 스킵
+    if (type === "past" && !achievementDateSet.has(dateStr)) {
+      setIsModalOpen(true);
+      setSelectedDateType(null);
+      setRecordData(null);
+      return;
+    }
+
+    // 오늘 + 미달성 → API 호출 스킵하고 메시지 표시용 상태만
+    const todayStr = toYMD_KST(new Date());
+    if (
+      type === "today" &&
+      dateStr === todayStr &&
+      !(hasTodayRecord || achievementDateSet.has(todayStr))
+    ) {
+      setSelectedDateType("today");
+      setRecordData(null); // 메시지 표시용
+      return;
+    }
+
+    // 여기서부터는 '오늘(달성됨)' 또는 '과거(달성됨)'만 API 호출
+    setSelectedDateType(type);
+
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/api/users/${user_id}/missions/posts`,
+        { params: { date: dateStr } }
+      );
+      setRecordData({ ...res.data, date: dateStr });
+    } catch (err) {
+      if (err.response?.status === 404) {
+        // 혹시 서버 데이터와 불일치 시에도 콘솔 소음 없이 안전 처리
+        setRecordData(null);
+        // 과거인데 서버에 기록이 없으면 UX 통일 위해 모달
+        if (type === "past") setIsModalOpen(true);
+      } else {
+        console.error("기록 불러오기 실패", err);
+        setRecordData(null);
+      }
+    }
+  };
+
+  // 📌 마운트 시 오늘 기록도 확인 (hasTodayRecord가 true일 때만!)
+  useEffect(() => {
+    if (!hasTodayRecord) return; // ⬅️ 가드: 오늘 글이 없다고 알면 API 호출 자체를 스킵
+
+    const checkTodayRecord = async () => {
+      const today = new Date();
+      const todayStr = `${today.getFullYear()}-${String(
+        today.getMonth() + 1
+      ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/api/users/${user_id}/missions/posts`,
+          { params: { date: todayStr } }
+        );
+        setRecordData({ ...res.data, date: todayStr });
+        setHasTodayRecord(true); // 유지
+      } catch (err) {
+        if (err.response?.status === 404) {
+          setHasTodayRecord(false);
+        } else {
+          console.error("오늘 기록 불러오기 실패", err);
+        }
+      }
+    };
+
+    checkTodayRecord();
+  }, [BASE_URL, hasTodayRecord]); // ⬅️ hasTodayRecord가 true일 때만 동작
 
   return (
     <Container>
+      <img
+        src={CalendarBackIcon}
+        style={{
+          width: "10%",
+          cursor: "pointer",
+          position: "absolute",
+          left: "10%",
+          top: "5%",
+        }}
+        onClick={handleBackIcon}
+      />
       <ContentWrapper>
         <Wrapper>
           <PrevButton onClick={handlePrevMonth} aria-label="이전 달">
@@ -53,34 +215,47 @@ const MissonCalendarPage = () => {
             <Arrow src={NextIcon} alt="다음 달" />
           </NextButton>
         </Wrapper>
-
-        <CalendarBox isPast={isPast}>
+        <CalendarBox $isPast={showRecord}>
           <Calendar
             year={currentDate.getFullYear()}
             month={currentDate.getMonth()}
             onDateClick={handleDateClick}
-            hide={isPast} // 글씨와 원 크기 제어
+            hide={showRecord} // 글씨와 원 크기 제어
+            achievementDateSet={achievementDateSet}
+            hasTodayRecord={hasTodayRecord}
           />
         </CalendarBox>
-
-        {isPast && (
-          <RecordBox isPast={isPast}>
-            <Record />
+        {showRecord && (
+          <RecordBox $isPast={showRecord}>
+            {recordData ? (
+              <Record
+                postId={recordData.postId}
+                title={recordData.title}
+                content={recordData.content}
+                photoUrl={recordData.photoUrl}
+                date={recordData.date}
+              />
+            ) : (
+              <div style={{ fontSize: "0.8rem", color: "#888" }}>
+                {isTodaySelected ? (
+                  <NotyetInform />
+                ) : (
+                  "해당 날짜에는 작성한 글이 없습니다."
+                )}
+              </div>
+            )}
           </RecordBox>
         )}
-
-        {selectedDateType === "future" && (
+        {isModalOpen && (
           <ModalBox>
             <CalendarModal
               isOpen={true}
-              onClose={() => setSelectedDateType(null)}
+              onClose={() => setIsModalOpen(false)}
             />
           </ModalBox>
         )}
-
-        {!isPast && <Massege>한 걸음, 두 걸음, 같이 걸어요.</Massege>}
+        {!showRecord && <Massege>한 걸음, 두 걸음, 같이 걸어요.</Massege>}
       </ContentWrapper>
-
       <TabBar icons={{ mission: PurpleMissionIcon }} />
     </Container>
   );
@@ -121,7 +296,8 @@ const Wrapper = styled.div`
 const MonthBox = styled.div`
   position: relative;
   height: 100%;
-  width: 15%;
+  width: 8rem;
+  flex-shrink: 0;
   border-radius: 36px;
   background-color: #b1aaff;
   background-repeat: no-repeat;
@@ -137,7 +313,7 @@ const MonthLabel = styled.div`
   transform: translate(-50%, -50%);
   font-size: 0.9rem;
   color: black;
-  pointer-events: none;
+  font-weight: 700;
 `;
 
 const ArrowButton = styled.button`
@@ -168,19 +344,19 @@ const PrevButton = styled(ArrowButton)``;
 const NextButton = styled(ArrowButton)``;
 
 const CalendarBox = styled.div`
-  padding: ${({ isPast }) => (isPast ? "2rem 3rem 0.5rem 3rem" : "3rem")};
-  width: ${({ isPast }) => (isPast ? "90%" : "95%")};
+  padding: ${({ $isPast }) => ($isPast ? "2rem 3rem 0.5rem 3rem" : "3rem")};
+  width: ${({ $isPast }) => ($isPast ? "90%" : "95%")};
   max-width: 480px;
-  height: ${({ isPast }) => (isPast ? "17rem" : "28rem")};
+  height: ${({ $isPast }) => ($isPast ? "17rem" : "28rem")};
   display: flex;
   margin-top: 3rem;
-  margin-bottom: ${({ isPast }) => (isPast ? "1rem" : "0")};
+  margin-bottom: ${({ $isPast }) => ($isPast ? "1rem" : "0")};
   justify-content: center;
   background-color: white;
 `;
 
 const RecordBox = styled.div`
-  width: ${({ isPast }) => (isPast ? "66%" : "100%")};
+  width: ${({ $isPast }) => ($isPast ? "66%" : "100%")};
   height: 17rem;
   display: flex;
   justify-content: center;
@@ -203,6 +379,6 @@ const ModalBox = styled.div`
 `;
 
 const Massege = styled.p`
-  font-size: 9px;
+  font-size: 0.8rem;
   color: #444444;
 `;

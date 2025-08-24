@@ -1,8 +1,17 @@
-// Calendar.jsx
 import React from "react";
 import styled from "styled-components";
 
-const Calendar = ({ year, month, onDateClick, hide }) => {
+import ButterflyIcon from "../assets/ButterflyIcon.png";
+import ButterflyIcon2 from "../assets/ButterflyIcon2.png";
+
+const Calendar = ({
+  year,
+  month,
+  onDateClick,
+  hide,
+  achievementDateSet,
+  hasTodayRecord,
+}) => {
   const today = new Date();
 
   const firstDay = new Date(year, month, 1);
@@ -32,7 +41,11 @@ const Calendar = ({ year, month, onDateClick, hide }) => {
     if (index === prevLastDayIndex) dateObj = new Date(year, month - 1, day);
     else dateObj = new Date(year, month, day);
 
-    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const todayDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
     return dateObj < todayDate;
   };
 
@@ -43,30 +56,57 @@ const Calendar = ({ year, month, onDateClick, hide }) => {
 
   const isFutureDay = (day) => {
     const dateObj = new Date(year, month, day);
-    return dateObj > new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    return (
+      dateObj > new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    );
+  };
+
+  const pad2 = (n) => String(n).padStart(2, "0");
+
+  // 달성일 조회: 셀의 yyyy-mm-dd 문자열을 만들어 Set.has()로 판별
+  const isAchievementDay = (day) => {
+    if (!day) return false;
+    const cellStr = `${year}-${pad2(month + 1)}-${pad2(day)}`;
+    return achievementDateSet.has(cellStr);
   };
 
   return (
     <Grid>
       {calendarCells.map((day, idx) => {
-        const type =
-          isToday(day) ? "today" :
-          isThisMonth(idx) && isPastDay(day, idx) ? "past" :
-          isFutureDay(day) ? "future" : null;
+        const type = isToday(day)
+          ? "today"
+          : isThisMonth(idx) && isPastDay(day, idx)
+          ? "past"
+          : isFutureDay(day)
+          ? "future"
+          : null;
+
+        const isAchieved = day && isThisMonth(idx) && isAchievementDay(day);
+        const isPrevMonthTail = idx === prevLastDayIndex;
+        const isTodayCell = day && isToday(day);
 
         return (
           <DayCell key={idx} onClick={() => day && onDateClick(day, type)}>
             <StatusContainer>
-              {day && (
-                isToday(day) ? (
-                  <CircleIcon color="#B1AAFF" hide={hide} />
-                ) : idx === prevLastDayIndex ? (
-                  <CircleIcon color="#f2f2f2" hide={hide} />
-                ) : isThisMonth(idx) && <CircleIcon color="#CDDDFF" hide={hide} />
-              )}
+              {day &&
+                (isTodayCell ? (
+                  <CircleIcon color="#B1AAFF" $hide={hide}>
+                    {(isAchieved || hasTodayRecord) && (
+                      <AchievementImage src={ButterflyIcon2} alt="오늘 달성" />
+                    )}
+                  </CircleIcon>
+                ) : isPrevMonthTail ? (
+                  <CircleIcon color="#f2f2f2" $hide={hide} />
+                ) : isThisMonth(idx) ? (
+                  <CircleIcon color="#CDDDFF" $hide={hide}>
+                    {isAchieved && (
+                      <AchievementImage src={ButterflyIcon} alt="달성" />
+                    )}
+                  </CircleIcon>
+                ) : null)}
             </StatusContainer>
             <IconBackground>
-              <DateText hide={hide}>{day}</DateText>
+              <DateText $hide={hide}>{day}</DateText>
             </IconBackground>
           </DayCell>
         );
@@ -104,8 +144,8 @@ const StatusContainer = styled.div`
 `;
 
 const CircleIcon = styled.div`
-  width: ${({ hide }) => (hide ? "1.5rem" : "1.8rem")};
-  height: ${({ hide }) => (hide ? "1.5rem" : "1.8rem")};
+  width: ${({ $hide }) => ($hide ? "1.5rem" : "1.8rem")};
+  height: ${({ $hide }) => ($hide ? "1.5rem" : "1.8rem")};
   background-color: ${({ color }) => color || "#CDDDFF"};
   border-radius: 50%;
   transition: all 0.2s ease;
@@ -120,8 +160,15 @@ const IconBackground = styled.div`
 `;
 
 const DateText = styled.div`
-  font-size: ${({ hide }) => (hide ? "0" : "0.9rem")};
+  font-size: ${({ $hide }) => ($hide ? "0" : "0.9rem")};
   font-weight: 540;
-  color: #A4A4A4;
+  color: #a4a4a4;
   transition: font-size 0.2s ease;
+`;
+
+const AchievementImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
 `;

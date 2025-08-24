@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import StarIcon from "../assets/StarIcon.png";
 import DefaultMissionIcon from "../assets/DefaultMissionIcon.png";
-import BackIcon from "../../../assets/BackIcon.png";
+import CancleIcon from "../../../assets/CancleIcon.png";
 
 const CalendarModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
@@ -17,7 +17,7 @@ const CalendarModal = ({ isOpen, onClose }) => {
           모든 시도는 앞으로 나아가는 걸음이에요. 충분히 잘하고 있어요. :)
         </ContentText>
         <BackButtonWrapper>
-          <BackButton src={BackIcon} alt="back" onClick={onClose} />
+          <BackButton src={CancleIcon} alt="back" onClick={onClose} />
         </BackButtonWrapper>
       </ContentBox>
     </Overlay>
