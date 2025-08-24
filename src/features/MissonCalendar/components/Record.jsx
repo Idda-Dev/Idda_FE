@@ -2,25 +2,30 @@ import React from "react";
 import styled from "styled-components";
 
 import StarIcon from "../assets/StarIcon.png";
-import PostImg from "../assets/PostImg.png";
 import BookMarkIcon from "../assets/BookMarkIcon.png";
 
-const Record = () => {
+const Record = ({ postId, title, content, photoUrl, date }) => {
+  const formattedDate = new Date(date).toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    weekday: "short",
+  }); // 예: 2025.08.23 (토)
+
+  console.log(`포스트 아이디 : ${postId}`);
+
   return (
     <Container>
       <Wrapper>
         <Star src={StarIcon} />
         <TimeWrapper>
-          <Time>2025.08.15 (화)</Time>
+          <Time>{formattedDate}</Time>
           <BookMark src={BookMarkIcon} alt="bookmark" />
         </TimeWrapper>
       </Wrapper>
-      <Img src={PostImg} />
-      <Title>근처 도서관에서 책 2권 빌리기</Title>
-      <Content>
-        도서관 마감시간에 다녀왔는데 사람이 없어서 좋았고 편하게 다닐 수 있어서
-        좋았어요.
-      </Content>
+      <Img src={photoUrl} alt="미션 인증 이미지" />
+      <Title>{title}</Title>
+      <Content>{content}</Content>
     </Container>
   );
 };
@@ -66,7 +71,7 @@ const Star = styled.img`
   height: 70%;
   width: auto;
 `;
-const Time = styled.p`
+const Time = styled.div`
   font-size: 1rem;
   font-weight: bold;
   letter-spacing: -0.5px;
@@ -74,20 +79,19 @@ const Time = styled.p`
 `;
 const Img = styled.img`
   padding-top: 0.4rem;
-  width: 95%;
-  height: auto;
+  height: 50%;
 `;
-const Title = styled.p`
+const Title = styled.div`
   margin: 0;
   text-align: start;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   display: -webkit-box; /* 플렉스 박스 대신 클램핑용 박스 */
   -webkit-line-clamp: 1; /* 최대 2줄 */
   -webkit-box-orient: vertical; /* 세로 방향 */
   overflow: hidden; /* 넘치는 내용 숨기기 */
   text-overflow: ellipsis; /* 말줄임표 */
 `;
-const Content = styled.p`
+const Content = styled.div`
   margin: 0;
   text-align: start;
   font-size: 0.7rem;

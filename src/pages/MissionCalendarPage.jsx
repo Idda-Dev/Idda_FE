@@ -41,10 +41,6 @@ const MissonCalendarPage = () => {
 
   const monthLabel = `${currentDate.getMonth() + 1}월`;
 
-  const handleDateClick = (day, type) => {
-    setSelectedDateType(type);
-  };
-
   const isPast = selectedDateType === "past";
 
   // API
@@ -77,6 +73,40 @@ const MissonCalendarPage = () => {
 
     fetchAchievements();
   }, [currentDate, BASE_URL]);
+
+  // 2. 달력에서 작성한 글 조회
+  const [recordData, setRecordData] = useState(null); // 기록 데이터 저장
+
+  const handleDateClick = async (day, type) => {
+    setSelectedDateType(type);
+
+    if (type === "past") {
+      const dateObj = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        day
+      );
+      const dateStr = `${dateObj.getFullYear()}-${String(
+        dateObj.getMonth() + 1
+      ).padStart(2, "0")}-${String(dateObj.getDate()).padStart(2, "0")}`;
+
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/api/users/${user_id}/missions/posts`,
+          { params: { date: dateStr } }
+        );
+        setRecordData({ ...res.data, date: dateStr });
+      } catch (err) {
+        if (err.response?.status === 404) {
+          console.warn(`기록 없음: ${dateStr}`);
+          setRecordData(null); // 기록 없음일 경우 null 저장
+        } else {
+          console.error("기록 불러오기 실패", err);
+          setRecordData(null);
+        }
+      }
+    }
+  };
 
   return (
     <Container>
@@ -114,7 +144,19 @@ const MissonCalendarPage = () => {
         </CalendarBox>
         {isPast && (
           <RecordBox isPast={isPast}>
-            <Record />
+            {recordData ? (
+              <Record
+                postId={recordData.postId}
+                title={recordData.title}
+                content={recordData.content}
+                photoUrl={recordData.photoUrl}
+                date={recordData.date}
+              />
+            ) : (
+              <p style={{ fontSize: "0.8rem", color: "#888" }}>
+                해당 날짜에는 작성한 글이 없습니다.
+              </p>
+            )}
           </RecordBox>
         )}
         {selectedDateType === "future" && (
