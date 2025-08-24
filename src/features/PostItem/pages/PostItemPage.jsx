@@ -26,7 +26,7 @@ const PostItemPage = () => {
   const [userInfo, setUserInfo] = useState(fallbackUser);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
-  // -------------------- 유저 정보 조회 --------------------
+  //유저 정보 조회
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -41,7 +41,7 @@ const PostItemPage = () => {
     fetchUserInfo();
   }, []);
 
-  // -------------------- 게시글 조회 --------------------
+  // 게시글 조회
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -61,7 +61,7 @@ const PostItemPage = () => {
     fetchPost();
   }, [numericPostId, userInfo]);
 
-  // -------------------- 댓글 조회 --------------------
+  // 댓글 조회 
   const fetchComments = async () => {
     try {
       if (!BASE_URL) {
@@ -80,7 +80,7 @@ const PostItemPage = () => {
     fetchComments();
   }, [numericPostId]);
 
-  // -------------------- 키보드 체크 --------------------
+  // 키보드 체크 
   useEffect(() => {
     let initialHeight = window.innerHeight;
     const handleResize = () => {
@@ -90,10 +90,22 @@ const PostItemPage = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // -------------------- 새 댓글 추가 --------------------
+  // 댓글 추가 
   const handleCommentAdded = (newComment) => {
     setComments(prev => [newComment, ...prev]);
   };
+
+  // 댓글 수정
+  const handleCommentUpdated = (updatedComment) => {
+    setComments(prev => prev.map(c => c.commentId === updatedComment.commentId ? updatedComment : c));
+  };
+
+  // 댓글 삭제
+  const handleCommentDeleted = (deletedCommentId) => {
+    setComments(prev => prev.filter(c => c.commentId !== deletedCommentId));
+  };
+
+  
 
   if (loading) return <div>로딩중...</div>;
   if (!post) return <div>데이터가 없습니다.</div>;
@@ -104,8 +116,15 @@ const PostItemPage = () => {
       <ScrollArea>
         <Profile nickname={post.nickname} profileImageUrl={post.profileImageUrl} time={post.createdAt} />
         <Post title={post.title} content={post.content} photoUrl={post.photoUrl} />
-        <Liked heartCount={post.heartCount} commentCount={post.commentCount} postId={numericPostId} />
-        <CommentList comments={comments} userId={userInfo.memberId} />
+        <Liked heartCount={post.heartCount} commentCount={post.commentCount} postId={numericPostId}/>
+        <CommentList 
+          comments={comments} 
+          userId={userInfo.memberId} 
+          onCommentChange={(updatedOrDeleted, type) => {
+            if(type === 'update') handleCommentUpdated(updatedOrDeleted);
+            if(type === 'delete') handleCommentDeleted(updatedOrDeleted);
+          }}
+        />
       </ScrollArea>
 
       <CommentInputWrapper $isKeyboardOpen={isKeyboardOpen}>
@@ -123,7 +142,6 @@ const PostItemPage = () => {
 
 export default PostItemPage;
 
-/* styled-components */
 const Container = styled.div`
   position: relative;
   width: 100%;
@@ -158,10 +176,4 @@ const CommentInputWrapper = styled.div`
   align-items: center;
   z-index: 200;
   background: #fff;
-`;
-
-const CommentListWrapper = styled.div`
-  flex: 1;
-  width: 100%;
-  overflow-y: auto;
 `;

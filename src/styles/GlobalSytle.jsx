@@ -1,21 +1,11 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-@font-face {
-    font-family: 'Pretendard-Bold';
-    src: url('/fonts/Pretendard-Bold.ttf');
-  }
   @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('/fonts/Pretendard-Regular.ttf');
-  }
-  @font-face {
-    font-family: 'Pretendard-SemiBold';
-    src: url('/fonts/Pretendard-SemiBold.ttf');
-  }
-  @font-face {
-    font-family: 'Pretendard-Medium';
-    src: url('/fonts/Pretendard-Medium.ttf');
+    font-family: 'Pretendard';
+    src: url('/fonts/PretendardVariable.ttf') format('truetype-variations');
+    font-weight: 100 900; /* 100~900 범위 사용 가능 */
+    font-style: normal;
   }
 
   *, *::before, *::after {
@@ -23,51 +13,38 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  background-color: white;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: white;
+    font-family: 'Pretendard', sans-serif;
   }
 
-  // 최상위 페이지 컴포넌트에 대해 모바일 웹 환경 구축
-
-  .InitProcess, .Ttokttok, .MyPage{
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  text-align: center;
-  margin: 0;
-  min-height: 100vh;
-  background-color: white;
-  }
-
-  .MainProcess{
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  text-align: center;
-  margin: 0;
-  min-height: 100vh;
-  background-color: #F5F6F6;
-  overflow-y: auto;
-  padding-bottom: 100px;
+  .InitProcess, .Ttokttok, .MyPage, .MainProcess {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    text-align: center;
+    margin: 0;
+    min-height: 100vh;
+    background-color: #F5F6F6;
+    overflow-y: auto;
+    padding-bottom: 100px;
   }
 
   &::-webkit-scrollbar {
-      width: 0px;
+    width: 0px;
   }
 
   &::-webkit-scrollbar-thumb {
-      background-color: #9a9a9a;
-      width: 2px;
+    background-color: #9a9a9a;
+    width: 2px;
   }
 
   &::-webkit-scrollbar {
@@ -77,70 +54,21 @@ const GlobalStyle = createGlobalStyle`
   &::-webkit-scrollbar-track {
     background-color: #ffffff;
   }
-  
-  // font 종류
-.h1 {
-  font-family:'Pretendard-Bold';
-  font-size: 22px;
-  line-height: 30px;
-}
 
-.h2 {
-  font-family:'Pretendard-Bold';
-  font-size: 18px;
-  line-height: 26px;
-}
+  /* 폰트 스타일 */
+  .h1 { font-weight: 700; font-size: 22px; line-height: 30px; }
+  .h2 { font-weight: 700; font-size: 18px; line-height: 26px; }
+  .h3 { font-weight: 600; font-size: 16px; line-height: 22px; }
 
-.h3 {
-  font-family:'Pretendard-SemiBold';
-  font-size: 16px;
-  line-height: 22px;
-}
+  .body1 { font-weight: 500; font-size: 16px; line-height: 22px; }
+  .body2 { font-weight: 500; font-size: 14px; line-height: 20px; }
 
+  .caption1 { font-weight: 400; font-size: 12px; line-height: 18px; }
+  .caption2 { font-weight: 400; font-size: 11px; line-height: 18px; }
 
-.body1 {
-  font-family:'Pretendard-Medium';
-  font-size: 16px;
-  line-height: 22px;
-}
-
-.body2 {
-  font-family:'Pretendard-Medium';
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.caption1 {
-  font-family:'Pretendard-Regular';
-  font-size: 12px;
-  line-height: 18px;
-}
-
-.caption2 {
-  font-family:'Pretendard-Regular';
-  font-size: 11px;
-  line-height: 18px;
-}
-
-.button1 {
-  font-family:'Pretendard-SemiBold';
-  font-size: 16px;
-  line-height: 24px;
-}
-
-.button2 {
-  font-family:'Pretendard-SemiBold';
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.button3 {
-  font-family:'Pretendard-SemiBold';
-  font-size: 12px;
-  line-height: 18px;
-}
-
-
+  .button1 { font-weight: 600; font-size: 16px; line-height: 24px; }
+  .button2 { font-weight: 600; font-size: 14px; line-height: 20px; }
+  .button3 { font-weight: 600; font-size: 12px; line-height: 18px; }
 `;
 
 export default GlobalStyle;

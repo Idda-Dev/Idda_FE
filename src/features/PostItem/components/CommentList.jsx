@@ -3,7 +3,7 @@ import React from 'react';
 import CommentListItem from "./CommentListItem";
 import styled from 'styled-components';
 
-const CommentList = ({ comments, userId=1 }) => {
+const CommentList = ({ comments, userId=1, onCommentChange }) => {
   return (
     <Wrapper>
       {comments.map((comment) => (
@@ -11,11 +11,13 @@ const CommentList = ({ comments, userId=1 }) => {
           key={comment.commentId}
           comment={comment}
           userId={userId}
+          onCommentChange={onCommentChange} // 추가
         />
       ))}
     </Wrapper>
   );
 };
+
 
 export default CommentList;
 

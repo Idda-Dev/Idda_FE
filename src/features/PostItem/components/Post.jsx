@@ -1,19 +1,15 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
-import PostImage from "../assets/PostImage.png";
 
-const Post = ({title, content, photoUrl}) => {
+const Post = ({ title, content, photoUrl }) => {
   return (
     <Container>
       <FixedTop>
-        <Image src={photoUrl} alt="포스트 이미지"/>
+        {photoUrl && <Image src={photoUrl} alt="포스트 이미지" />}
         <Title>{title}</Title>
       </FixedTop>
       <ScrollContent>
-        <Content>
-          {content}
-          {/* 내용이 길어지면 여기서 스크롤 */}
-        </Content>
+        <Content>{content}</Content>
       </ScrollContent>
     </Container>
   );
@@ -24,12 +20,13 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 22px 28px;
+  width: 74%;
+  min-height: 20vh;       /* 최소 높이 */
+  max-height: 40vh;       /* 최대 높이 */
+  padding: 1.5rem;
   background-color: white;
   border-radius: 16px;
   border: 1px solid #6F69B0;
-  width: 74%;
-  max-height: 40vh;      /* 컨테이너 최대 높이 */
   gap: 0.4rem;
 `;
 
@@ -41,33 +38,36 @@ const FixedTop = styled.div`
 
 const ScrollContent = styled.div`
   width: 100%;
+  flex: 1 1 auto;       /* 남은 공간 채움 */
   overflow-y: auto;
-  /* 컨테이너 패딩 영역 침범하지 않도록 패딩 없음 */
+  padding-bottom: 0;   
 `;
 
 const Image = styled.img`
-  width: 80%;
+  width: 100%;
+  max-height: 200px;    /* 이미지 최대 높이 제한 */
   border-radius: 9px;
+  object-fit: cover;
+  display: block;
 `;
 
-const Title = styled.p`
+const Title = styled.div`
   font-size: 0.8rem;
   font-weight: 550;
-  margin: 0;
-  text-align: left;
-  letter-spacing: -0.5px; 
+  letter-spacing: -0.5px;
+  text-align: start;
 `;
 
-const Content = styled.p`
-  color:#909090;
+const Content = styled.div`
+  color: #909090;
   font-size: 0.7rem;
-  margin: 0;
-  text-align: left;
-  line-height: 1.4rem;       
-  text-decoration: underline;      /* 각 줄 밑줄 */
-  text-underline-offset: 5px;      /* 글자에서 밑줄 떨어지는 거리 */
-  text-decoration-thickness: 0.05rem;  /* 밑줄 두께 */
-  letter-spacing: -0.5px;  
+  line-height: 1.4rem;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 0.05rem;
+  letter-spacing: -0.5px;
+  margin: 0;      
+  text-align: start;
 `;
 
 export default Post;

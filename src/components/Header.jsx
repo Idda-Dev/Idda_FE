@@ -8,9 +8,14 @@ const Header = ({ title, backPath, backgroundColor, color, backIcon }) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    if (backPath) navigate(backPath);
-    else navigate("/");
-  };
+  if (backPath !== undefined) {
+    const path = backPath === "-1" ? -1 : backPath;
+    navigate(path);
+  } else {
+    navigate("/");
+  }
+};
+
 
   return (
     <Container bgColor={backgroundColor}>

@@ -47,7 +47,7 @@ const MyCouponsPage = () => {
 
   return (
     <Container>
-      <Header title="내 쿠폰" backPath="/shop" />
+      <Header title="내 쿠폰" backPath="-1" />
 
       <ButtonGroup>
         <TabButton 

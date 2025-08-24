@@ -57,7 +57,7 @@ const ModalContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 5rem;
+  margin-bottom: 3rem;
 `;
 
 const Icon=styled.img`
