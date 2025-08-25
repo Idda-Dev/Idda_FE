@@ -45,7 +45,8 @@ const ScrollContent = styled.div`
 
 const Image = styled.img`
   width: 100%;
-  max-height: 200px;    /* 이미지 최대 높이 제한 */
+  max-height: 170px;    /* 이미지 최대 높이 제한 */
+  max-width: 280px;
   border-radius: 9px;
   object-fit: cover;
   display: block;
