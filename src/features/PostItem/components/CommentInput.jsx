@@ -123,4 +123,13 @@ const Input = styled.input`
   border: 1px solid #6f69b0;
   outline: none;
   font-size: 0.8rem;
+
+  /* ✅ 라이트 모드 고정 */
+  background-color: #ffffff;
+  color: #000000;
+
+  /* placeholder도 강제 */
+  &::placeholder {
+    color: #999999;
+  }
 `;
