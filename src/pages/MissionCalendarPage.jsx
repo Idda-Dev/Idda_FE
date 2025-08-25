@@ -18,6 +18,23 @@ import NotyetInform from "../features/MissonCalendar/components/NotyetInform.jsx
 
 // ui보려고 캘린더 크기조절되는거 걍 과거현재미래로 나눠둠 !
 
+// 파일 상단(컴포넌트 바깥)
+const getYMDInKST = (date = new Date()) => {
+  const fmt = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  return fmt.format(date);
+};
+
+const toYMD_KST = (input) => {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(input)) return input;
+  const d = input instanceof Date ? input : new Date(input);
+  return getYMDInKST(d);
+};
+
 const MissonCalendarPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDateType, setSelectedDateType] = useState(null);
@@ -53,23 +70,6 @@ const MissonCalendarPage = () => {
   const [achievementDateSet, setAchievementDateSet] = useState(new Set());
   const BASE_URL = import.meta.env.VITE_API_BASE_URL; // VITE_API_BASE_URL 불러오기
   const user_id = 1; // user_id 1로 고정
-
-  const getYMDInKST = (date = new Date()) => {
-    const fmt = new Intl.DateTimeFormat("sv-SE", {
-      timeZone: "Asia/Seoul",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-    return fmt.format(date);
-  };
-
-  // 기존 toYMD_KST 대신 아래처럼 사용
-  const toYMD_KST = (input) => {
-    if (/^\d{4}-\d{2}-\d{2}$/.test(input)) return input;
-    const d = input instanceof Date ? input : new Date(input);
-    return getYMDInKST(d); // ✅ 항상 Asia/Seoul 기준
-  };
 
   // 1. 미션 달성일 나비 아이콘 렌더링
   useEffect(() => {
