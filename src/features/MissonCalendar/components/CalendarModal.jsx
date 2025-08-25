@@ -14,7 +14,7 @@ const CalendarModal = ({ isOpen, onClose }) => {
         <Star src={StarIcon} alt="Star" />
         <DefaultMission src={DefaultMissionIcon} alt="Default Mission" />
         <ContentText>
-          모든 시도는 앞으로 나아가는 걸음이에요. 충분히 잘하고 있어요. :)
+          {`모든 시도는 앞으로 나아가는 걸음이에요.\n 충분히 잘하고 있어요. :)`}
         </ContentText>
         <BackButtonWrapper>
           <BackButton src={CancleIcon} alt="back" onClick={onClose} />
@@ -67,12 +67,13 @@ const ContentText = styled.div`
   width: 100%;
   font-size: 0.76rem;
   color: #444444;
-  text-align: start;
+  text-align: center;
   letter-spacing: -0.5px;
   line-height: 1.7rem;
   text-decoration-line: underline;
   text-underline-offset: 0.4rem; /* 글자와 밑줄 사이 간격 */
   text-decoration-color: #444444; /* 밑줄 색상 */
+  white-space: pre-line;
 `;
 
 const BackButton = styled.img`
