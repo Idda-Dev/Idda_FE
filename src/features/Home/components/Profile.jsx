@@ -59,8 +59,8 @@ const Container=styled.div`
     color: white;
     height:8rem;
     width: 16.2rem;
-    border-radius: 12px;
-    z-index: 1;
+    border-radius: 12px 12px 0 0;
+    z-index: 2;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -129,6 +129,7 @@ const Time=styled.p`
     color: #D9D9D9;
     margin: 0;
     font-size: 0.8rem;
+    font-weight: 550;
     padding-right: 1rem;
     height: 25%;
     display: flex;
@@ -142,7 +143,6 @@ const Time=styled.p`
 const Days = styled.span`
   color: white;
   font-size: 0.8rem;
-  font-weight: 550;
   padding-right: 1rem;
   height: 25%;
   display: flex;
@@ -179,6 +179,7 @@ const Icon2 = styled.img`
 const Text=styled.p`
   margin: 0;
   font-size: 0.8rem;
+  font-weight: 550;
 `
 
 const Level=styled.p`

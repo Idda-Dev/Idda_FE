@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // 추가
 import { userinfo } from "../mocks/userinfo"; 
 import TabBar from "../components/TabBar";
 import PurpleHomeIcon from "../assets/PurpleHomeIcon.png";
 import Profile from "../features/Home/components/Profile";
 import CandyCount from "../features/Home/components/CandyCount";
-import BackgroundImg from "../features/Home/assets/MainPageImage.png";
+import BackgroundImg from "../features/Home/assets/BgImg.png";
 import CouponIcon from "../features/Home/assets/CouponIcon.png"
+import TodayMission from "../features/Home/components/TodayMission";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const MainPage = () => {
-  const navigate = useNavigate(); // 추가
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -45,23 +44,20 @@ const MainPage = () => {
   if (loading) return <Message>로딩중...</Message>;
   if (error) console.warn(error);
 
-  // 클릭 핸들러
-  const handleCouponClick = () => {
-    navigate("/coupon");
-  };
+  
 
   return (
     <Container>
       <Background src={BackgroundImg} alt="배경 이미지" />
-      <Icon onClick={handleCouponClick}>
+      <Icon>
         <Coupon src={CouponIcon} alt="쿠폰 아이콘" />
-        <Name>쿠폰함</Name>
       </Icon>
       <Wrapper>
         {userData && (
           <>
             <CandyCount candy={userData.candy} />
             <Profile user={userData} />
+            <TodayMission/>
           </>
         )}
       </Wrapper>
@@ -85,25 +81,26 @@ const Container = styled.div`
 
 const Background = styled.img`
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  bottom: 0;             // 아래쪽 기준
+  right: 0;              // 오른쪽 기준
+  width: 100%;           // 확대
+  height: 100%;          // 확대
   object-fit: cover;
   z-index: 0;
-  object-position: center;
+  object-position: right bottom; // 오른쪽 밑 모서리 기준
 `;
+
+
 
 const Icon = styled.div`
   position: absolute;
-  top: 62%;
-  left: 33%;
+  top: 54%;
+  left: 18%;
   transform: translate(-50%, -50%);
-  width: 6rem;
-  height: 6rem;
+  width: 7rem;
+  height: 7rem;
   max-width: 150px;  
-  cursor: pointer;
-  z-index: 10;
+  z-index: 0;
 
   display: flex;
   align-items: center;
@@ -116,22 +113,6 @@ const Coupon = styled.img`
   width: 6rem;
 `;
 
-const Name = styled.p`
-  position: absolute; // 절대 위치
-  top: 70%;          // 아이콘 중앙
-  left: 50%;
-  transform: translate(-50%, 0);
-  margin: 0;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  width: 4rem;
-  font-weight: 500;
-  font-size: 0.7rem;
-  padding: 0.3rem;
-  border-radius: 16px;
-  text-align: center;
-`;
-
 
 const Wrapper = styled.div`
   display: flex;
@@ -139,7 +120,6 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 3rem;
-  gap: 1rem;
   padding: 0 1.5rem;
 `;
 
