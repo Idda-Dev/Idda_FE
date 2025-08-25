@@ -197,14 +197,14 @@ const DropdownRight = styled.div`
 
 const DropdownContainer = styled.div`
   position: relative;
-  width: 80px;
+  width: 70px;
   font-size: 9px;
 `;
 
 const SelectedBox = styled.div`
   background-color: #f2f2f2;
   border-radius: 20px;
-  padding: 5px 12px;
+  padding: 3px 10px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
