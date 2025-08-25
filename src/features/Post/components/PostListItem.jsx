@@ -11,8 +11,14 @@ const PostListItem = ({ post }) => {
   const formatCount = (count) => (count > 999 ? "999+" : count);
 
   const handleClick = () => {
-    navigate(`/community/post/${post.postId}`, { state: { memberId: post.memberId } });
-  };
+  navigate(`/community/post/${post.postId}`, { 
+    state: { 
+      memberId: post.memberId,
+      location: post.location 
+    } 
+  });
+};
+
 
   return (
     <Wrapper onClick={handleClick}>

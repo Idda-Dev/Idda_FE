@@ -122,7 +122,11 @@ const PostItemPage = () => {
 
   return (
     <Container>
-      <Header title="다같이 한걸음" backPath={"-1"} />
+      <Header
+  title="다같이 한걸음"
+  backPath={`/community?location=${post.location}`}
+/>
+
       <FixedArea>
         <Profile
           nickname={post.nickname}
