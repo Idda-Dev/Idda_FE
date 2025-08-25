@@ -32,25 +32,13 @@ const MissionPage = () => {
   const isFormValid = imagePreview && finalText && selected !== "공개 여부";
 
   const getYMDInKST = (date = new Date()) => {
-    const ymd = new Intl.DateTimeFormat("sv-SE", {
+    const fmt = new Intl.DateTimeFormat("sv-SE", {
       timeZone: "Asia/Seoul",
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
-    }).format(date);
-
-    // ⏰ 시간 전용 formatter
-    const hms = new Intl.DateTimeFormat("sv-SE", {
-      timeZone: "Asia/Seoul",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    }).format(date);
-
-    console.log("📌 KST full:", `${ymd} ${hms}`);
-
-    return ymd; // 기존대로 날짜만 반환
+    });
+    return fmt.format(date); // "YYYY-MM-DD"
   };
 
   useEffect(() => {
