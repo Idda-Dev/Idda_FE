@@ -63,6 +63,8 @@ const ModalOverlay = styled.div`
   gap: 20px;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  inset: 0;
 `;
 
 const ModalContent = styled.div`
