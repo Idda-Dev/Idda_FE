@@ -7,7 +7,7 @@ import TabBar from "../components/TabBar";
 import PurpleHomeIcon from "../assets/PurpleHomeIcon.png";
 import Profile from "../features/Home/components/Profile";
 import CandyCount from "../features/Home/components/CandyCount";
-import BackgroundImg from "../features/Home/assets/MainPageImage.png";
+import BackgroundImg from "../features/Home/assets/BgImg.png";
 import CouponIcon from "../features/Home/assets/CouponIcon.png"
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -85,22 +85,24 @@ const Container = styled.div`
 
 const Background = styled.img`
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  bottom: 0;             // 아래쪽 기준
+  right: 0;              // 오른쪽 기준
+  width: 100%;           // 확대
+  height: 100%;          // 확대
   object-fit: cover;
   z-index: 0;
-  object-position: center;
+  object-position: right bottom; // 오른쪽 밑 모서리 기준
 `;
+
+
 
 const Icon = styled.div`
   position: absolute;
-  top: 62%;
-  left: 33%;
+  top: 54%;
+  left: 24%;
   transform: translate(-50%, -50%);
-  width: 6rem;
-  height: 6rem;
+  width: 7rem;
+  height: 7rem;
   max-width: 150px;  
   cursor: pointer;
   z-index: 10;
