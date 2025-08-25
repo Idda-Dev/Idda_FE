@@ -104,7 +104,7 @@ const TextOverlayBold = styled.p`
   left: 50%;
   transform: translate(-50%, -50%); /* 정확히 중앙으로 이동 */
   color: #fff;
-  font-size: 16px;
+  font-size: 17.5px;
   font-weight: 600;
 `;
 

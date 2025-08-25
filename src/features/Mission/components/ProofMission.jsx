@@ -55,14 +55,10 @@ const ProofMission = ({ data, handlers }) => {
             accept="image/*"
             onChange={handleChangeImage}
           />
-          <Caption>
+          <Caption onClick={() => setShowModal(true)}>
             <Row style={{ gap: "4px" }}>
               {finalText || "미션을 하며 스친 생각이나 기분을 기록해주세요."}
-              <img
-                src={WritingIcon}
-                style={{ cursor: "pointer", width: "6%" }}
-                onClick={() => setShowModal(true)}
-              />
+              <img src={WritingIcon} style={{ width: "6%" }} />
             </Row>
           </Caption>
           {showModal && (
@@ -176,6 +172,7 @@ const Caption = styled.div`
   text-underline-position: from-font;
   margin-top: 10px;
   margin-bottom: 15px;
+  cursor: pointer;
 `;
 
 const SubmitButton = styled.div`
@@ -200,14 +197,14 @@ const DropdownRight = styled.div`
 
 const DropdownContainer = styled.div`
   position: relative;
-  width: 80px;
+  width: 70px;
   font-size: 9px;
 `;
 
 const SelectedBox = styled.div`
   background-color: #f2f2f2;
   border-radius: 20px;
-  padding: 5px 12px;
+  padding: 3px 10px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;

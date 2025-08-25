@@ -10,6 +10,7 @@ export const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
 `;
 
 export const Row = styled.div`
