@@ -8,6 +8,7 @@ import Profile from "../features/Home/components/Profile";
 import CandyCount from "../features/Home/components/CandyCount";
 import BackgroundImg from "../features/Home/assets/BgImg.png";
 import CouponIcon from "../features/Home/assets/CouponIcon.png"
+import TodayMission from "../features/Home/components/TodayMission";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -56,6 +57,7 @@ const MainPage = () => {
           <>
             <CandyCount candy={userData.candy} />
             <Profile user={userData} />
+            <TodayMission/>
           </>
         )}
       </Wrapper>
@@ -98,7 +100,7 @@ const Icon = styled.div`
   width: 7rem;
   height: 7rem;
   max-width: 150px;  
-  z-index: 10;
+  z-index: 0;
 
   display: flex;
   align-items: center;
@@ -118,7 +120,6 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 3rem;
-  gap: 1rem;
   padding: 0 1.5rem;
 `;
 
