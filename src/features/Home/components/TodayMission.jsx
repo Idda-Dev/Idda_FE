@@ -115,22 +115,22 @@ const Content = styled.p`
   width: 60%;
   font-size: 0.8rem;
   font-weight: 550;
-  padding: 0.5rem;
+  padding: 0.5rem ;
 
   /* border-radius 조건부: 확장 상태일 때만 왼쪽 아래 12px */
   border-radius: ${({ $isExpanded }) =>
     $isExpanded ? "0 0 12px 12px" : "0 0 12px 0"};
 
-  /* 줄임표 한 줄 처리 */
   display: block;
   white-space: ${({ $isExpanded }) => ($isExpanded ? "normal" : "nowrap")};
   overflow: hidden;
   text-overflow: ellipsis;
+
+  /* 클릭 가능 여부에 따라 커서와 정렬 */
   cursor: ${({ $isOverflow }) => ($isOverflow ? "pointer" : "default")};
-
-  text-align: left;
+  text-align: ${({ $isExpanded }) =>
+    $isExpanded ? "left" : "center"};
 `;
-
 
 
 
