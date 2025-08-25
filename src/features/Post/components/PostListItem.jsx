@@ -14,10 +14,12 @@ const PostListItem = ({ post }) => {
   navigate(`/community/post/${post.postId}`, { 
     state: { 
       memberId: post.memberId,
-      location: post.location 
+      location: post.location,
+      fromCommunity: true // 커뮤니티에서 왔음을 표시
     } 
   });
 };
+
 
 
   return (
