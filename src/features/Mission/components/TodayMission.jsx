@@ -23,7 +23,7 @@ const TodayMission = ({
 
   return (
     <div>
-      <Row style={{ justifyContent: "space-between", marginBottom: "20px" }}>
+      <Row style={{ justifyContent: "space-between", marginBottom: "1.5rem" }}>
         <TitleBox>
           <img src={Star1} alt="Star" style={{ width: "20%" }} />
           오늘의 미션
@@ -73,7 +73,7 @@ const TitleBox = styled.div`
   background: #fff;
   box-shadow: -10px 0 20px 0 rgba(0, 0, 0, 0.06);
   width: 7.5rem;
-  height: 30px;
+  height: 2rem;
   padding: 5px 15px 5px 5px;
   justify-content: center;
   align-items: center;
@@ -121,8 +121,8 @@ const TextOverlayRegular = styled.p`
 `;
 
 const CandyOverlay = styled.div`
-  width: 88px;
-  height: 30px;
+  width: 5rem;
+  height: 2rem;
   position: absolute;
   top: 74%;
   left: 76%;
