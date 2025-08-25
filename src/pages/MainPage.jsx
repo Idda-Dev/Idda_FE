@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { userinfo } from "../mocks/userinfo"; 
+import { userinfo } from "../mocks/userinfo";
 import TabBar from "../components/TabBar";
 import PurpleHomeIcon from "../assets/PurpleHomeIcon.png";
 import Profile from "../features/Home/components/Profile";
 import CandyCount from "../features/Home/components/CandyCount";
 import BackgroundImg from "../features/Home/assets/BgImg.png";
-import CouponIcon from "../features/Home/assets/CouponIcon.png"
 import TodayMission from "../features/Home/components/TodayMission";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -44,24 +43,23 @@ const MainPage = () => {
   if (loading) return <Message>로딩중...</Message>;
   if (error) console.warn(error);
 
-  
-
   return (
     <Container>
       <Background src={BackgroundImg} alt="배경 이미지" />
-      <Icon>
-        <Coupon src={CouponIcon} alt="쿠폰 아이콘" />
-      </Icon>
+
       <Wrapper>
         {userData && (
           <>
             <CandyCount candy={userData.candy} />
             <Profile user={userData} />
-            <TodayMission/>
+            <TodayMission />
           </>
         )}
       </Wrapper>
-      <TabBar icons={{ home: PurpleHomeIcon }} backgroundColor="rgba(255, 255, 255, 0.9)" />
+      <TabBar
+        icons={{ home: PurpleHomeIcon }}
+        backgroundColor="rgba(255, 255, 255, 0.9)"
+      />
     </Container>
   );
 };
@@ -81,38 +79,14 @@ const Container = styled.div`
 
 const Background = styled.img`
   position: absolute;
-  bottom: 0;             // 아래쪽 기준
-  right: 0;              // 오른쪽 기준
-  width: 100%;           // 확대
-  height: 100%;          // 확대
+  bottom: 0; // 아래쪽 기준
+  right: 0; // 오른쪽 기준
+  width: 100%; // 확대
+  height: 100%; // 확대
   object-fit: cover;
   z-index: 0;
   object-position: right bottom; // 오른쪽 밑 모서리 기준
 `;
-
-
-
-const Icon = styled.div`
-  position: absolute;
-  top: 54%;
-  left: 18%;
-  transform: translate(-50%, -50%);
-  width: 7rem;
-  height: 7rem;
-  max-width: 150px;  
-  z-index: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-`;
-
-const Coupon = styled.img`
-  height: 7rem;
-  width: 6rem;
-`;
-
 
 const Wrapper = styled.div`
   display: flex;
