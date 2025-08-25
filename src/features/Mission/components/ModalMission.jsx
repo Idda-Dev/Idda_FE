@@ -17,6 +17,7 @@ const ModalMission = ({
           style={{
             justifyContent: "space-between",
             alignItems: "start",
+            marginBottom: "15px",
           }}
         >
           <div style={{ width: "25px" }} />
@@ -25,7 +26,7 @@ const ModalMission = ({
             src={CancleIcon}
             alt="back"
             onClick={onClose}
-            style={{ cursor: "pointer", width: "9%" }}
+            style={{ cursor: "pointer", width: "7%" }}
           />
         </Row>
         <hr
@@ -74,7 +75,7 @@ const ModalContent = styled.div`
 
 const ModalTitle = styled.div`
   text-align: left;
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 700;
   line-height: 20px;
@@ -91,6 +92,7 @@ const ModalTextarea = styled.textarea`
   font-size: 12px;
   outline: none;
   background: #d1cdff;
+  color: black;
 `;
 
 const SubmitButton = styled.div`
