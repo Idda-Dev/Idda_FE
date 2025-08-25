@@ -7,7 +7,9 @@ const Header = ({ title, backPath, backgroundColor, color, backIcon }) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    if (backPath !== undefined) {
+    if (typeof backPath === "function") {
+      backPath(); // 함수이면 실행
+    } else if (backPath !== undefined) {
       const path = backPath === "-1" ? -1 : backPath;
       navigate(path);
     } else {

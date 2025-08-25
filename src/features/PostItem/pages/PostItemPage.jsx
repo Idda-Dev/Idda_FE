@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Profile from "../components/Profile";
@@ -19,6 +19,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const PostItemPage = () => {
   const { postId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const memberId = location.state?.memberId;
   const numericPostId = Number(postId);
 
@@ -28,7 +29,7 @@ const PostItemPage = () => {
   const [userInfo, setUserInfo] = useState(fallbackUser);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
-  //유저 정보 조회
+  // 유저 정보 조회
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -122,7 +123,18 @@ const PostItemPage = () => {
 
   return (
     <Container>
-      <Header title="다같이 한걸음" backPath={"-1"} />
+      <Header
+        title="다같이 한걸음"
+        backPath={() => {
+          // 커뮤니티에서 왔으면 커뮤니티 페이지로, 아니면 -1
+          if (location.state?.fromCommunity) {
+            navigate(`/community?location=${post.location}`);
+          } else {
+            navigate(-1);
+          }
+        }}
+      />
+
       <FixedArea>
         <Profile
           nickname={post.nickname}
@@ -140,6 +152,7 @@ const PostItemPage = () => {
           postId={numericPostId}
         />
       </FixedArea>
+
       <ScrollArea>
         <CommentList
           comments={comments}
@@ -158,7 +171,7 @@ const PostItemPage = () => {
           userNickname={userInfo.nickname}
           userProfileImageUrl={userInfo.profileImageUrl}
           onCommentAdded={handleCommentAdded}
-          refreshComments={fetchComments} // ✅ 추가
+          refreshComments={fetchComments}
         />
       </CommentInputWrapper>
     </Container>
@@ -167,6 +180,7 @@ const PostItemPage = () => {
 
 export default PostItemPage;
 
+// Styled Components
 const Container = styled.div`
   position: relative;
   width: 100%;

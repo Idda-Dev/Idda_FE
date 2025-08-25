@@ -7,8 +7,12 @@ import { userinfo } from "../mocks/userinfo";
 import TabBar from "../components/TabBar";
 import PurpleCommunityIcon from "../assets/PurpleCommunityIcon.png"
 
+import { useSearchParams } from "react-router-dom";
+
 const CommunityPage = () => {
-  const [location, setLocation] = useState(userinfo.location);
+  const [searchParams] = useSearchParams();
+  const initialLocation = searchParams.get("location") || userinfo.location; 
+  const [location, setLocation] = useState(initialLocation);
 
   return (
     <Container>
@@ -16,13 +20,10 @@ const CommunityPage = () => {
       <Wrapper>
         <Location location={location} setLocation={setLocation} />
         <PostListWrapper>
-          {/* location 상태를 PostList 컴포넌트에 props로 전달 */}
           <PostList location={location} />
         </PostListWrapper>
       </Wrapper>
-      <TabBar
-      icons={{ community: PurpleCommunityIcon }} 
-      />
+      <TabBar icons={{ community: PurpleCommunityIcon }} />
     </Container>
   );
 };
