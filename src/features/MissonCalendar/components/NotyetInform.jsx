@@ -3,11 +3,8 @@ import Star2 from "../assets/Star2.png";
 import LoadingIcon from "../assets/LoadingIcon.png";
 import { Column, Row } from "../../../components/CommonComponents";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 const NotyetInform = () => {
-  const nav = useNavigate();
-
   // KST 기준 오늘 날짜를 "YYYY.M.D (요일)"로 반환
   const todayStr = useMemo(() => {
     const now = new Date();
@@ -22,9 +19,6 @@ const NotyetInform = () => {
     return `${y}.${m}.${d} (${weekdayKor})`;
   }, []);
 
-  const handlerMoveMissionPage = () => {
-    nav("/mission");
-  };
   return (
     <div>
       <Wrapper>
@@ -34,13 +28,10 @@ const NotyetInform = () => {
         </Row>
         <LightPurpleBox>
           <Column style={{ gap: "10px", alignItems: "center" }}>
-            아직 미션 인증을 하지 않았어요.
+            아직 미션이 인증되지 않았어요.
             <img src={LoadingIcon} alt="로딩중" style={{ width: "15%" }} />
           </Column>
         </LightPurpleBox>
-        <GotoMissionButton onClick={handlerMoveMissionPage}>
-          미션 인증하러 가기
-        </GotoMissionButton>
       </Wrapper>
     </div>
   );
@@ -66,7 +57,7 @@ const LightPurpleBox = styled.div`
   display: flex;
   width: 100%;
   height: 142px;
-  padding: 50px 40px;
+  padding: 50px 45px;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
@@ -74,23 +65,6 @@ const LightPurpleBox = styled.div`
   background: #eceaff;
   color: #444;
   text-align: center;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 500;
-`;
-
-const GotoMissionButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 288px;
-  height: 35px;
-  border-radius: 16px;
-  background: #2f0047;
-  box-shadow: 6px 4px 20px 0 rgba(0, 0, 0, 0.09);
-  color: #fff;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 500;
-  padding: 8px 70px;
-  cursor: pointer;
 `;
