@@ -19,7 +19,10 @@ const MissionPage = () => {
   const [finalText, setFinalText] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("공개 여부");
-  const [missionData, setMissionData] = useState({ content: "", missionComment: "" });
+  const [missionData, setMissionData] = useState({
+    content: "",
+    missionComment: "",
+  });
   const [alreadyVerified, setAlreadyVerified] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
@@ -28,15 +31,25 @@ const MissionPage = () => {
   const user_id = 1;
   const isFormValid = imagePreview && finalText && selected !== "공개 여부";
 
+  const getYMDInKST = (date = new Date()) => {
+    const fmt = new Intl.DateTimeFormat("sv-SE", {
+      timeZone: "Asia/Seoul",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    return fmt.format(date); // "YYYY-MM-DD"
+  };
+
   useEffect(() => {
     const fetchMissionData = async () => {
       try {
-        const now = new Date();
-        const kstDate = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-        const formattedDate = kstDate.toISOString().split("T")[0];
+        const formattedDate = getYMDInKST();
 
         const response = await axios.get(
-          `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(formattedDate)}`
+          `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(
+            formattedDate
+          )}`
         );
 
         setMissionData({
@@ -54,7 +67,9 @@ const MissionPage = () => {
   const handleRefreshMission = async () => {
     try {
       setIsRefreshing(true);
-      const res = await axios.put(`${BASE_URL}/api/users/${user_id}/missions/refresh`);
+      const res = await axios.put(
+        `${BASE_URL}/api/users/${user_id}/missions/refresh`
+      );
       setMissionData({
         content: res.data.content,
         missionComment: res.data.missionComment,
@@ -104,9 +119,12 @@ const MissionPage = () => {
       formData.append("public", selected === "공개" ? "true" : "false");
       formData.append("file", imageFile);
 
-      const date = new Date().toISOString().split("T")[0];
+      // ✅ KST 기준 날짜 사용
+      const date = getYMDInKST();
       const missionIdResponse = await axios.get(
-        `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(date)}`
+        `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(
+          date
+        )}`
       );
       const missionId = missionIdResponse.data.missionId;
       const postUrl = `${BASE_URL}/api/users/${user_id}/missions/${missionId}`;
@@ -115,14 +133,10 @@ const MissionPage = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
+      // 여기서 로컬 상태를 건드려 alreadyVerified를 바꾸지 않음
+      // 소프트 리프레시(재조회)
       alert("등록 완료!");
-      setInputText("");
-      setFinalText("");
-      setImagePreview(null);
-      setImageFile(null);
-      setSelected("공개 여부");
-      setAlreadyVerified(true);
-      setRefreshTrigger(prev => !prev);
+      setRefreshTrigger((prev) => !prev);
     } catch (error) {
       console.error(error);
       alert("등록 실패");

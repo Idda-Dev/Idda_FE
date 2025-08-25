@@ -54,16 +54,21 @@ const MissonCalendarPage = () => {
   const BASE_URL = import.meta.env.VITE_API_BASE_URL; // VITE_API_BASE_URL 불러오기
   const user_id = 1; // user_id 1로 고정
 
-  // 유틸: 어떤 입력이 오든 KST 기준 YYYY-MM-DD 문자열로 변환
-  const toYMD_KST = (input) => {
-    // 이미 'YYYY-MM-DD'면 그대로 사용 (타임존 영향 없음)
-    if (/^\d{4}-\d{2}-\d{2}$/.test(input)) return input;
+  const getYMDInKST = (date = new Date()) => {
+    const fmt = new Intl.DateTimeFormat("sv-SE", {
+      timeZone: "Asia/Seoul",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    return fmt.format(date);
+  };
 
-    const d = new Date(input); // ISO 등은 여기서 로컬(KST)로 읽힘
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${y}-${m}-${day}`;
+  // 기존 toYMD_KST 대신 아래처럼 사용
+  const toYMD_KST = (input) => {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(input)) return input;
+    const d = input instanceof Date ? input : new Date(input);
+    return getYMDInKST(d); // ✅ 항상 Asia/Seoul 기준
   };
 
   // 1. 미션 달성일 나비 아이콘 렌더링
