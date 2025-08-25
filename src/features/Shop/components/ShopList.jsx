@@ -32,7 +32,7 @@ const ShopList = () => {
     fetchItems();
   }, []);
 
-  if (loading) return <div>로딩중...</div>;
+  if (loading) return <div></div>;
   if (!items.length) return <div>쿠폰이 없습니다.</div>;
 
   return (

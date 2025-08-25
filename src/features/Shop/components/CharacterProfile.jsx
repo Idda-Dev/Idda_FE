@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import axios from "axios";
 import Candy from "../assets/Candy.png";
-import ProfileImg from "../assets/ProfileImg.png"
+import ProfileImg from "../assets/ProfileImg.png";
 import { userinfo } from "../../../mocks/userinfo";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -39,7 +39,7 @@ const CharacterProfile = () => {
     };
 
     fetchUserInfo();
-  }, [userId]); 
+  }, [userId]);
 
   if (loading) return <div>로딩중...</div>;
   if (!userInfo) return <div>사용자 정보를 불러올 수 없습니다.</div>;
@@ -56,14 +56,14 @@ const CharacterProfile = () => {
       </Content>
     </Container>
   );
-}
+};
 
 export default CharacterProfile;
 
 const Container = styled.div`
   height: 27%;
   width: 100%;
-  background: linear-gradient(to bottom, #2F0047, #624273);
+  background: linear-gradient(to bottom, #2f0047, #624273);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -93,7 +93,6 @@ const Content = styled.div`
   right: 0.5rem;
 `;
 
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -101,7 +100,7 @@ const Wrapper = styled.div`
   width: 5.5rem;
   height: 1.5rem;
   background-color: white;
-  align-items: center; 
+  align-items: center;
   border-radius: 16px;
   padding-right: 0.6rem;
 `;
@@ -125,8 +124,8 @@ const Button = styled.button`
   font-size: 0.6rem;
   font-weight: 550;
   cursor: pointer;
-  width: 5.5rem; 
-  height: 1.5rem; 
+  width: 5.5rem;
+  height: 1.5rem;
   text-align: center;
   display: flex;
   justify-content: center;
