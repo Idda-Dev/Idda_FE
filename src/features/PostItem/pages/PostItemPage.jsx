@@ -122,50 +122,52 @@ const PostItemPage = () => {
 
   return (
     <Container>
-      <Header
+  <Header
   title="다같이 한걸음"
   backPath={`/community?location=${post.location}`}
 />
 
-      <FixedArea>
-        <Profile
-          nickname={post.nickname}
-          profileImageUrl={post.profileImageUrl}
-          time={post.createdAt}
-        />
-        <Post
-          title={post.title}
-          content={post.content}
-          photoUrl={post.photoUrl}
-        />
-        <Liked
-          heartCount={post.heartCount}
-          commentCount={comments.length}
-          postId={numericPostId}
-        />
-      </FixedArea>
-      <ScrollArea>
-        <CommentList
-          comments={comments}
-          userId={userInfo.memberId}
-          onCommentChange={(updatedOrDeleted, type) => {
-            if (type === "update") handleCommentUpdated(updatedOrDeleted);
-            if (type === "delete") handleCommentDeleted(updatedOrDeleted);
-          }}
-        />
-      </ScrollArea>
 
-      <CommentInputWrapper $isKeyboardOpen={isKeyboardOpen}>
-        <CommentInput
-          postId={numericPostId}
-          userId={userInfo.memberId}
-          userNickname={userInfo.nickname}
-          userProfileImageUrl={userInfo.profileImageUrl}
-          onCommentAdded={handleCommentAdded}
-          refreshComments={fetchComments} // ✅ 추가
-        />
-      </CommentInputWrapper>
-    </Container>
+  <FixedArea>
+    <Profile
+      nickname={post.nickname}
+      profileImageUrl={post.profileImageUrl}
+      time={post.createdAt}
+    />
+    <Post
+      title={post.title}
+      content={post.content}
+      photoUrl={post.photoUrl}
+    />
+    <Liked
+      heartCount={post.heartCount}
+      commentCount={comments.length}
+      postId={numericPostId}
+    />
+  </FixedArea>
+  <ScrollArea>
+    <CommentList
+      comments={comments}
+      userId={userInfo.memberId}
+      onCommentChange={(updatedOrDeleted, type) => {
+        if (type === "update") handleCommentUpdated(updatedOrDeleted);
+        if (type === "delete") handleCommentDeleted(updatedOrDeleted);
+      }}
+    />
+  </ScrollArea>
+
+  <CommentInputWrapper $isKeyboardOpen={isKeyboardOpen}>
+    <CommentInput
+      postId={numericPostId}
+      userId={userInfo.memberId}
+      userNickname={userInfo.nickname}
+      userProfileImageUrl={userInfo.profileImageUrl}
+      onCommentAdded={handleCommentAdded}
+      refreshComments={fetchComments}
+    />
+  </CommentInputWrapper>
+</Container>
+
   );
 };
 
