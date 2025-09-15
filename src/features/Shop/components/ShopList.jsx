@@ -26,6 +26,7 @@ const ShopList = () => {
         setItems(coupons); // Fallback to mock data
       } finally {
         setLoading(false); // 로딩 상태를 최종적으로 false로 설정
+        console.log("테스트");
       }
     };
 
