@@ -7,6 +7,8 @@ import CommunityPage from "./pages/CommunityPage";
 import ShopPage from "./pages/ShopPage";
 import PostItemPage from "./features/PostItem/pages/PostItemPage";
 import MyCouponsPage from "./features/MyCoupons/pages/MyCouponsPage";
+import FirstPage from "./features/ServiceInfo/pages/FirstPage";
+import SecondPage from "./features/ServiceInfo/pages/SecondPage";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,8 @@ const router = createBrowserRouter([
       { path: "/shop", element: <ShopPage /> },
       { path: "/coupon", element: <MyCouponsPage /> },
       { path: "/mission/calendar", element: <MissionCalendarPage /> },
+      { path: "/serviceInfo/serviceInfo1", element: <FirstPage /> },
+      { path: "/serviceInfo/serviceInfo2", element: <SecondPage/> },
     ],
   },
 ]);
