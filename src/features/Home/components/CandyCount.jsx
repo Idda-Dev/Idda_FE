@@ -44,12 +44,13 @@ const Count=styled.p`
     color: #2F0047;
     border-radius: 36px;
     margin: 0;
-    padding: 0.1rem 0.5rem; 
+    width: 3.5rem;
+    padding: 0.1rem 0.3rem; 
     text-align: center;
     font-size: 0.8rem;
     font-weight: 550;
     display: inline-block;
-    max-width: 25%; /* 부모 Container 안에서 최대 폭 */
+    max-width: 35%; /* 부모 Container 안에서 최대 폭 */
     white-space: nowrap;
     overflow-x: auto;
     /* 스크롤바 숨기기 */
