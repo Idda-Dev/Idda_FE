@@ -106,14 +106,14 @@ const Wrapper = styled.div`
 `;
 
 const Icon = styled.img`
-  height: 1.4rem;
+  height: 1.3rem;
   right: 1rem;
   width: auto;
 `;
 
 const MyCandy = styled.p`
   font-size: 0.65rem;
-  font-weight: 550;
+  font-weight: 500;
   color: black;
 `;
 
