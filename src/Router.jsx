@@ -11,6 +11,7 @@ import FirstPage from "./features/ServiceInfo/pages/FirstPage";
 import SecondPage from "./features/ServiceInfo/pages/SecondPage";
 import LoginPage from "./pages/LoginPage";
 import TestPage from "./features/TestPage/pages/TestPage";
+import TypePage from "./features/Type/pages/TypePage";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       { path: "/serviceInfo1/serviceInfo2", element: <SecondPage/> },
       { path: "/login", element: <LoginPage/> },
       { path: "/test", element: <TestPage/> },
+      { path: "/typeInfo", element: <TypePage/> },
     ],
   },
 ]);
