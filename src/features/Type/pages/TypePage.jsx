@@ -23,7 +23,7 @@ const Container=styled.div`
     background-color: #ECEAFF;
     width: 100%;
     height: 100%;
-    padding-bottom: 3rem;
+    padding-bottom: 5rem;
     padding-top: 7rem;
     display: flex;
     flex-direction: column;
