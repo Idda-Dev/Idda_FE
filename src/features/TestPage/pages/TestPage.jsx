@@ -1,9 +1,41 @@
 import React from 'react'
+import styled from 'styled-components'
+import Title from '../components/Title'
+import FirstPageTitle from '../components/FirstPageTitle'
+import List from '../components/List'
+import Content from '../components/Content'
+import LastPageContent from "../components/LastPageContent"
 
 const TestPage = () => {
   return (
-    <div>TestPage</div>
+    <Container>
+        <Wrapper>
+            <FirstPageTitle/>
+            <List/>
+        </Wrapper>
+        <Content/>
+    </Container>
   )
 }
 
-export default TestPage
+export default TestPage;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;  // 화면 전체 높이
+  width: 100%;
+  padding-top: 10rem;
+  padding-bottom: 3rem;
+  gap: 2rem;
+  background-color: #ECEAFF;
+`
+const Wrapper=styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+`
