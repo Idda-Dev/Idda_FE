@@ -1,14 +1,21 @@
 import React from 'react'
 import styled from 'styled-components';
+import { useNavigate } from "react-router-dom"; 
 import LoginBg from "../assets/LoginBg.png"
 import StartButtonImg from "../assets/StartButton.png"
 
 const LoginPage = () => {
+    
+  const navigate = useNavigate();   
+  const handleStart = () => {
+    navigate("/test");   
+  };
+
   return (
     <Container>
       <Content>
         <Input placeholder="닉네임을 입력하세요" />
-        <StartButton>
+        <StartButton onClick={handleStart}>
           <img src={StartButtonImg} alt="start-button" />
         </StartButton>
       </Content>
@@ -33,7 +40,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem; /* 인풋과 버튼 사이 간격 */
+  gap: 2rem; 
   width: 80%;
   max-width: 300px;
 `
