@@ -196,7 +196,7 @@ const MissionPage = () => {
           onClose={() => setShowComplete(false)}
           onGoBoard={() => {
             setShowComplete(false);
-            navigate("/board"); // 실제 라우트에 맞게 변경
+            navigate("/community"); // 실제 라우트에 맞게 변경
           }}
           onGoShop={() => {
             setShowComplete(false);
