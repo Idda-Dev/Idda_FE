@@ -10,8 +10,8 @@ const TestPage = () => {
   return (
     <Container>
         <Wrapper>
-            <FirstPageTitle/>
-            <List/>
+            <FirstPageTitle questionIndex={0}/>
+            <List questionIndex={0}/>
         </Wrapper>
         <Content/>
     </Container>
@@ -27,9 +27,8 @@ const Container = styled.div`
   align-items: center;
   height: 100%;  
   width: 100%;
-  padding-top: 7rem;
+  padding-top: 9rem;
   padding-bottom: 5rem;
-  gap: 2rem;
   background-color: #ECEAFF;
 `
 const Wrapper=styled.div`
@@ -37,5 +36,5 @@ const Wrapper=styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
 `
