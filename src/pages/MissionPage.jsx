@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import MissionCompleteModal from "../features/Mission/components/MissionCompleteModal";
 
 import PurpleMissonIcon from "../assets/PurpleMissionIcon.png";
 
@@ -26,10 +28,13 @@ const MissionPage = () => {
   const [alreadyVerified, setAlreadyVerified] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const [showComplete, setShowComplete] = useState(false); // ✅ 완료 모달 상태
 
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const user_id = 1;
   const isFormValid = imagePreview && finalText && selected !== "공개 여부";
+
+  const navigate = useNavigate();
 
   const getYMDInKST = (date = new Date()) => {
     const fmt = new Intl.DateTimeFormat("sv-SE", {
@@ -133,10 +138,9 @@ const MissionPage = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      // 여기서 로컬 상태를 건드려 alreadyVerified를 바꾸지 않음
-      // 소프트 리프레시(재조회)
-      alert("등록 완료!");
-      setRefreshTrigger((prev) => !prev);
+      // ✅ 완료 모달 먼저 띄우고, 살짝 뒤에 새 데이터 조회
+      setShowComplete(true);
+      setTimeout(() => setRefreshTrigger((prev) => !prev), 300);
     } catch (error) {
       console.error(error);
       alert("등록 실패");
@@ -185,6 +189,21 @@ const MissionPage = () => {
       <TabBarWrapper>
         <TabBar icons={{ mission: PurpleMissonIcon }} />
       </TabBarWrapper>
+
+      {/* ✅ 완료 모달 */}
+      {showComplete && (
+        <MissionCompleteModal
+          onClose={() => setShowComplete(false)}
+          onGoBoard={() => {
+            setShowComplete(false);
+            navigate("/community"); // 실제 라우트에 맞게 변경
+          }}
+          onGoShop={() => {
+            setShowComplete(false);
+            navigate("/shop"); // 실제 라우트에 맞게 변경
+          }}
+        />
+      )}
     </Container>
   );
 };
