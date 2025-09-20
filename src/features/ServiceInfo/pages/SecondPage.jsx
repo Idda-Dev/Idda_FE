@@ -44,9 +44,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
-  padding-top: 3rem;
-  padding-bottom: 6rem;
+  justify-content: space-between;
+  padding-top: 6rem;
+  padding-bottom: 7rem;
   padding-left: 2rem;
   padding-right: 2rem;
 `

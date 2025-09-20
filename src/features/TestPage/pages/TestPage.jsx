@@ -25,10 +25,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 100%;  // 화면 전체 높이
+  height: 100%;  
   width: 100%;
-  padding-top: 10rem;
-  padding-bottom: 3rem;
+  padding-top: 7rem;
+  padding-bottom: 5rem;
   gap: 2rem;
   background-color: #ECEAFF;
 `
