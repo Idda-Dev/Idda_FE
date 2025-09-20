@@ -80,7 +80,7 @@ const MissionPage = () => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/api/users/${user_id}`);
-        setUserName(res.data.username); // ✅ API에서 이름 필드
+        setUserName(res.data.nickname); // ✅ 실제 응답 필드명
       } catch (e) {
         console.error(e);
       }

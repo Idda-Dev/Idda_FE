@@ -13,6 +13,7 @@ const FontStyle = createGlobalStyle`
     font-style: normal;
   }
 `;
+
 // 캐릭터 이미지가 있다면 prop으로 넘겨서 쓰세요.
 const LevelUpModal = ({
   level,
@@ -21,6 +22,16 @@ const LevelUpModal = ({
   onClose,
   characterImg,
 }) => {
+  // ✅ 레벨별 맞춤 멘트 정의
+  const levelMentMap = {
+    두뭉치: "두뭉치는 집안에서 할 수 있는 미션부터 시작해요.",
+    세뭉치: "세뭉치는 작은 외출 미션부터 시작해요.",
+    네뭉치: "네뭉치는 타인과 상호작용하는 미션부터 시작해요.",
+    다섯뭉치: `이제 모든 뭉치의 미션을 받아볼 수 있어요.\n여기까지 오느라 정말 수고했어요. ${userName}님의 여정을 늘 응원해요!`,
+  };
+
+  // ✅ levelName에 해당하는 메시지 선택
+  const desc2Text = levelMentMap[levelName] || "";
   return (
     <Overlay>
       <FontStyle /> {/* ✅ 폰트 적용 */}
@@ -42,7 +53,7 @@ const LevelUpModal = ({
           <Star src={Star2} />
           <Title>{userName}님이 해냈어요!</Title>
           <Desc>이제 새로운 도전이 기다리고 있어요.</Desc>
-          <Desc2>{levelName}는 집안에서 할 수 있는 미션부터 시작해요.</Desc2>
+          <Desc2>{desc2Text}</Desc2>
           <PrimaryBtn onClick={onClose}>한 걸음 더 나아가기</PrimaryBtn>
         </Card>
       </Column>
