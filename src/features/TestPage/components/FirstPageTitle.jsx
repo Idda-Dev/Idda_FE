@@ -26,7 +26,7 @@ const Background = styled.img`
 
 const Title = styled.p`
   position: absolute;
-  top: 13%;    
+  top: 3%;    
   left: 54%;   
   transform: translate(-50%, -50%); 
   color: #2F0047;
