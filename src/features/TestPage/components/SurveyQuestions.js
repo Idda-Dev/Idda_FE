@@ -21,7 +21,7 @@ export const survey = [
         "전혀 그렇지 않다"
     ]},
     {
-    question: "나는 사랑과 보호를 받지 못한다고 느낀다.",
+    question: "가족, 친척 외에 교류하는 사람이 없다.",
     options: [
         "그렇다", 
         "조금 그렇다", 

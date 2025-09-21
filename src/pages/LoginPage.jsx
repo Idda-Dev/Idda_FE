@@ -1,27 +1,68 @@
-import React from 'react'
-import styled from 'styled-components';
-import { useNavigate } from "react-router-dom"; 
-import LoginBg from "../assets/LoginBg.png"
-import StartButtonImg from "../assets/StartButton.png"
+import React, { useState } from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+import LoginBg from "../assets/LoginBg.png";
+import StartButtonImg from "../assets/StartButton.png";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const LoginPage = () => {
-    
-  const navigate = useNavigate();   
-  const handleStart = () => {
-    navigate("/test");   
+  const navigate = useNavigate();
+  const [nickname, setNickname] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleStart = async () => {
+    if (!nickname.trim()) return; // 닉네임이 비어있으면 동작 X
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      // 새 유저 생성
+      const res = await axios.post(`${BASE_URL}/api/users/register`, {
+        nickname,
+      });
+
+      const userData = res.data;
+      const userId = userData.memberId;
+
+      if (userData.newMember) {
+        // 새 유저 → test 페이지
+        navigate("/test", { state: { user: userData, userId } });
+      } else {
+        // 기존 유저 → main 페이지
+        navigate("/main", { state: { user: userData, userId } });
+      }
+    } catch (err) {
+      console.error("API 호출 실패:", err);
+      setError("로그인에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Container>
       <Content>
-        <Input placeholder="닉네임을 입력하세요" />
-        <StartButton onClick={handleStart}>
+        <Input
+          placeholder="닉네임을 입력하세요"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+        />
+        <StartButton
+          onClick={handleStart}
+          disabled={!nickname.trim() || loading}
+        >
           <img src={StartButtonImg} alt="start-button" />
         </StartButton>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
       </Content>
     </Container>
-  )
-}
+  );
+};
 
 export default LoginPage;
 
@@ -32,18 +73,18 @@ const Container = styled.div`
   background-size: cover;
   display: flex;
   justify-content: center;
-  align-items: flex-end;  
-  padding-bottom: 10%;   
-`
+  align-items: flex-end;
+  padding-bottom: 10%;
+`;
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem; 
+  gap: 2rem;
   width: 80%;
   max-width: 300px;
-`
+`;
 
 const Input = styled.input`
   width: 50%;
@@ -53,12 +94,12 @@ const Input = styled.input`
   border: none;
   border-radius: 36px;
   outline: none;
-  background-color: #B1AAFF;
+  background-color: #b1aaff;
 
   &::placeholder {
     color: white;
   }
-`
+`;
 
 const StartButton = styled.button`
   background: none;
@@ -70,15 +111,20 @@ const StartButton = styled.button`
     width: 55%;
     height: auto;
     transition: transform 0.1s ease-in-out;
-  }
-
-&:focus {
-    outline: none;
+    opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
   }
 
   &:active img {
-    transform: scale(0.95); /* 눌렸을 때 살짝 작아짐 */
+    transform: ${({ disabled }) => (disabled ? "none" : "scale(0.95)")};
   }
-`
 
+  &:focus {
+    outline: none;
+  }
+`;
 
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.75rem;
+  margin-top: -1rem;
+`;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 import { userinfo } from "../mocks/userinfo";
 import TabBar from "../components/TabBar";
 import PurpleHomeIcon from "../assets/PurpleHomeIcon.png";
@@ -12,6 +13,9 @@ import TodayMission from "../features/Home/components/TodayMission";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const MainPage = () => {
+  const location = useLocation();
+  const { userId } = location.state || {}; // 🔥 로그인에서 전달된 userId
+
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,7 +29,8 @@ const MainPage = () => {
           console.warn("⚠️ BASE_URL이 설정되지 않았습니다. → 목데이터 사용");
           setUserData(userinfo);
         } else {
-          const res = await axios.get(`${BASE_URL}/api/users/1`);
+          if (!userId) throw new Error("userId가 전달되지 않았습니다.");
+          const res = await axios.get(`${BASE_URL}/api/users/${userId}`); // 🔥 userId 사용
           setUserData(res.data);
         }
       } catch (err) {
@@ -38,7 +43,7 @@ const MainPage = () => {
     };
 
     fetchUser();
-  }, []);
+  }, [userId]);
 
   if (loading) return <Message>로딩중...</Message>;
   if (error) console.warn(error);
@@ -79,13 +84,13 @@ const Container = styled.div`
 
 const Background = styled.img`
   position: absolute;
-  bottom: 0; // 아래쪽 기준
-  right: 0; // 오른쪽 기준
-  width: 100%; // 확대
-  height: 100%; // 확대
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   z-index: 0;
-  object-position: right bottom; // 오른쪽 밑 모서리 기준
+  object-position: right bottom;
 `;
 
 const Wrapper = styled.div`

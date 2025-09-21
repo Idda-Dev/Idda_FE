@@ -1,14 +1,20 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
-import StarIcon from "../assets/Star.png"
+import { useLocation, useNavigate } from 'react-router-dom';
+import StarIcon from "../assets/Star.png";
 
 const FirstPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { nickname, level } = location.state || {};
+
   return (
-    <Container>
+    <Container onClick={() => navigate("/serviceInfo1/serviceInfo2", { state: { nickname, level } })}>
         <Star src={StarIcon} alt="Star" />
         <TextWrapper>
             <Text1>성공한 미션들이 쌓이면 다음 뭉치가 될 수 있어요.</Text1>
             <Text2>한뭉치 - 두뭉치 - 세뭉치 - 네뭉치</Text2>
+            <Text3>✨ {nickname} 님의 현재 레벨은 {level} 입니다 ✨</Text3>
         </TextWrapper>
         <Wrapper>
             <Box>한뭉치는 방안에서 할 수 있는 미션부터 시작해요</Box>
@@ -23,7 +29,7 @@ const FirstPage = () => {
                 이불 밖으로 나가보아요 :
             </Text3>
         </TextWrapper>
-    </Container> 
+    </Container>
   )
 }
 
@@ -38,8 +44,8 @@ const Container = styled.div`
     justify-content: space-between;
     padding-top: 6rem;
     padding-bottom: 5rem;
-
     background-color: #ECEAFF;
+    cursor: pointer; 
 `
 
 const Star=styled.img`

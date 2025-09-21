@@ -1,19 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import CheckImg from '../assets/CheckIcon.png';      
 import CheckboxBgImg from '../assets/Checkbox.png'; 
 
-const ListItem = ({ content }) => {
-  const [checked, setChecked] = useState(false);
-
-  const handleClick = () => {
-    setChecked(!checked);
-  };
-
+const ListItem = ({ content, isSelected, onClick }) => {
   return (
     <Wrapper>
-      <Box onClick={handleClick}>
-        {checked && <Check src={CheckImg} alt="checked" />}
+      <Box onClick={onClick}>
+        {isSelected && <Check src={CheckImg} alt="checked" />}
       </Box>
       <Content>{content}</Content>
     </Wrapper>
@@ -40,7 +34,12 @@ const Box = styled.button`
   outline: none;
 
   &:focus {
-    outline: none;  
+    outline: none;
+  }
+
+  &:active {
+    outline: none;
+    border: none;
   }
 `;
 

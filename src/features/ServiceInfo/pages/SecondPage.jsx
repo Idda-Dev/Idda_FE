@@ -1,10 +1,14 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
-import BackgroundImg from "../assets/Background.png" 
-import TitleBgImg from "../assets/TitleBackground.png"       
-import TextBgImg from "../assets/TalkIcon.png"   // 🔥 Text2 뒤에 올 이미지
+import { useLocation } from 'react-router-dom';
+import BackgroundImg from "../assets/Background.png";
+import TitleBgImg from "../assets/TitleBackground.png";
+import TextBgImg from "../assets/TalkIcon.png";
 
 const SecondPage = () => {
+  const location = useLocation();
+  const { nickname, level } = location.state || {};
+
   return (
     <Container>
         <TitleWrapper>
@@ -27,6 +31,7 @@ const SecondPage = () => {
         </Content>
 
         <Box>
+          {nickname}님의 레벨: {level} <br />
           한걸음씩, 이불 밖도 따뜻한 세상으로<br />
           나갈 습관을 함께 만들어 봐요!
         </Box>
@@ -35,6 +40,7 @@ const SecondPage = () => {
 }
 
 export default SecondPage;
+
 
 const Container = styled.div`
   width: 100%;
@@ -82,33 +88,30 @@ const Text1 = styled.p`
   color: #2F0047;
 `
 
-/* 🔥 Text2용 Wrapper */
 const TextWrapper = styled.div`
   position: relative;
-  display: flex;         // flex로 이미지와 텍스트 정렬
-  align-items: center;   // 세로 중앙 맞춤
-  justify-content: flex-start; // 왼쪽 붙이기
-  width: 100%;           // 부모 폭 채우기
-  margin: 0;             // 위아래 여백 제거
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0;
 `
 
 const TextBackground = styled.img`
-  width: 13rem;   // 말풍선 이미지 크기
+  width: 13rem;
   height: auto;
 `
 
 const Text2 = styled.p`
   position: absolute;
   top: 50%;
-  
   transform: translateY(-50%);
   margin: 0;
   font-size: 0.8rem;
   color: #2F0047;
-  text-align: left;   // 왼쪽 정렬
+  text-align: left;
   width: 11rem;     
 `
-
 
 const Content = styled.p`
   margin: 0;
