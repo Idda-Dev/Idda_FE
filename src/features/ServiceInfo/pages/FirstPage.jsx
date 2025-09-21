@@ -8,12 +8,8 @@ const FirstPage = () => {
   const navigate = useNavigate();
   const { nickname, level } = location.state || {};
 
-  const handleClick = () => {
-    navigate("/serviceInfo1/serviceInfo2", { state: { nickname, level } });
-  }
-
   return (
-    <Container onClick={handleClick}>
+    <Container onClick={() => navigate("/serviceInfo1/serviceInfo2", { state: { nickname, level } })}>
         <Star src={StarIcon} alt="Star" />
         <TextWrapper>
             <Text1>성공한 미션들이 쌓이면 다음 뭉치가 될 수 있어요.</Text1>
@@ -49,7 +45,7 @@ const Container = styled.div`
     padding-top: 6rem;
     padding-bottom: 5rem;
     background-color: #ECEAFF;
-    cursor: pointer; /* 클릭 가능 표시 */
+    cursor: pointer; 
 `
 
 const Star=styled.img`

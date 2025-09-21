@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import BackgroundImg from "../assets/Background.png" 
-import TitleBgImg from "../assets/TitleBackground.png"       
-import TextBgImg from "../assets/TalkIcon.png"
+import BackgroundImg from "../assets/Background.png";
+import TitleBgImg from "../assets/TitleBackground.png";
+import TextBgImg from "../assets/TalkIcon.png";
 
 const SecondPage = () => {
   const location = useLocation();
@@ -40,6 +40,7 @@ const SecondPage = () => {
 }
 
 export default SecondPage;
+
 
 const Container = styled.div`
   width: 100%;
