@@ -5,7 +5,7 @@ import ProfileIcon from '../../PostItem/assets/ProfileIcon.png';
 import LikedIcon from "../../PostItem/assets/LikedIcon.png";
 import CommentIcon from "../../PostItem/assets/CommentIcon.png";
 
-const PostListItem = ({ post }) => {
+const PostListItem = ({ post, userId }) => {
   const navigate = useNavigate();
 
   const formatCount = (count) => (count > 999 ? "999+" : count);
@@ -15,7 +15,8 @@ const PostListItem = ({ post }) => {
     state: { 
       memberId: post.memberId,
       location: post.location,
-      fromCommunity: true // 커뮤니티에서 왔음을 표시
+      fromCommunity: true, // 커뮤니티에서 왔음을 표시
+      userId:userId
     } 
   });
 };

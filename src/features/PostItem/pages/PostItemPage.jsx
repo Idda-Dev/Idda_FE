@@ -10,57 +10,50 @@ import CommentList from "../components/CommentList";
 import CommentInput from "../components/CommentInput";
 import Header from "../../../components/Header";
 
-import { post as mockPost } from "../../../mocks/post";
-import { comments as mockComments } from "../../../mocks/comments";
-import { userinfo as fallbackUser } from "../../../mocks/userinfo";
-
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const PostItemPage = () => {
   const { postId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const memberId = location.state?.memberId;
+
+  // state에서 userId 받기
+  const { memberId, userId } = location.state || {};
   const numericPostId = Number(postId);
 
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
-  const [userInfo, setUserInfo] = useState(fallbackUser);
+  const [userInfo, setUserInfo] = useState(null);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   // 유저 정보 조회
   useEffect(() => {
     const fetchUserInfo = async () => {
+      if (!BASE_URL || !userId) return;
       try {
-        if (!BASE_URL) return;
-        const res = await axios.get(
-          `${BASE_URL}/api/users/${userInfo.memberId}`
-        );
+        const res = await axios.get(`${BASE_URL}/api/users/${userId}`);
         setUserInfo(res.data);
       } catch (err) {
-        console.warn("유저 정보 API 실패 → fallback 사용", err);
-        setUserInfo(fallbackUser);
+        console.error("유저 정보 API 실패", err);
+        setUserInfo(null);
       }
     };
     fetchUserInfo();
-  }, [userInfo.memberId]);
+  }, [userId]);
 
   // 게시글 조회
   useEffect(() => {
     const fetchPost = async () => {
+      if (!BASE_URL || !memberId) return;
       try {
-        if (!BASE_URL) {
-          setPost(mockPost);
-          return;
-        }
         const res = await axios.get(
           `${BASE_URL}/api/missions/users/${memberId}/posts/${numericPostId}`
         );
         setPost(res.data);
       } catch (err) {
-        console.warn("게시글 API 실패 → fallback 사용", err);
-        setPost(mockPost);
+        console.error("게시글 API 실패", err);
+        setPost(null);
       } finally {
         setLoading(false);
       }
@@ -70,18 +63,13 @@ const PostItemPage = () => {
 
   // 댓글 조회
   const fetchComments = useCallback(async () => {
+    if (!BASE_URL) return;
     try {
-      if (!BASE_URL) {
-        setComments(mockComments);
-        return;
-      }
-      const res = await axios.get(
-        `${BASE_URL}/api/posts/${numericPostId}/comments`
-      );
+      const res = await axios.get(`${BASE_URL}/api/posts/${numericPostId}/comments`);
       setComments(res.data);
     } catch (err) {
-      console.warn("댓글 API 실패 → fallback 사용", err);
-      setComments(mockComments);
+      console.error("댓글 API 실패", err);
+      setComments([]);
     }
   }, [numericPostId]);
 
@@ -107,9 +95,7 @@ const PostItemPage = () => {
   // 댓글 수정
   const handleCommentUpdated = (updatedComment) => {
     setComments((prev) =>
-      prev.map((c) =>
-        c.commentId === updatedComment.commentId ? updatedComment : c
-      )
+      prev.map((c) => (c.commentId === updatedComment.commentId ? updatedComment : c))
     );
   };
 
@@ -125,10 +111,10 @@ const PostItemPage = () => {
     <Container>
       <Header
         title="다같이 한걸음"
+        userId={userId}
         backPath={() => {
-          // 커뮤니티에서 왔으면 커뮤니티 페이지로, 아니면 -1
           if (location.state?.fromCommunity) {
-            navigate(`/community?location=${post.location}`);
+            navigate(`/community?location=${post.location}`, { state: { userId } });
           } else {
             navigate(-1);
           }
@@ -141,22 +127,14 @@ const PostItemPage = () => {
           profileImageUrl={post.profileImageUrl}
           time={post.createdAt}
         />
-        <Post
-          title={post.title}
-          content={post.content}
-          photoUrl={post.photoUrl}
-        />
-        <Liked
-          heartCount={post.heartCount}
-          commentCount={comments.length}
-          postId={numericPostId}
-        />
+        <Post title={post.title} content={post.content} photoUrl={post.photoUrl} />
+        <Liked heartCount={post.heartCount} commentCount={comments.length} postId={numericPostId} />
       </FixedArea>
 
       <ScrollArea>
         <CommentList
           comments={comments}
-          userId={userInfo.memberId}
+          userId={userId}
           onCommentChange={(updatedOrDeleted, type) => {
             if (type === "update") handleCommentUpdated(updatedOrDeleted);
             if (type === "delete") handleCommentDeleted(updatedOrDeleted);
@@ -167,9 +145,9 @@ const PostItemPage = () => {
       <CommentInputWrapper $isKeyboardOpen={isKeyboardOpen}>
         <CommentInput
           postId={numericPostId}
-          userId={userInfo.memberId}
-          userNickname={userInfo.nickname}
-          userProfileImageUrl={userInfo.profileImageUrl}
+          userId={userId}
+          userNickname={userInfo?.nickname || ""}
+          userProfileImageUrl={userInfo?.profileImageUrl || ""}
           onCommentAdded={handleCommentAdded}
           refreshComments={fetchComments}
         />
