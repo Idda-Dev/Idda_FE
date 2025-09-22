@@ -64,6 +64,7 @@ const MainPage = () => {
       <TabBar
         icons={{ home: PurpleHomeIcon }}
         backgroundColor="rgba(255, 255, 255, 0.9)"
+        userId={userId}
       />
     </Container>
   );

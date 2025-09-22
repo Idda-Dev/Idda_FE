@@ -30,7 +30,7 @@ const TypePage = () => {
     axios.post(`${BASE_URL}/api/users/${userId}/missions`, {
     })
     .then(res => {
-      console.log("✅ 미션 생성 완료:", res.data); // 성공 로그
+      console.log("✅ 미션 생성 요청 완료 ", res.data); // 성공 로그
     })
     .catch(err => {
       console.error("❌ 미션 생성 실패:", err); // 실패 로그
