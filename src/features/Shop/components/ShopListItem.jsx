@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Candy from "../assets/Candy.png";
 import ShopModal from '../components/ShopModal';
 
-const ShopListItem = ({ item }) => {
+const ShopListItem = ({ item, userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCountClick = () => {
@@ -28,6 +28,7 @@ const ShopListItem = ({ item }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         item={item}
+        userId={userId} // userId 전달
       />
     </>
   );
@@ -35,7 +36,6 @@ const ShopListItem = ({ item }) => {
 
 export default ShopListItem;
 
-// Styled Components
 const Container = styled.div`
   width: 100%;
   display: flex;

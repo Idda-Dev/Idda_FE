@@ -8,15 +8,13 @@ import { userinfo } from "../../../mocks/userinfo";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const CharacterProfile = () => {
+const CharacterProfile = ({ userId }) => { 
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const userId = 1;
-
   const goToCoupon = () => {
-    navigate("/coupon");
+    navigate("/coupon", { state: { userId } }); 
   };
 
   useEffect(() => {
@@ -27,6 +25,8 @@ const CharacterProfile = () => {
           setUserInfo(userinfo);
           return;
         }
+
+        if (!userId) throw new Error("userId가 전달되지 않았습니다.");
 
         const res = await axios.get(`${BASE_URL}/api/users/${userId}`);
         setUserInfo(res.data);
@@ -60,6 +60,7 @@ const CharacterProfile = () => {
 
 export default CharacterProfile;
 
+// Styled-components 그대로 유지
 const Container = styled.div`
   height: 27%;
   width: 100%;
@@ -67,8 +68,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end; /* 이미지가 아래로 나오도록 */
-  margin-bottom: 2rem; /* 프로필 이미지 아래로 튀어나오는 공간 확보 */
+  align-items: flex-end;
+  margin-bottom: 2rem;
   padding: 0 1rem;
   position: relative;
 `;
@@ -78,7 +79,7 @@ const Profile = styled.img`
   height: auto;
   border-radius: 50%;
   position: relative;
-  bottom: -2rem; /* 보라색 영역 아래로 튀어나오게 */
+  bottom: -2rem;
   z-index: 2;
 `;
 
@@ -89,7 +90,7 @@ const Content = styled.div`
   align-items: center;
   height: 4rem;
   position: relative;
-  top: -1.5rem; /* 위로 올라가도록 조정 */
+  top: -1.5rem;
   right: 0.5rem;
 `;
 

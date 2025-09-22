@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Coupon from './Coupon';
 
-const Coupons = ({ items, activeTab }) => {
+const Coupons = ({ items, activeTab, userId }) => {
   if (!items || items.length === 0) {
     return <div>쿠폰이 없습니다.</div>;
   }
@@ -10,7 +10,7 @@ const Coupons = ({ items, activeTab }) => {
   return (
     <Container>
       {items.map((item) => (
-        <Coupon key={item.memberCouponId} item={item} activeTab={activeTab} />
+        <Coupon key={item.memberCouponId} item={item} activeTab={activeTab} userId={userId} />
       ))}
     </Container>
   );
