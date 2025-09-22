@@ -2,11 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import QuestionIcon from "../assets/QuestionIcon.png";
 
-const LastPageContent = ({ onSubmit }) => {
+const LastPageContent = ({ onSubmit, disabled }) => {
   return (
     <Wrapper>
-      <Icon src={QuestionIcon} />
-      <Button onClick={onSubmit}>은둔 유형 확인하기</Button>
+      <Icon src={QuestionIcon} alt="question-icon" />
+      <Button onClick={onSubmit} disabled={disabled}>
+        은둔 유형 확인하기
+      </Button>
     </Wrapper>
   );
 };
@@ -25,17 +27,19 @@ const Icon = styled.img`
 `;
 
 const Button = styled.button`
-  background-color: #2f0047;
+  background-color: ${({ disabled }) => (disabled ? "#2f0047" : "#2f0047")};
   color: #fff;
   border: none;
   border-radius: 36px;
   padding: 0.6rem 1.5rem;
   font-size: 0.9rem;
   font-weight: 500;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
   outline: none;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
 
   &:active {
-    transform: scale(0.95);
+    transform: ${({ disabled }) => (disabled ? "none" : "scale(0.95)")};
   }
 `;
