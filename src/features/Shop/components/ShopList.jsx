@@ -6,7 +6,7 @@ import { coupons } from "../../../mocks/coupons";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const ShopList = () => {
+const ShopList = ({ userId }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,9 +23,9 @@ const ShopList = () => {
         setItems(res.data);
       } catch (err) {
         console.error("API 호출 실패:", err);
-        setItems(coupons); // Fallback to mock data
+        setItems(coupons);
       } finally {
-        setLoading(false); // 로딩 상태를 최종적으로 false로 설정
+        setLoading(false);
       }
     };
 
@@ -38,7 +38,7 @@ const ShopList = () => {
   return (
     <Container>
       {items.map((item) => (
-        <ShopListItem key={item.couponId} item={item} />
+        <ShopListItem key={item.couponId} item={item} userId={userId} />
       ))}
     </Container>
   );

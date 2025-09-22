@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 import Calendar from "../features/MissonCalendar/components/Calendar";
-import TabBar from "../components/TabBar.jsx";
-
 import CalendarModal from "../features/MissonCalendar/components/CalendarModal.jsx";
+import Record from "../features/MissonCalendar/components/Record.jsx";
+import NotyetInform from "../features/MissonCalendar/components/NotyetInform.jsx";
+import TabBar from "../components/TabBar.jsx";
 
 import PurpleMissionIcon from "../assets/PurpleMissionIcon.png";
 import PrevIcon from "../features/MissonCalendar/assets/PrevIcon.png";
 import NextIcon from "../features/MissonCalendar/assets/NextIcon.png";
 import CalendarBackIcon from "../features/MissonCalendar/assets/CalendarBackIcon.png";
 
-import Record from "../features/MissonCalendar/components/Record.jsx";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import NotyetInform from "../features/MissonCalendar/components/NotyetInform.jsx";
-
-// ui보려고 캘린더 크기조절되는거 걍 과거현재미래로 나눠둠 !
-
-// 파일 상단(컴포넌트 바깥)
+// 날짜 포맷 함수
 const getYMDInKST = (date = new Date()) => {
   const fmt = new Intl.DateTimeFormat("sv-SE", {
     timeZone: "Asia/Seoul",
@@ -36,16 +32,23 @@ const toYMD_KST = (input) => {
 };
 
 const MissonCalendarPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // location.state에서 userId 받기
+  const { userId } = location.state || {};
+
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDateType, setSelectedDateType] = useState(null);
-
-  const nav = useNavigate();
-
-  // ⬇️ 추가: 모달 오픈 상태 (미션 안 한 '과거' 날짜 클릭 시만 사용)
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [achievementDateSet, setAchievementDateSet] = useState(new Set());
+  const [recordData, setRecordData] = useState(null);
 
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+  // 뒤로가기
   const handleBackIcon = () => {
-    nav(-1);
+    navigate(-1, { state: { userId } });
   };
 
   const handlePrevMonth = () => {
@@ -64,19 +67,15 @@ const MissonCalendarPage = () => {
 
   const isPast = selectedDateType === "past";
   const isTodaySelected = selectedDateType === "today";
-  const showRecord = isPast || isTodaySelected; // 과거, 오늘 확인용
+  const showRecord = isPast || isTodaySelected;
 
-  // API
-  const [achievementDateSet, setAchievementDateSet] = useState(new Set());
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL; // VITE_API_BASE_URL 불러오기
-  const user_id = 1; // user_id 1로 고정
-
-  // 1. 미션 달성일 나비 아이콘 렌더링
+  // 1️⃣ 달성 기록 조회
   useEffect(() => {
+    if (!userId) return;
     const fetchAchievements = async () => {
       try {
         const res = await axios.get(
-          `${BASE_URL}/api/users/${user_id}/missions/achievements`,
+          `${BASE_URL}/api/users/${userId}/missions/achievements`,
           {
             params: {
               year: currentDate.getFullYear(),
@@ -84,11 +83,7 @@ const MissonCalendarPage = () => {
             },
           }
         );
-
-        // (예상) res.data = { dates: ["2025-08-18", "2025-08-20T12:34:56Z", ...] }
         const { dates } = res.data;
-
-        // 모두 KST기준 YYYY-MM-DD 문자열로 통일
         const normalized = dates.map(toYMD_KST);
         setAchievementDateSet(new Set(normalized));
       } catch (err) {
@@ -96,16 +91,12 @@ const MissonCalendarPage = () => {
         setAchievementDateSet(new Set());
       }
     };
-
     fetchAchievements();
-  }, [currentDate, BASE_URL]);
+  }, [currentDate, userId, BASE_URL]);
 
-  // 2. 달력에서 작성한 글 조회
-  const [recordData, setRecordData] = useState(null); // 기록 데이터 저장
-
+  // 2️⃣ 날짜 클릭 시 기록 조회
   const handleDateClick = async (day, type) => {
-    if (!day) return;
-    if (type === "future") return;
+    if (!day || type === "future") return;
 
     const dateObj = new Date(
       currentDate.getFullYear(),
@@ -114,7 +105,6 @@ const MissonCalendarPage = () => {
     );
     const dateStr = toYMD_KST(dateObj);
 
-    // 과거 + 미달성(나비 없음) → 모달
     if (type === "past" && !achievementDateSet.has(dateStr)) {
       setIsModalOpen(true);
       setSelectedDateType(null);
@@ -122,14 +112,9 @@ const MissonCalendarPage = () => {
       return;
     }
 
-    // 오늘 + 미달성 → 안내 메시지
     const todayStr = toYMD_KST(new Date());
 
-    if (
-      type === "today" &&
-      dateStr === todayStr &&
-      !achievementDateSet.has(todayStr)
-    ) {
+    if (type === "today" && dateStr === todayStr && !achievementDateSet.has(todayStr)) {
       setSelectedDateType("today");
       setRecordData(null);
       return;
@@ -139,7 +124,7 @@ const MissonCalendarPage = () => {
 
     try {
       const res = await axios.get(
-        `${BASE_URL}/api/users/${user_id}/missions/posts`,
+        `${BASE_URL}/api/users/${userId}/missions/posts`,
         { params: { date: dateStr } }
       );
       setRecordData({ ...res.data, date: dateStr });
@@ -184,7 +169,7 @@ const MissonCalendarPage = () => {
             year={currentDate.getFullYear()}
             month={currentDate.getMonth()}
             onDateClick={handleDateClick}
-            hide={showRecord} // 글씨와 원 크기 제어
+            hide={showRecord}
             achievementDateSet={achievementDateSet}
           />
         </CalendarBox>
@@ -193,7 +178,7 @@ const MissonCalendarPage = () => {
             {recordData ? (
               <Record
                 postId={recordData.postId}
-                memberId={user_id}
+                memberId={userId}
                 title={recordData.title}
                 content={recordData.content}
                 photoUrl={recordData.photoUrl}
@@ -201,26 +186,19 @@ const MissonCalendarPage = () => {
               />
             ) : (
               <div style={{ fontSize: "0.8rem", color: "#888" }}>
-                {isTodaySelected ? (
-                  <NotyetInform />
-                ) : (
-                  "해당 날짜에는 작성한 글이 없습니다."
-                )}
+                {isTodaySelected ? <NotyetInform /> : "해당 날짜에는 작성한 글이 없습니다."}
               </div>
             )}
           </RecordBox>
         )}
         {isModalOpen && (
           <ModalBox>
-            <CalendarModal
-              isOpen={true}
-              onClose={() => setIsModalOpen(false)}
-            />
+            <CalendarModal isOpen={true} onClose={() => setIsModalOpen(false)} />
           </ModalBox>
         )}
         {!showRecord && <Massege>한 걸음, 두 걸음, 같이 걸어요.</Massege>}
       </ContentWrapper>
-      <TabBar icons={{ mission: PurpleMissionIcon }} />
+      <TabBar icons={{ mission: PurpleMissionIcon }} userId={userId}/>
     </Container>
   );
 };

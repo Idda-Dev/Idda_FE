@@ -5,9 +5,8 @@ import { qr as qrMockData } from "../../../mocks/qr";
 import BackIcon from "../assets/BackIcon.png";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const userId = 1;
 
-const QrModal = ({ memberCouponId, onClose }) => {
+const QrModal = ({ memberCouponId, onClose,userId }) => {
   const [qrUrl, setQrUrl] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
