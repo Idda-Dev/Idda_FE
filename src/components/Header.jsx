@@ -22,7 +22,7 @@ const Header = ({ title, backgroundColor, color, backIcon, userId, backPath }) =
       }
     } else {
       // 기본 루트 이동 시 userId 전달
-      navigate("/", { state: { userId } });
+      navigate("/main", { state: { userId } });
     }
   };
 
@@ -36,7 +36,6 @@ const Header = ({ title, backgroundColor, color, backIcon, userId, backPath }) =
 
 export default Header;
 
-// Styled Components
 const Container = styled.div`
   position: absolute;
   display: flex;

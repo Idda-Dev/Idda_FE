@@ -16,10 +16,11 @@ const ShopPage = () => {
     <Wrapper>
       <Header
         title="솜뭉치 가게"
-        backPath="/"
+        backPath="/main"
         backgroundColor="#2F0047"
         color="#FFFFFF"
         backIcon={WhiteIcon}
+        userId={userId}
       />
       <CharacterProfile userId={userId} />
       <ShopListWrapper>
