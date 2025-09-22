@@ -16,7 +16,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const TestPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { userId } = location.state;
+  const { userId, user } = location.state; 
 
   const [questionNumber, setQuestionNumber] = useState(1);
   const [answers, setAnswers] = useState({});
@@ -61,7 +61,7 @@ const TestPage = () => {
     try {
       const res = await axios.post(`${BASE_URL}/api/users/${userId}/surveys/submit`, { answer: question6Answer });
       const { nickname, level } = res.data;
-      navigate("/typeInfo", { state: { nickname, level } }); 
+      navigate("/typeInfo", { state: { userId, user, nickname, level } }); 
     } catch (err) {
       console.error("최종 결과 제출 실패:", err.response?.data || err);
     }
@@ -70,14 +70,26 @@ const TestPage = () => {
   const handlePrev = () => { if (questionNumber > 1) setQuestionNumber(prev => prev - 1); };
   const handleNext = () => { if (questionNumber < survey.length) setQuestionNumber(prev => prev + 1); };
 
-  const renderTitle = () => (questionNumber === 1 ? <FirstPageTitle questionIndex={currentQuestionIndex} /> : <Title questionIndex={currentQuestionIndex} />);
-  const renderContent = () => (questionNumber === survey.length ? <LastPageContent onSubmit={handleSubmitSurvey} /> : <Content questionNumber={questionNumber} onPrev={handlePrev} onNext={handleNext} />);
+  const renderTitle = () =>
+    questionNumber === 1
+      ? <FirstPageTitle questionIndex={currentQuestionIndex} />
+      : <Title questionIndex={currentQuestionIndex} />;
+
+  const renderContent = () =>
+    questionNumber === survey.length
+      ? <LastPageContent onSubmit={handleSubmitSurvey} />
+      : <Content questionNumber={questionNumber} onPrev={handlePrev} onNext={handleNext} />;
 
   return (
     <Container>
       <Wrapper>
         {renderTitle()}
-        <List questionIndex={currentQuestionIndex} onAnswer={handleAnswer} selectedAnswer={answers[questionNumber]} loading={loading} />
+        <List
+          questionIndex={currentQuestionIndex}
+          onAnswer={handleAnswer}
+          selectedAnswer={answers[questionNumber]}
+          loading={loading}
+        />
       </Wrapper>
       {renderContent()}
     </Container>

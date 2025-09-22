@@ -14,7 +14,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const MainPage = () => {
   const location = useLocation();
-  const { userId } = location.state || {}; // 🔥 로그인에서 전달된 userId
+  const { userId } = location.state || {}; // 로그인, lastpagecontent에서 전달된 userId
 
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -30,7 +30,7 @@ const MainPage = () => {
           setUserData(userinfo);
         } else {
           if (!userId) throw new Error("userId가 전달되지 않았습니다.");
-          const res = await axios.get(`${BASE_URL}/api/users/${userId}`); // 🔥 userId 사용
+          const res = await axios.get(`${BASE_URL}/api/users/${userId}`); 
           setUserData(res.data);
         }
       } catch (err) {

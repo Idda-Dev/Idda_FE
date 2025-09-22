@@ -15,17 +15,13 @@ const LoginPage = () => {
   const [error, setError] = useState(null);
 
   const handleStart = async () => {
-    if (!nickname.trim()) return; // 닉네임이 비어있으면 동작 X
+    if (!nickname.trim()) return;
 
     setLoading(true);
     setError(null);
 
     try {
-      // 새 유저 생성
-      const res = await axios.post(`${BASE_URL}/api/users/register`, {
-        nickname,
-      });
-
+      const res = await axios.post(`${BASE_URL}/api/users/register`, { nickname });
       const userData = res.data;
       const userId = userData.memberId;
 
@@ -52,10 +48,7 @@ const LoginPage = () => {
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
         />
-        <StartButton
-          onClick={handleStart}
-          disabled={!nickname.trim() || loading}
-        >
+        <StartButton onClick={handleStart} disabled={!nickname.trim() || loading}>
           <img src={StartButtonImg} alt="start-button" />
         </StartButton>
         {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -116,10 +109,6 @@ const StartButton = styled.button`
 
   &:active img {
     transform: ${({ disabled }) => (disabled ? "none" : "scale(0.95)")};
-  }
-
-  &:focus {
-    outline: none;
   }
 `;
 
