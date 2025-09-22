@@ -57,7 +57,7 @@ const MainPage = () => {
           <>
             <CandyCount candy={userData.candy} />
             <Profile user={userData} />
-            <TodayMission />
+            <TodayMission user={userData}/>
           </>
         )}
       </Wrapper>
