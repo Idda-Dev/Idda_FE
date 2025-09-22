@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import MissionCompleteModal from "../features/Mission/components/MissionCompleteModal";
 
 import PurpleMissonIcon from "../assets/PurpleMissionIcon.png";
@@ -14,6 +14,11 @@ import AlreadyWrittenMission from "../features/Mission/components/AlreadyWritten
 import TabBar from "../components/TabBar";
 
 const MissionPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const userId = location.state?.userId; // navigate로 전달된 userId
+  const user_id = userId;
+
   const [imagePreview, setImagePreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -28,13 +33,10 @@ const MissionPage = () => {
   const [alreadyVerified, setAlreadyVerified] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
-  const [showComplete, setShowComplete] = useState(false); // ✅ 완료 모달 상태
+  const [showComplete, setShowComplete] = useState(false);
 
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  const user_id = 1;
   const isFormValid = imagePreview && finalText && selected !== "공개 여부";
-
-  const navigate = useNavigate();
 
   const getYMDInKST = (date = new Date()) => {
     const fmt = new Intl.DateTimeFormat("sv-SE", {
@@ -43,20 +45,19 @@ const MissionPage = () => {
       month: "2-digit",
       day: "2-digit",
     });
-    return fmt.format(date); // "YYYY-MM-DD"
+    return fmt.format(date);
   };
 
   useEffect(() => {
+    if (!user_id) return; // userId 없으면 요청 안함
     const fetchMissionData = async () => {
       try {
         const formattedDate = getYMDInKST();
-
         const response = await axios.get(
           `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(
             formattedDate
           )}`
         );
-
         setMissionData({
           content: response.data.content,
           missionComment: response.data.missionComment,
@@ -67,9 +68,10 @@ const MissionPage = () => {
       }
     };
     fetchMissionData();
-  }, [BASE_URL, refreshTrigger]);
+  }, [BASE_URL, refreshTrigger, user_id]);
 
   const handleRefreshMission = async () => {
+    if (!user_id) return;
     try {
       setIsRefreshing(true);
       const res = await axios.put(
@@ -117,6 +119,7 @@ const MissionPage = () => {
       alert("모든 입력을 완료해주세요.");
       return;
     }
+    if (!user_id) return;
 
     try {
       const formData = new FormData();
@@ -124,12 +127,9 @@ const MissionPage = () => {
       formData.append("public", selected === "공개" ? "true" : "false");
       formData.append("file", imageFile);
 
-      // ✅ KST 기준 날짜 사용
       const date = getYMDInKST();
       const missionIdResponse = await axios.get(
-        `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(
-          date
-        )}`
+        `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(date)}`
       );
       const missionId = missionIdResponse.data.missionId;
       const postUrl = `${BASE_URL}/api/users/${user_id}/missions/${missionId}`;
@@ -138,7 +138,6 @@ const MissionPage = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      // ✅ 완료 모달 먼저 띄우고, 살짝 뒤에 새 데이터 조회
       setShowComplete(true);
       setTimeout(() => setRefreshTrigger((prev) => !prev), 300);
     } catch (error) {
@@ -185,22 +184,20 @@ const MissionPage = () => {
         )}
       </MainContainer>
 
-      {/* 탭바 고정 */}
       <TabBarWrapper>
-        <TabBar icons={{ mission: PurpleMissonIcon }} />
+        <TabBar icons={{ mission: PurpleMissonIcon }} userId={user_id} />
       </TabBarWrapper>
 
-      {/* ✅ 완료 모달 */}
       {showComplete && (
         <MissionCompleteModal
           onClose={() => setShowComplete(false)}
           onGoBoard={() => {
             setShowComplete(false);
-            navigate("/community"); // 실제 라우트에 맞게 변경
+            navigate("/community", { state: { userId: user_id } });
           }}
           onGoShop={() => {
             setShowComplete(false);
-            navigate("/shop"); // 실제 라우트에 맞게 변경
+            navigate("/shop", { state: { userId: user_id } });
           }}
         />
       )}
@@ -210,7 +207,6 @@ const MissionPage = () => {
 
 export default MissionPage;
 
-/* 스타일 */
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -232,6 +228,6 @@ const TabBarWrapper = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 60px; /* 탭바 높이 */
+  height: 60px;
   z-index: 100;
 `;
