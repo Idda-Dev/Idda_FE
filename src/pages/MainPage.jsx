@@ -57,13 +57,14 @@ const MainPage = () => {
           <>
             <CandyCount candy={userData.candy} />
             <Profile user={userData} />
-            <TodayMission user={userData}/>
+            <TodayMission userId={userId} /> {/* userId 전달 */}
           </>
         )}
       </Wrapper>
       <TabBar
         icons={{ home: PurpleHomeIcon }}
         backgroundColor="rgba(255, 255, 255, 0.9)"
+        userId={userId}
       />
     </Container>
   );

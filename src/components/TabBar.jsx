@@ -18,8 +18,8 @@ import CommunityIcon from "../assets/CommunityIcon.png";
 //   flex-direction: column;
 // `
 
-const TabBar = ({ icons = {}, backgroundColor = "#E8F0FF" }) => {
-  const navigate = useNavigate(); // 페이지 이동 함수
+const TabBar = ({ icons = {}, backgroundColor = "#E8F0FF", userId }) => {
+  const navigate = useNavigate();
 
   const finalIcons = {
     home: icons.home || HomeIcon,
@@ -30,24 +30,25 @@ const TabBar = ({ icons = {}, backgroundColor = "#E8F0FF" }) => {
 
   return (
     <Wrapper $backgroundColor={backgroundColor}>
-      <TabButton onClick={() => navigate("/")}>
+      <TabButton onClick={() => navigate("/main", { state: { userId } })}>
         <TabIcon src={finalIcons.home} alt="홈" />홈
       </TabButton>
-      <TabButton onClick={() => navigate("/mission")}>
+      <TabButton onClick={() => navigate("/mission", { state: { userId } })}>
         <TabIcon src={finalIcons.mission} alt="미션" />
         미션
       </TabButton>
-      <TabButton onClick={() => navigate("/shop")}>
+      <TabButton onClick={() => navigate("/shop", { state: { userId } })}>
         <TabIcon src={finalIcons.shop} alt="상점" />
         상점
       </TabButton>
-      <TabButton onClick={() => navigate("/community")}>
+      <TabButton onClick={() => navigate("/community", { state: { userId } })}>
         <TabIcon src={finalIcons.community} alt="게시판" />
         게시판
       </TabButton>
     </Wrapper>
   );
 };
+
 
 const Wrapper = styled.div`
   position: absolute;

@@ -4,9 +4,8 @@ import axios from "axios";
 import StarIcon from "../assets/StarIcon.png";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const userId = 1;
 
-const TodayMission = () => {
+const TodayMission = ({ userId }) => {
   const [mission, setMission] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,8 +37,8 @@ const TodayMission = () => {
       }
     };
 
-    fetchMission();
-  }, []);
+    if (userId) fetchMission();
+  }, [userId]);
 
   useEffect(() => {
     if (contentRef.current) {
@@ -62,14 +61,13 @@ const TodayMission = () => {
         <Title>미션</Title>
       </Container>
       <Content
-  ref={contentRef}
-  onClick={toggleExpand}
-  $isExpanded={isExpanded}
-  $isOverflow={isOverflow}
->
-  {mission?.content || "오늘의 미션이 없습니다."}
-</Content>
-
+        ref={contentRef}
+        onClick={toggleExpand}
+        $isExpanded={isExpanded}
+        $isOverflow={isOverflow}
+      >
+        {mission?.content || "오늘의 미션이 없습니다."}
+      </Content>
     </Wrapper>
   );
 };
@@ -115,24 +113,16 @@ const Content = styled.p`
   width: 60%;
   font-size: 0.8rem;
   font-weight: 550;
-  padding: 0.5rem ;
-
-  /* border-radius 조건부: 확장 상태일 때만 왼쪽 아래 12px */
+  padding: 0.5rem;
   border-radius: ${({ $isExpanded }) =>
     $isExpanded ? "0 0 12px 12px" : "0 0 12px 0"};
-
   display: block;
   white-space: ${({ $isExpanded }) => ($isExpanded ? "normal" : "nowrap")};
   overflow: hidden;
   text-overflow: ellipsis;
-
-  /* 클릭 가능 여부에 따라 커서와 정렬 */
   cursor: ${({ $isOverflow }) => ($isOverflow ? "pointer" : "default")};
-  text-align: ${({ $isExpanded }) =>
-    $isExpanded ? "left" : "center"};
+  text-align: ${({ $isExpanded }) => ($isExpanded ? "left" : "center")};
 `;
-
-
 
 const Icon = styled.img`
   width: 1rem;

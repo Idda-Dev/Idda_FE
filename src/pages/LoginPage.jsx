@@ -100,6 +100,11 @@ const StartButton = styled.button`
   cursor: pointer;
   outline: none;
 
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
   img {
     width: 55%;
     height: auto;
@@ -111,6 +116,7 @@ const StartButton = styled.button`
     transform: ${({ disabled }) => (disabled ? "none" : "scale(0.95)")};
   }
 `;
+
 
 const ErrorMessage = styled.p`
   color: red;

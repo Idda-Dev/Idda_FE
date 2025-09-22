@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 import HomeIcon from "../assets/HomeIcon.png";
 import NextBt from "../assets/NextBt.png";
@@ -9,18 +10,35 @@ import moongchi2 from "../assets/Doomoongchi.gif";
 import moongchi3 from "../assets/Hanmoongchi.gif";
 import moongchi4 from "../assets/Hanmoongchi.gif";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const TypePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { nickname, level, userId, user } = location.state || {};
-
-  console.log("✅ TypePage → nickname:", nickname, "level:", level, "userId:", userId, "user:", user);
 
   const typeMap = { 1: "한뭉치", 2: "두뭉치", 3: "세뭉치", 4: "네뭉치" };
   const gifMap = { 1: moongchi1, 2: moongchi2, 3: moongchi3, 4: moongchi4 };
 
   const userType = typeMap[level] || "..."; 
   const userGif = gifMap[level] || moongchi1;
+
+  const handleNext = () => {
+    if (!userId) return;
+
+    // 백그라운드에서 미션 생성 요청
+    axios.post(`${BASE_URL}/api/users/${userId}/missions`, {
+    })
+    .then(res => {
+      console.log("✅ 미션 생성 요청 완료 ", res.data); // 성공 로그
+    })
+    .catch(err => {
+      console.error("❌ 미션 생성 실패:", err); // 실패 로그
+    });
+
+    // 페이지는 즉시 이동
+    navigate("/serviceInfo1", { state: { nickname, level, userId, user } });
+  };
 
   return (
     <Container>
@@ -37,10 +55,11 @@ const TypePage = () => {
       </Text2>
       <Text3>{userType}는 집콕력이 아주 높아요.</Text3>
       <Text4>방안에서 할 수 있는 미션부터 시작해요!</Text4>
+
       <NextButton
         src={NextBt}
         alt="Next"
-        onClick={() => navigate("/serviceInfo1", { state: { nickname, level, userId, user } })}
+        onClick={handleNext}
       />
     </Container>
   )
@@ -48,7 +67,6 @@ const TypePage = () => {
 
 export default TypePage;
 
-/* styled-components */
 const Container = styled.div`
   background-color: #ECEAFF;
   width: 100%;
