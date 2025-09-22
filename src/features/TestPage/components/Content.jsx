@@ -3,15 +3,21 @@ import styled from 'styled-components';
 import BackBt from "../assets/BackBt.png";
 import GoBt from "../assets/GoBt.png";
 
-const Content = ({ onPrev, onNext, questionNumber }) => {
+const Content = ({ onPrev, onNext, questionNumber, selectedAnswer }) => {
+  const goButtonClickable = selectedAnswer != null; // 체크 여부 확인
+
   return (
     <Wrapper>
-      {/* 첫 질문이면 BackBt 숨기기 */}
       {questionNumber > 1 && (
         <Icon src={BackBt} alt="back-button" onClick={onPrev} />
       )}
       <Text>해당 사항에 체크해 주세요.</Text>
-      <Icon src={GoBt} alt="go-button" onClick={onNext} />
+      <Icon
+        src={GoBt}
+        alt="go-button"
+        onClick={goButtonClickable ? onNext : () => {}}
+        clickable={goButtonClickable} // styled에서 cursor 제어
+      />
     </Wrapper>
   );
 };
@@ -26,10 +32,10 @@ const Wrapper = styled.div`
   justify-content: flex-end;
 `;
 
-const Icon = styled.img`   
+const Icon = styled.img`
   height: 30%;
-  width: auto;   
-  cursor: pointer;
+  width: auto;
+  cursor: ${({ clickable }) => (clickable ? 'pointer' : 'default')};
 `;
 
 const Text = styled.p`
@@ -37,3 +43,4 @@ const Text = styled.p`
   font-size: 0.9rem;
   text-align: center;
 `;
+

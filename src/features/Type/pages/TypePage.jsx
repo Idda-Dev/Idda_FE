@@ -4,8 +4,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import HomeIcon from "../assets/HomeIcon.png";
 import NextBt from "../assets/NextBt.png";
-
-// 레벨별 GIF import
 import moongchi1 from "../assets/Hanmoongchi.gif";
 import moongchi2 from "../assets/Doomoongchi.gif";
 import moongchi3 from "../assets/Hanmoongchi.gif";
@@ -14,22 +12,12 @@ import moongchi4 from "../assets/Hanmoongchi.gif";
 const TypePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { nickname, level } = location.state || {};
+  const { nickname, level, userId, user } = location.state || {};
 
-  // level에 따른 유형 매핑
-  const typeMap = {
-    1: "한뭉치",
-    2: "두뭉치",
-    3: "세뭉치",
-    4: "네뭉치"
-  };
+  console.log("✅ TypePage → nickname:", nickname, "level:", level, "userId:", userId, "user:", user);
 
-  const gifMap = {
-    1: moongchi1,
-    2: moongchi2,
-    3: moongchi3,
-    4: moongchi4
-  };
+  const typeMap = { 1: "한뭉치", 2: "두뭉치", 3: "세뭉치", 4: "네뭉치" };
+  const gifMap = { 1: moongchi1, 2: moongchi2, 3: moongchi3, 4: moongchi4 };
 
   const userType = typeMap[level] || "..."; 
   const userGif = gifMap[level] || moongchi1;
@@ -52,7 +40,7 @@ const TypePage = () => {
       <NextButton
         src={NextBt}
         alt="Next"
-        onClick={() => navigate("/serviceInfo1", { state: { nickname, level } })}
+        onClick={() => navigate("/serviceInfo1", { state: { nickname, level, userId, user } })}
       />
     </Container>
   )
@@ -60,7 +48,7 @@ const TypePage = () => {
 
 export default TypePage;
 
-// styled-components 아래는 그대로
+/* styled-components */
 const Container = styled.div`
   background-color: #ECEAFF;
   width: 100%;

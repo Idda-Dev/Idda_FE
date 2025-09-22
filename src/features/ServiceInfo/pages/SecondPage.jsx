@@ -1,16 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom'; 
 import BackgroundImg from "../assets/Background.png";
 import TitleBgImg from "../assets/TitleBackground.png";
 import TextBgImg from "../assets/TalkIcon.png";
 
 const SecondPage = () => {
   const location = useLocation();
-  const { nickname, level } = location.state || {};
+  const navigate = useNavigate();
+  const { nickname, level, userId, user } = location.state || {};
+
+  console.log("✅ SecondPage → nickname:", nickname, "level:", level, "userId:", userId, "user:", user);
+
+  const handleNavigate = () => {
+    navigate("/main", { state: { userId, user } });
+  };
 
   return (
-    <Container>
+    <Container onClick={handleNavigate}>
         <TitleWrapper>
           <TitleBackground src={TitleBgImg} alt="title-bg" />
           <Title>매일 작은 미션에 도전해요</Title>
@@ -41,7 +48,7 @@ const SecondPage = () => {
 
 export default SecondPage;
 
-
+/* styled-components 동일 */
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -55,19 +62,20 @@ const Container = styled.div`
   padding-bottom: 7rem;
   padding-left: 2rem;
   padding-right: 2rem;
-`
+  cursor: pointer; /* ✅ 클릭 가능하게 */
+`;
 
 const TitleWrapper = styled.div`
   position: relative;
   display: inline-block;
   margin-bottom: 1rem;
   width: 17rem;
-`
+`;
 
 const TitleBackground = styled.img`
   width: 100%;
   height: auto;
-`
+`;
 
 const Title = styled.p`
   margin: 0;
@@ -78,7 +86,7 @@ const Title = styled.p`
   transform: translate(-50%, -50%);
   font-size: 1rem;
   text-align: center;
-`
+`;
 
 const Text1 = styled.p`
   margin: 0;
@@ -86,7 +94,7 @@ const Text1 = styled.p`
   text-align: right;
   width: 100%;
   color: #2F0047;
-`
+`;
 
 const TextWrapper = styled.div`
   position: relative;
@@ -95,12 +103,12 @@ const TextWrapper = styled.div`
   justify-content: flex-start;
   width: 100%;
   margin: 0;
-`
+`;
 
 const TextBackground = styled.img`
   width: 13rem;
   height: auto;
-`
+`;
 
 const Text2 = styled.p`
   position: absolute;
@@ -111,13 +119,13 @@ const Text2 = styled.p`
   color: #2F0047;
   text-align: left;
   width: 11rem;     
-`
+`;
 
 const Content = styled.p`
   margin: 0;
   font-size: 1rem;
   text-align: center;
-`
+`;
 
 const Box = styled.div`
   display: flex;
@@ -131,4 +139,4 @@ const Box = styled.div`
   font-weight: 500;
   font-size: 0.9rem;
   color: #2F0047;
-`
+`;
