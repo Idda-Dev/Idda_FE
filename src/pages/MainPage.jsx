@@ -57,7 +57,7 @@ const MainPage = () => {
           <>
             <CandyCount candy={userData.candy} />
             <Profile user={userData} />
-            <TodayMission user={userData}/>
+            <TodayMission userId={userId} /> {/* userId 전달 */}
           </>
         )}
       </Wrapper>
