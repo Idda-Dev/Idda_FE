@@ -13,12 +13,13 @@ const TodayMission = ({
   onRefresh,
   isRefreshing,
   alreadyVerified,
+  userId,
 }) => {
   // 미션 달력으로 이동
   const nav = useNavigate();
 
   const handleMissionCalendarPage = () => {
-    nav("/mission/calendar", { state: { hasTodayRecord: !!alreadyVerified } });
+    nav("/mission/calendar", { state: { hasTodayRecord: !!alreadyVerified, userId:userId } });
   };
 
   return (

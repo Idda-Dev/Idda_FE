@@ -156,6 +156,7 @@ const MissionPage = () => {
           onRefresh={handleRefreshMission}
           isRefreshing={isRefreshing}
           alreadyVerified={alreadyVerified}
+          userId={userId}
         />
         {alreadyVerified ? (
           <AlreadyWrittenMission />
