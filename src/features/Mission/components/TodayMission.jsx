@@ -19,7 +19,9 @@ const TodayMission = ({
   const nav = useNavigate();
 
   const handleMissionCalendarPage = () => {
-    nav("/mission/calendar", { state: { hasTodayRecord: !!alreadyVerified, userId:userId } });
+    nav("/mission/calendar", {
+      state: { hasTodayRecord: !!alreadyVerified, userId: userId },
+    });
   };
 
   return (
@@ -61,7 +63,7 @@ const TodayMission = ({
         />
         <TextOverlayBold>{content}</TextOverlayBold>
         <TextOverlayRegular>{missionComment}</TextOverlayRegular>
-        <CandyOverlay>5개</CandyOverlay>
+        <CandyOverlay>15개</CandyOverlay>
       </ImageWrapper>
     </div>
   );
@@ -126,7 +128,7 @@ const CandyOverlay = styled.div`
   height: 2rem;
   position: absolute;
   top: 74%;
-  left: 76%;
+  left: 77%;
   font-size: 12px;
   font-weight: 500;
 `;

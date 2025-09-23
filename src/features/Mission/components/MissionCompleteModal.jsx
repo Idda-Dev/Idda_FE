@@ -24,7 +24,7 @@ const MissionCompleteModal = ({ onClose, onGoBoard, onGoShop }) => {
           <img src={CloseIcon} alt="close" />
         </CloseBtn>
 
-        <Title>솜뭉치 5개를 모았어요.</Title>
+        <Title>솜뭉치 15개를 모았어요.</Title>
         <Sub>오늘 하루도 수고했어요 :) 내일 또 만나요!</Sub>
 
         <Btn onClick={onGoBoard}>게시판 구경가기</Btn>
