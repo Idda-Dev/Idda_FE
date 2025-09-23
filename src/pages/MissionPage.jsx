@@ -83,7 +83,7 @@ const MissionPage = () => {
       }
     };
     fetchUser();
-  }, []);
+  }, [BASE_URL]);
 
   const handleRefreshMission = async () => {
     try {
@@ -213,7 +213,6 @@ const MissionPage = () => {
       {/* ✅ 레벨업 모달 (가장 위에) */}
       {showLevelUp && (
         <LevelUpModal
-          level={levelUpInfo.level}
           levelName={levelUpInfo.name}
           userName={userName}
           onClose={() => {

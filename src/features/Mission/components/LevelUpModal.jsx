@@ -21,13 +21,7 @@ const FontStyle = createGlobalStyle`
 `;
 
 // 캐릭터 이미지가 있다면 prop으로 넘겨서 쓰세요.
-const LevelUpModal = ({
-  level,
-  levelName,
-  userName,
-  onClose,
-  characterImg,
-}) => {
+const LevelUpModal = ({ levelName, userName, onClose, characterImg }) => {
   // ✅ 레벨별 맞춤 멘트 정의
   const levelMentMap = {
     두뭉치: "두뭉치는 집안에서 할 수 있는 미션부터 시작해요.",
