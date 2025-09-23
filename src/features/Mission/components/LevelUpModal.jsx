@@ -5,6 +5,12 @@ import Star2 from "../assets/Star2.svg";
 import { Column } from "../../../components/CommonComponents";
 import PressStart2P from "../../../../public/fonts/PressStart2P-Regular.ttf";
 
+import Char1 from "../assets/char-1.png";
+import Char2 from "../assets/char-2.png";
+import Char3 from "../assets/char-3.png";
+import Char4 from "../assets/char-4.png";
+import Char5 from "../assets/char-5.png";
+
 const FontStyle = createGlobalStyle`
   @font-face {
     font-family: 'PressStart2P';
@@ -30,6 +36,14 @@ const LevelUpModal = ({
     다섯뭉치: `이제 모든 뭉치의 미션을 받아볼 수 있어요.\n여기까지 오느라 정말 수고했어요. ${userName}님의 여정을 늘 응원해요!`,
   };
 
+  // 컴포넌트 안쪽
+  const levelImageMap = {
+    한뭉치: Char1,
+    두뭉치: Char2,
+    세뭉치: Char3,
+    네뭉치: Char4,
+    다섯뭉치: Char5,
+  };
   // ✅ levelName에 해당하는 메시지 선택
   const desc2Text = levelMentMap[levelName] || "";
   return (
@@ -41,11 +55,10 @@ const LevelUpModal = ({
         {/* 캐릭터 + 후광 */}
         <CharacterWrap>
           <Glow />
-          {characterImg ? (
-            <Character src={characterImg} alt="character" />
-          ) : (
-            <Fallback />
-          )}
+          <Character
+            src={characterImg || levelImageMap[levelName] || Char1}
+            alt="character"
+          />
         </CharacterWrap>
         <MoongChi>{levelName}</MoongChi>
         {/* 하단 카드 */}
@@ -76,17 +89,30 @@ const Overlay = styled.div`
   padding-top: 100px;
 `;
 
+const popIn = keyframes`
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
 const LevelBadge = styled.div`
   border-radius: 26px;
-  background: rgba(236, 234, 255, 0.5);
   display: inline-flex;
-  padding: 16px 26px;
   justify-content: center;
   align-items: center;
   gap: 10px;
 
   font-family: "PressStart2P", monospace; /* ✅ 새 폰트 적용 */
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 400;
   letter-spacing: 2px;
 
@@ -94,6 +120,7 @@ const LevelBadge = styled.div`
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.16);
   font-size: 24px;
   font-weight: 400;
+  animation: ${popIn} 0.8s ease-out forwards;
 `;
 
 const pulse = keyframes`
@@ -122,12 +149,21 @@ const Glow = styled.div`
   animation: ${pulse} 1.8s ease-in-out infinite;
 `;
 
+const wiggle = keyframes`
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(-4deg); }
+  50%  { transform: rotate(4deg); }
+  75%  { transform: rotate(-2deg); }
+  100% { transform: rotate(0deg); }
+`;
+
 const Character = styled.img`
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  animation: ${wiggle} 2.5s ease-in-out infinite;
 `;
 
 const Fallback = styled.div`
@@ -138,31 +174,28 @@ const Fallback = styled.div`
 `;
 
 const MoongChi = styled.div`
-  width: 94px;
-  padding: 8px 8px 16px 8px;
+  padding: 10px 23px;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  border-radius: 26px;
-  background: rgba(236, 234, 255, 0.6);
+  border-radius: 36px;
+  background: #d1cdff;
 
-  color: var(--white, #fff);
-  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.16);
-  font-family: "Press Start 2P";
+  color: var(--M0, #2f0047);
+  font-family: "Pretendard Variable";
   font-size: 16px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   line-height: normal;
 `;
 
 const Card = styled.div`
-  width: 259px;
-  height: 227px;
+  width: 300px;
   flex-shrink: 0;
   background: #eceaff;
   border-radius: 24px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
-  padding: 22px 20px 26px;
+  padding: 22px 20px 0;
   text-align: center;
 `;
 
@@ -174,7 +207,7 @@ const Title = styled.div`
   color: #2f0047;
   font-size: 16px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 700;
   line-height: normal;
   margin-bottom: 20px;
   margin-top: 10px;
@@ -190,25 +223,25 @@ const Desc = styled.div`
 `;
 
 const Desc2 = styled.div`
-  margin: 0 0 30px;
+  margin: 0 0 20px;
   color: #2f0047;
   font-size: 11px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 800;
   line-height: normal;
 `;
 
 const PrimaryBtn = styled.button`
   border: 0;
-  width: 70%;
-  height: 40px;
+  width: 75%;
   border-radius: 36px;
   background: #6f69b0;
   color: #fff;
   cursor: pointer;
 
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 700;
+  margin-bottom: 24px;
+
+  font-size: 16px;
+  font-weight: 800;
   line-height: normal;
 `;
