@@ -6,13 +6,10 @@ import { useNavigate } from "react-router-dom";
 import MissionCompleteModal from "../features/Mission/components/MissionCompleteModal";
 import LevelUpModal from "../features/Mission/components/LevelUpModal";
 
-import PurpleMissonIcon from "../assets/PurpleMissionIcon.png";
-
 import MissionHeader from "../features/Mission/components/MissionHeader";
 import TodayMission from "../features/Mission/components/TodayMission";
 import ProofMission from "../features/Mission/components/ProofMission";
 import AlreadyWrittenMission from "../features/Mission/components/AlreadyWrittenMission";
-import TabBar from "../components/TabBar";
 
 const MissionPage = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -213,11 +210,6 @@ const MissionPage = () => {
         )}
       </MainContainer>
 
-      {/* 탭바 고정 */}
-      <TabBarWrapper>
-        <TabBar icons={{ mission: PurpleMissonIcon }} />
-      </TabBarWrapper>
-
       {/* ✅ 레벨업 모달 (가장 위에) */}
       {showLevelUp && (
         <LevelUpModal
@@ -256,7 +248,7 @@ export default MissionPage;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   position: relative;
   background-color: #f8faff;
@@ -267,13 +259,4 @@ const MainContainer = styled.div`
   overflow-y: auto;
   padding: 1.5rem 3rem;
   box-sizing: border-box;
-`;
-
-const TabBarWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 60px; /* 탭바 높이 */
-  z-index: 100;
 `;

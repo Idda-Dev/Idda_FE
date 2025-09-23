@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Calendar from "../features/MissonCalendar/components/Calendar";
-import TabBar from "../components/TabBar.jsx";
 
 import CalendarModal from "../features/MissonCalendar/components/CalendarModal.jsx";
 
-import PurpleMissionIcon from "../assets/PurpleMissionIcon.png";
 import PrevIcon from "../features/MissonCalendar/assets/PrevIcon.png";
 import NextIcon from "../features/MissonCalendar/assets/NextIcon.png";
 import CalendarBackIcon from "../features/MissonCalendar/assets/CalendarBackIcon.png";
@@ -220,7 +218,6 @@ const MissonCalendarPage = () => {
         )}
         {!showRecord && <Massege>한 걸음, 두 걸음, 같이 걸어요.</Massege>}
       </ContentWrapper>
-      <TabBar icons={{ mission: PurpleMissionIcon }} />
     </Container>
   );
 };
@@ -234,7 +231,7 @@ const Container = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  height: calc(100% - 1rem);
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

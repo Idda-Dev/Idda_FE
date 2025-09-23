@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { userinfo } from "../mocks/userinfo";
-import TabBar from "../components/TabBar";
-import PurpleHomeIcon from "../assets/PurpleHomeIcon.png";
 import Profile from "../features/Home/components/Profile";
 import CandyCount from "../features/Home/components/CandyCount";
 import BackgroundImg from "../features/Home/assets/BgImg.png";
@@ -56,10 +54,6 @@ const MainPage = () => {
           </>
         )}
       </Wrapper>
-      <TabBar
-        icons={{ home: PurpleHomeIcon }}
-        backgroundColor="rgba(255, 255, 255, 0.9)"
-      />
     </Container>
   );
 };

@@ -3,15 +3,13 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import PostList from "../features/Post/components/PostList";
 import Location from "../features/Post/components/Location";
-import { userinfo } from "../mocks/userinfo"; 
-import TabBar from "../components/TabBar";
-import PurpleCommunityIcon from "../assets/PurpleCommunityIcon.png"
+import { userinfo } from "../mocks/userinfo";
 
 import { useSearchParams } from "react-router-dom";
 
 const CommunityPage = () => {
   const [searchParams] = useSearchParams();
-  const initialLocation = searchParams.get("location") || userinfo.location; 
+  const initialLocation = searchParams.get("location") || userinfo.location;
   const [location, setLocation] = useState(initialLocation);
 
   return (
@@ -23,7 +21,6 @@ const CommunityPage = () => {
           <PostList location={location} />
         </PostListWrapper>
       </Wrapper>
-      <TabBar icons={{ community: PurpleCommunityIcon }} />
     </Container>
   );
 };
@@ -42,7 +39,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   width: calc(74% + 2rem);
-  height: calc(100% - 2.5rem);
+  height: 100%; /* 탭바 고려 X */
   padding-top: 52px;
   display: flex;
   flex-direction: column;
