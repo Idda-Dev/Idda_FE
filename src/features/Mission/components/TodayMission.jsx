@@ -19,7 +19,9 @@ const TodayMission = ({
   const nav = useNavigate();
 
   const handleMissionCalendarPage = () => {
-    nav("/mission/calendar", { state: { hasTodayRecord: !!alreadyVerified, userId:userId } });
+    nav("/mission/calendar", {
+      state: { hasTodayRecord: !!alreadyVerified, userId: userId },
+    });
   };
 
   return (
@@ -38,30 +40,33 @@ const TodayMission = ({
       </Row>
       <ImageWrapper>
         <BackgroundImage src={MissionCard} alt="카드" />
-        {/* ✅ 새로고침 버튼 */}
-        <img
-          src={ReMissionIcon}
-          alt="새 미션 받기"
-          title={isRefreshing ? "새 미션 불러오는 중..." : "새 미션 받기"}
-          style={{
-            position: "absolute",
-            top: "12%",
-            left: "88%",
-            width: "6%",
-            cursor: isRefreshing ? "not-allowed" : "pointer",
-            opacity: isRefreshing ? 0.6 : 1,
-          }}
-          onClick={isRefreshing ? undefined : onRefresh}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (!isRefreshing && (e.key === "Enter" || e.key === " "))
-              onRefresh();
-          }}
-        />
+        {/* ✅ 새로고침 버튼: 아직 인증 안 했을 때만 보이게 */}
+        {!alreadyVerified && (
+          <img
+            src={ReMissionIcon}
+            alt="새 미션 받기"
+            title={isRefreshing ? "새 미션 불러오는 중..." : "새 미션 받기"}
+            style={{
+              position: "absolute",
+              top: "12%",
+              left: "88%",
+              width: "6%",
+              cursor: isRefreshing ? "not-allowed" : "pointer",
+              opacity: isRefreshing ? 0.6 : 1,
+            }}
+            onClick={isRefreshing ? undefined : onRefresh}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (!isRefreshing && (e.key === "Enter" || e.key === " ")) {
+                onRefresh();
+              }
+            }}
+          />
+        )}
         <TextOverlayBold>{content}</TextOverlayBold>
         <TextOverlayRegular>{missionComment}</TextOverlayRegular>
-        <CandyOverlay>5개</CandyOverlay>
+        <CandyOverlay>15개</CandyOverlay>
       </ImageWrapper>
     </div>
   );
@@ -126,7 +131,7 @@ const CandyOverlay = styled.div`
   height: 2rem;
   position: absolute;
   top: 74%;
-  left: 76%;
+  left: 77%;
   font-size: 12px;
   font-weight: 500;
 `;
