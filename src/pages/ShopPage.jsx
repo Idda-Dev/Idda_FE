@@ -16,7 +16,7 @@ const ShopPage = () => {
     <Wrapper>
       <Header
         title="솜뭉치 가게"
-        backPath="/main"
+        backPath={-1}
         backgroundColor="#2F0047"
         color="#FFFFFF"
         backIcon={WhiteIcon}
