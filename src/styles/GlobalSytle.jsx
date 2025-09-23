@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
     text-align: center;
     margin: 0;
     padding: 0;
-    min-height: 100vh;
+    min-height: 100dvh;
     background-color: white;
     font-family: 'Pretendard', sans-serif;
   }
