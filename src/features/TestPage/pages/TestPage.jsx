@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useUserStore from "../../../store/useUserStore";
 
 import Title from "../components/Title";
 import FirstPageTitle from "../components/FirstPageTitle";
@@ -14,9 +15,8 @@ import { survey } from "../components/SurveyQuestions";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const TestPage = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { userId, user } = location.state;
+  const { userId } = useUserStore();
 
   const [questionNumber, setQuestionNumber] = useState(1);
   const [answers, setAnswers] = useState({});
@@ -31,11 +31,13 @@ const TestPage = () => {
           `${BASE_URL}/api/users/${userId}/surveys/${questionNumber}`
         );
         if (res.data?.answer) {
-          setAnswers((prev) => ({ ...prev, [questionNumber]: res.data.answer }));
+          setAnswers((prev) => ({
+            ...prev,
+            [questionNumber]: res.data.answer,
+          }));
         }
       } catch (err) {
-        if (err.response?.status !== 404)
-          console.error("답변 조회 실패:", err);
+        if (err.response?.status !== 404) console.error("답변 조회 실패:", err);
       }
     };
     fetchAnswer();
@@ -56,17 +58,14 @@ const TestPage = () => {
     }
   };
 
-  // 최종 제출 → typeInfo로 이동
   const handleSubmitSurvey = async () => {
-    if (answers[6] == null) return; // 6번 답변 없으면 클릭 불가
+    if (answers[6] == null) return;
 
     try {
-      const res = await axios.post(
-        `${BASE_URL}/api/users/${userId}/surveys/submit`,
-        { answer: answers[6] }
-      );
-      const { nickname, level } = res.data;
-      navigate("/typeInfo", { state: { userId, user, nickname, level } });
+      await axios.post(`${BASE_URL}/api/users/${userId}/surveys/submit`, {
+        answer: answers[6],
+      });
+      navigate("/typeInfo");
     } catch (err) {
       console.error("최종 결과 제출 실패:", err.response?.data || err);
     }
@@ -82,32 +81,14 @@ const TestPage = () => {
     }
   };
 
-  const renderTitle = () =>
-    questionNumber === 1 ? (
-      <FirstPageTitle questionIndex={currentQuestionIndex} />
-    ) : (
-      <Title questionIndex={currentQuestionIndex} />
-    );
-
-  const renderContent = () =>
-    questionNumber === survey.length ? (
-      <LastPageContent
-        onSubmit={handleSubmitSurvey}
-        disabled={answers[6] == null}
-      />
-    ) : (
-      <Content
-        questionNumber={questionNumber}
-        onPrev={handlePrev}
-        onNext={handleNext}
-        selectedAnswer={answers[questionNumber]} // Go 버튼 활성/비활성화 제어
-      />
-    );
-
   return (
     <Container>
       <Wrapper>
-        {renderTitle()}
+        {questionNumber === 1 ? (
+          <FirstPageTitle questionIndex={currentQuestionIndex} />
+        ) : (
+          <Title questionIndex={currentQuestionIndex} />
+        )}
         <List
           questionIndex={currentQuestionIndex}
           onAnswer={handleAnswer}
@@ -115,13 +96,26 @@ const TestPage = () => {
           loading={loading}
         />
       </Wrapper>
-      {renderContent()}
+      {questionNumber === survey.length ? (
+        <LastPageContent
+          onSubmit={handleSubmitSurvey}
+          disabled={answers[6] == null}
+        />
+      ) : (
+        <Content
+          questionNumber={questionNumber}
+          onPrev={handlePrev}
+          onNext={handleNext}
+          selectedAnswer={answers[questionNumber]}
+        />
+      )}
     </Container>
   );
 };
 
 export default TestPage;
 
+/* ================= styled ================= */
 const Container = styled.div`
   display: flex;
   flex-direction: column;

@@ -7,7 +7,14 @@ function App() {
   const location = useLocation();
 
   // 탭바를 숨기고 싶은 경로들
-  const hideTabBarRoutes = ["/", "/login"];
+  const hideTabBarRoutes = [
+    "/",
+    "/login",
+    "/test",
+    "/typeInfo",
+    "/serviceInfo1",
+    "/serviceInfo1/serviceInfo2",
+  ];
 
   const shouldHideTabBar = hideTabBarRoutes.includes(location.pathname);
 

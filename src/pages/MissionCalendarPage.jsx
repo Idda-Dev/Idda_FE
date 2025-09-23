@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useUserStore from "../store/useUserStore";
 
 import Calendar from "../features/MissonCalendar/components/Calendar";
-
 import CalendarModal from "../features/MissonCalendar/components/CalendarModal.jsx";
 import Record from "../features/MissonCalendar/components/Record.jsx";
 import NotyetInform from "../features/MissonCalendar/components/NotyetInform.jsx";
@@ -13,7 +13,8 @@ import PrevIcon from "../features/MissonCalendar/assets/PrevIcon.png";
 import NextIcon from "../features/MissonCalendar/assets/NextIcon.png";
 import CalendarBackIcon from "../features/MissonCalendar/assets/CalendarBackIcon.png";
 
-// 날짜 포맷 함수
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const getYMDInKST = (date = new Date()) => {
   const fmt = new Intl.DateTimeFormat("sv-SE", {
     timeZone: "Asia/Seoul",
@@ -31,11 +32,8 @@ const toYMD_KST = (input) => {
 };
 
 const MissonCalendarPage = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-
-  // location.state에서 userId 받기
-  const { userId } = location.state || {};
+  const userId = useUserStore((s) => s.userId);
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDateType, setSelectedDateType] = useState(null);
@@ -43,12 +41,7 @@ const MissonCalendarPage = () => {
   const [achievementDateSet, setAchievementDateSet] = useState(new Set());
   const [recordData, setRecordData] = useState(null);
 
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-  // 뒤로가기
-  const handleBackIcon = () => {
-    navigate(-1, { state: { userId } });
-  };
+  const handleBackIcon = () => navigate(-1);
 
   const handlePrevMonth = () => {
     const year = currentDate.getFullYear();
@@ -63,12 +56,11 @@ const MissonCalendarPage = () => {
   };
 
   const monthLabel = `${currentDate.getMonth() + 1}월`;
-
   const isPast = selectedDateType === "past";
   const isTodaySelected = selectedDateType === "today";
   const showRecord = isPast || isTodaySelected;
 
-  // 1️⃣ 달성 기록 조회
+  // 달성 기록 조회
   useEffect(() => {
     if (!userId) return;
     const fetchAchievements = async () => {
@@ -91,9 +83,9 @@ const MissonCalendarPage = () => {
       }
     };
     fetchAchievements();
-  }, [currentDate, userId, BASE_URL]);
+  }, [currentDate, userId]);
 
-  // 2️⃣ 날짜 클릭 시 기록 조회
+  // 특정 날짜 기록 조회
   const handleDateClick = async (day, type) => {
     if (!day || type === "future") return;
 
@@ -112,7 +104,6 @@ const MissonCalendarPage = () => {
     }
 
     const todayStr = toYMD_KST(new Date());
-
     if (
       type === "today" &&
       dateStr === todayStr &&
@@ -128,7 +119,9 @@ const MissonCalendarPage = () => {
     try {
       const res = await axios.get(
         `${BASE_URL}/api/users/${userId}/missions/posts`,
-        { params: { date: dateStr } }
+        {
+          params: { date: dateStr },
+        }
       );
       setRecordData({ ...res.data, date: dateStr });
     } catch (err) {
@@ -167,6 +160,7 @@ const MissonCalendarPage = () => {
             <Arrow src={NextIcon} alt="다음 달" />
           </NextButton>
         </Wrapper>
+
         <CalendarBox $isPast={showRecord}>
           <Calendar
             year={currentDate.getFullYear()}
@@ -176,6 +170,7 @@ const MissonCalendarPage = () => {
             achievementDateSet={achievementDateSet}
           />
         </CalendarBox>
+
         {showRecord && (
           <RecordBox $isPast={showRecord}>
             {recordData ? (
@@ -198,6 +193,7 @@ const MissonCalendarPage = () => {
             )}
           </RecordBox>
         )}
+
         {isModalOpen && (
           <ModalBox>
             <CalendarModal
@@ -214,6 +210,7 @@ const MissonCalendarPage = () => {
 
 export default MissonCalendarPage;
 
+/* ================= styled ================= */
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -229,19 +226,17 @@ const ContentWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
-  position: fixed; /* 화면에 고정 */
-  top: 6rem; /* 상단에서 1rem */
-  left: 50%; /* 화면 가로 중앙 */
-  transform: translateX(-50%); /* 중앙 정렬 보정 */
-
+  position: fixed;
+  top: 6rem;
+  left: 50%;
+  transform: translateX(-50%);
   width: 60%;
   height: 2rem;
-
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
-  z-index: 10; /* 다른 요소 위에 표시 */
+  z-index: 10;
 `;
 
 const MonthBox = styled.div`
@@ -251,17 +246,14 @@ const MonthBox = styled.div`
   flex-shrink: 0;
   border-radius: 36px;
   background-color: #b1aaff;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  user-select: none;
 `;
 
 const MonthLabel = styled.div`
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 0.9rem;
   color: black;
   font-weight: 600;
@@ -278,7 +270,6 @@ const ArrowButton = styled.button`
   padding: 0;
   background-color: transparent;
   border: none;
-
   &:focus {
     outline: none;
     box-shadow: none;
@@ -315,7 +306,7 @@ const RecordBox = styled.div`
 `;
 
 const ModalBox = styled.div`
-  position: absolute; // fixed 대신 absolute
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;

@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useUserStore from "../store/useUserStore";
+
 import MissionCompleteModal from "../features/Mission/components/MissionCompleteModal";
 import LevelUpModal from "../features/Mission/components/LevelUpModal";
-
 import MissionHeader from "../features/Mission/components/MissionHeader";
 import TodayMission from "../features/Mission/components/TodayMission";
 import ProofMission from "../features/Mission/components/ProofMission";
 import AlreadyWrittenMission from "../features/Mission/components/AlreadyWrittenMission";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const MissionPage = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const userId = location.state?.userId; // navigate로 전달된 userId
-  const user_id = userId;
+  const userId = useUserStore((s) => s.userId);
 
   const [imagePreview, setImagePreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
@@ -32,13 +33,11 @@ const MissionPage = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(false);
   const [showComplete, setShowComplete] = useState(false);
 
-  const [showLevelUp, setShowLevelUp] = useState(false); // 레벨업 모달
+  const [showLevelUp, setShowLevelUp] = useState(false);
   const [levelUpInfo, setLevelUpInfo] = useState({ level: null, name: "" });
   const [userName, setUserName] = useState("");
 
   const LEVEL_NAME = ["한뭉치", "두뭉치", "세뭉치", "네뭉치", "다섯뭉치"];
-
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const isFormValid = imagePreview && finalText && selected !== "공개 여부";
 
   const getYMDInKST = (date = new Date()) => {
@@ -51,13 +50,14 @@ const MissionPage = () => {
     return fmt.format(date);
   };
 
+  // 미션 데이터
   useEffect(() => {
-    if (!user_id) return; // userId 없으면 요청 안함
+    if (!userId) return;
     const fetchMissionData = async () => {
       try {
         const formattedDate = getYMDInKST();
         const response = await axios.get(
-          `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(
+          `${BASE_URL}/api/users/${userId}/missions?date=${encodeURIComponent(
             formattedDate
           )}`
         );
@@ -71,26 +71,28 @@ const MissionPage = () => {
       }
     };
     fetchMissionData();
-  }, [BASE_URL, refreshTrigger, user_id]);
+  }, [BASE_URL, refreshTrigger, userId]);
 
+  // 유저 닉네임
   useEffect(() => {
+    if (!userId) return;
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/api/users/${user_id}`);
-        setUserName(res.data.nickname); // ✅ 실제 응답 필드명
+        const res = await axios.get(`${BASE_URL}/api/users/${userId}`);
+        setUserName(res.data.nickname);
       } catch (e) {
         console.error(e);
       }
     };
     fetchUser();
-  }, []);
+  }, [userId]);
 
   const handleRefreshMission = async () => {
-    if (!user_id) return;
+    if (!userId) return;
     try {
       setIsRefreshing(true);
       const res = await axios.put(
-        `${BASE_URL}/api/users/${user_id}/missions/refresh`
+        `${BASE_URL}/api/users/${userId}/missions/refresh`
       );
       setMissionData({
         content: res.data.content,
@@ -134,7 +136,7 @@ const MissionPage = () => {
       alert("모든 입력을 완료해주세요.");
       return;
     }
-    if (!user_id) return;
+    if (!userId) return;
 
     try {
       const formData = new FormData();
@@ -144,27 +146,23 @@ const MissionPage = () => {
 
       const date = getYMDInKST();
       const missionIdResponse = await axios.get(
-        `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(
+        `${BASE_URL}/api/users/${userId}/missions?date=${encodeURIComponent(
           date
         )}`
       );
       const missionId = missionIdResponse.data.missionId;
-      const postUrl = `${BASE_URL}/api/users/${user_id}/missions/${missionId}`;
+      const postUrl = `${BASE_URL}/api/users/${userId}/missions/${missionId}`;
 
       const { data } = await axios.post(postUrl, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      // ✅ 응답의 level로 레벨업 모달 여부 결정
       const nextLevel = Number(data?.level);
       if (nextLevel >= 2 && nextLevel <= 5) {
-        setLevelUpInfo({
-          level: nextLevel,
-          name: LEVEL_NAME[nextLevel - 1], // 1~5 → idx 0~4
-        });
-        setShowLevelUp(true); // 레벨업 모달 먼저
+        setLevelUpInfo({ level: nextLevel, name: LEVEL_NAME[nextLevel - 1] });
+        setShowLevelUp(true);
       } else {
-        setShowComplete(true); // 레벨 변화 없으면 바로 완료 모달
+        setShowComplete(true);
       }
       setTimeout(() => setRefreshTrigger((prev) => !prev), 300);
     } catch (error) {
@@ -186,7 +184,7 @@ const MissionPage = () => {
           userId={userId}
         />
         {alreadyVerified ? (
-          <AlreadyWrittenMission userId={user_id} />
+          <AlreadyWrittenMission userId={userId} />
         ) : (
           <ProofMission
             data={{
@@ -212,16 +210,14 @@ const MissionPage = () => {
         )}
       </MainContainer>
 
-      {/* ✅ 레벨업 모달 (가장 위에) */}
       {showLevelUp && (
         <LevelUpModal
           levelName={levelUpInfo.name}
           userName={userName}
           onClose={() => {
             setShowLevelUp(false);
-            setShowComplete(true); // 닫으면 완료 모달 보이기
+            setShowComplete(true);
           }}
-          // characterImg={...} // 있으면 전달
         />
       )}
 
@@ -230,11 +226,11 @@ const MissionPage = () => {
           onClose={() => setShowComplete(false)}
           onGoBoard={() => {
             setShowComplete(false);
-            navigate("/community", { state: { userId: user_id } });
+            navigate("/community");
           }}
           onGoShop={() => {
             setShowComplete(false);
-            navigate("/shop", { state: { userId: user_id } });
+            navigate("/shop");
           }}
         />
       )}
@@ -244,6 +240,7 @@ const MissionPage = () => {
 
 export default MissionPage;
 
+/* ================= styled ================= */
 const Container = styled.div`
   display: flex;
   flex-direction: column;

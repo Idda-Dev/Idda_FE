@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useUserStore from "../store/useUserStore";
 
 import LoginBg from "../assets/LoginBg.png";
 import StartButtonImg from "../assets/StartButton.png";
@@ -14,6 +15,8 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const setUser = useUserStore((state) => state.setUser);
+
   const handleStart = async () => {
     if (!nickname.trim()) return;
 
@@ -25,14 +28,13 @@ const LoginPage = () => {
         nickname,
       });
       const userData = res.data;
-      const userId = userData.memberId;
+
+      setUser(userData); // ✅ zustand에 저장
 
       if (userData.newMember) {
-        // 새 유저 → test 페이지
-        navigate("/test", { state: { user: userData, userId } });
+        navigate("/test");
       } else {
-        // 기존 유저 → main 페이지
-        navigate("/main", { state: { user: userData, userId } });
+        navigate("/main");
       }
     } catch (err) {
       console.error("API 호출 실패:", err);
@@ -64,6 +66,7 @@ const LoginPage = () => {
 
 export default LoginPage;
 
+/* ================= styled ================= */
 const Container = styled.div`
   width: 100%;
   height: 100dvh;
@@ -104,11 +107,6 @@ const StartButton = styled.button`
   border: none;
   cursor: pointer;
   outline: none;
-
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
 
   img {
     width: 55%;

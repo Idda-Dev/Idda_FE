@@ -1,10 +1,10 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 import BackBt from "../assets/BackBt.png";
 import GoBt from "../assets/GoBt.png";
 
 const Content = ({ onPrev, onNext, questionNumber, selectedAnswer }) => {
-  const goButtonClickable = selectedAnswer != null; // 체크 여부 확인
+  const isClickable = selectedAnswer != null;
 
   return (
     <Wrapper>
@@ -15,8 +15,11 @@ const Content = ({ onPrev, onNext, questionNumber, selectedAnswer }) => {
       <Icon
         src={GoBt}
         alt="go-button"
-        onClick={goButtonClickable ? onNext : () => {}}
-        clickable={goButtonClickable} // styled에서 cursor 제어
+        // 클릭 불가능하면 onClick 자체를 없앰
+        onClick={isClickable ? onNext : undefined}
+        $clickable={isClickable} // ✅ transient prop로 변경
+        aria-disabled={!isClickable} // 접근성 보조
+        tabIndex={isClickable ? 0 : -1}
       />
     </Wrapper>
   );
@@ -28,14 +31,16 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  padding:0 5.84rem;
+  padding: 0 5.84rem;
   justify-content: flex-end;
 `;
 
 const Icon = styled.img`
   height: 30%;
   width: auto;
-  cursor: ${({ clickable }) => (clickable ? 'pointer' : 'default')};
+  cursor: ${({ $clickable }) => ($clickable ? "pointer" : "default")}; /* ✅ */
+  opacity: ${({ $clickable }) => ($clickable ? 1 : 0.5)};
+  pointer-events: ${({ $clickable }) => ($clickable ? "auto" : "none")};
 `;
 
 const Text = styled.p`
@@ -43,4 +48,3 @@ const Text = styled.p`
   font-size: 0.9rem;
   text-align: center;
 `;
-

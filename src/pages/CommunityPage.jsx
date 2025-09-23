@@ -1,41 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import useUserStore from "../store/useUserStore";
+
 import Header from "../components/Header";
 import PostList from "../features/Post/components/PostList";
 import Location from "../features/Post/components/Location";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const CommunityPage = () => {
-  const locationState = useLocation();
-  const { userId } = locationState.state || {};
-
+  const userId = useUserStore((s) => s.userId);
   const [userData, setUserData] = useState(null);
-  const [location, setLocation] = useState("동작구"); // ✅ 기본값 "동작구"
+  const [location, setLocation] = useState("동작구");
 
-  // 유저 ID 전달 확인
   useEffect(() => {
-    console.log("✅ 전달된 userId:", userId);
-  }, [userId]);
-
-  // 유저 정보 조회 API 호출
-  useEffect(() => {
-    if (!userId) return; // userId 없으면 API 안 부름
-
+    if (!userId) return;
     const fetchUserInfo = async () => {
       try {
-        const res = await axios.get(`/api/users/${userId}`);
+        const res = await axios.get(`${BASE_URL}/api/users/${userId}`);
         setUserData(res.data);
-
-        // 응답에 location 있으면 업데이트
-        if (res.data.location) {
-          setLocation(res.data.location);
-        }
+        if (res.data.location) setLocation(res.data.location);
       } catch (error) {
         console.error("❌ 유저 정보 불러오기 실패:", error);
       }
     };
-
     fetchUserInfo();
   }, [userId]);
 
@@ -52,7 +41,6 @@ const CommunityPage = () => {
           </>
         ) : (
           <>
-            {/* 로딩 중에도 기본값으로 표시 */}
             <Location location={location} setLocation={setLocation} />
             <p>유저 정보를 불러오는 중...</p>
           </>
@@ -62,6 +50,9 @@ const CommunityPage = () => {
   );
 };
 
+export default CommunityPage;
+
+/* ================= styled ================= */
 const Container = styled.div`
   position: relative;
   display: flex;
@@ -76,7 +67,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   width: calc(74% + 2rem);
-  height: 100%; /* 탭바 고려 X */
+  height: 100%;
   padding-top: 52px;
   display: flex;
   flex-direction: column;
@@ -87,5 +78,3 @@ const PostListWrapper = styled.div`
   flex: 1;
   overflow-y: auto;
 `;
-
-export default CommunityPage;
