@@ -21,7 +21,9 @@ const LoginPage = () => {
     setError(null);
 
     try {
-      const res = await axios.post(`${BASE_URL}/api/users/register`, { nickname });
+      const res = await axios.post(`${BASE_URL}/api/users/register`, {
+        nickname,
+      });
       const userData = res.data;
       const userId = userData.memberId;
 
@@ -48,7 +50,10 @@ const LoginPage = () => {
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
         />
-        <StartButton onClick={handleStart} disabled={!nickname.trim() || loading}>
+        <StartButton
+          onClick={handleStart}
+          disabled={!nickname.trim() || loading}
+        >
           <img src={StartButtonImg} alt="start-button" />
         </StartButton>
         {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -61,7 +66,7 @@ export default LoginPage;
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   background: url(${LoginBg}) no-repeat center center;
   background-size: cover;
   display: flex;
@@ -116,7 +121,6 @@ const StartButton = styled.button`
     transform: ${({ disabled }) => (disabled ? "none" : "scale(0.95)")};
   }
 `;
-
 
 const ErrorMessage = styled.p`
   color: red;

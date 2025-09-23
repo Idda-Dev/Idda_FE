@@ -4,12 +4,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 import Calendar from "../features/MissonCalendar/components/Calendar";
+
 import CalendarModal from "../features/MissonCalendar/components/CalendarModal.jsx";
 import Record from "../features/MissonCalendar/components/Record.jsx";
 import NotyetInform from "../features/MissonCalendar/components/NotyetInform.jsx";
-import TabBar from "../components/TabBar.jsx";
 
-import PurpleMissionIcon from "../assets/PurpleMissionIcon.png";
 import PrevIcon from "../features/MissonCalendar/assets/PrevIcon.png";
 import NextIcon from "../features/MissonCalendar/assets/NextIcon.png";
 import CalendarBackIcon from "../features/MissonCalendar/assets/CalendarBackIcon.png";
@@ -114,7 +113,11 @@ const MissonCalendarPage = () => {
 
     const todayStr = toYMD_KST(new Date());
 
-    if (type === "today" && dateStr === todayStr && !achievementDateSet.has(todayStr)) {
+    if (
+      type === "today" &&
+      dateStr === todayStr &&
+      !achievementDateSet.has(todayStr)
+    ) {
       setSelectedDateType("today");
       setRecordData(null);
       return;
@@ -186,19 +189,25 @@ const MissonCalendarPage = () => {
               />
             ) : (
               <div style={{ fontSize: "0.8rem", color: "#888" }}>
-                {isTodaySelected ? <NotyetInform /> : "해당 날짜에는 작성한 글이 없습니다."}
+                {isTodaySelected ? (
+                  <NotyetInform />
+                ) : (
+                  "해당 날짜에는 작성한 글이 없습니다."
+                )}
               </div>
             )}
           </RecordBox>
         )}
         {isModalOpen && (
           <ModalBox>
-            <CalendarModal isOpen={true} onClose={() => setIsModalOpen(false)} />
+            <CalendarModal
+              isOpen={true}
+              onClose={() => setIsModalOpen(false)}
+            />
           </ModalBox>
         )}
         {!showRecord && <Massege>한 걸음, 두 걸음, 같이 걸어요.</Massege>}
       </ContentWrapper>
-      <TabBar icons={{ mission: PurpleMissionIcon }} userId={userId}/>
     </Container>
   );
 };
@@ -212,7 +221,7 @@ const Container = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  height: calc(100% - 1rem);
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

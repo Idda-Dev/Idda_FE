@@ -37,7 +37,8 @@ const Wrapper = styled.div`
   width: 100%;
   margin: 0 auto;
   padding-top: 3.5rem; /* 헤더 높이 */
-  padding-bottom: 1.5rem; /* 탭바 높이 */
+  padding-bottom: 0;
+
   position: relative;
   min-height: 100%;
   display: flex;

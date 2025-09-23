@@ -3,14 +3,12 @@ import styled from "styled-components";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import MissionCompleteModal from "../features/Mission/components/MissionCompleteModal";
-
-import PurpleMissonIcon from "../assets/PurpleMissionIcon.png";
+import LevelUpModal from "../features/Mission/components/LevelUpModal";
 
 import MissionHeader from "../features/Mission/components/MissionHeader";
 import TodayMission from "../features/Mission/components/TodayMission";
 import ProofMission from "../features/Mission/components/ProofMission";
 import AlreadyWrittenMission from "../features/Mission/components/AlreadyWrittenMission";
-import TabBar from "../components/TabBar";
 
 const MissionPage = () => {
   const location = useLocation();
@@ -33,6 +31,12 @@ const MissionPage = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
   const [showComplete, setShowComplete] = useState(false);
+
+  const [showLevelUp, setShowLevelUp] = useState(false); // 레벨업 모달
+  const [levelUpInfo, setLevelUpInfo] = useState({ level: null, name: "" });
+  const [userName, setUserName] = useState("");
+
+  const LEVEL_NAME = ["한뭉치", "두뭉치", "세뭉치", "네뭉치", "다섯뭉치"];
 
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const isFormValid = imagePreview && finalText && selected !== "공개 여부";
@@ -68,6 +72,18 @@ const MissionPage = () => {
     };
     fetchMissionData();
   }, [BASE_URL, refreshTrigger, user_id]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/api/users/${user_id}`);
+        setUserName(res.data.nickname); // ✅ 실제 응답 필드명
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const handleRefreshMission = async () => {
     if (!user_id) return;
@@ -128,16 +144,28 @@ const MissionPage = () => {
 
       const date = getYMDInKST();
       const missionIdResponse = await axios.get(
-        `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(date)}`
+        `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(
+          date
+        )}`
       );
       const missionId = missionIdResponse.data.missionId;
       const postUrl = `${BASE_URL}/api/users/${user_id}/missions/${missionId}`;
 
-      await axios.post(postUrl, formData, {
+      const { data } = await axios.post(postUrl, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      setShowComplete(true);
+      // ✅ 응답의 level로 레벨업 모달 여부 결정
+      const nextLevel = Number(data?.level);
+      if (nextLevel >= 2 && nextLevel <= 5) {
+        setLevelUpInfo({
+          level: nextLevel,
+          name: LEVEL_NAME[nextLevel - 1], // 1~5 → idx 0~4
+        });
+        setShowLevelUp(true); // 레벨업 모달 먼저
+      } else {
+        setShowComplete(true); // 레벨 변화 없으면 바로 완료 모달
+      }
       setTimeout(() => setRefreshTrigger((prev) => !prev), 300);
     } catch (error) {
       console.error(error);
@@ -184,9 +212,18 @@ const MissionPage = () => {
         )}
       </MainContainer>
 
-      <TabBarWrapper>
-        <TabBar icons={{ mission: PurpleMissonIcon }} userId={user_id} />
-      </TabBarWrapper>
+      {/* ✅ 레벨업 모달 (가장 위에) */}
+      {showLevelUp && (
+        <LevelUpModal
+          levelName={levelUpInfo.name}
+          userName={userName}
+          onClose={() => {
+            setShowLevelUp(false);
+            setShowComplete(true); // 닫으면 완료 모달 보이기
+          }}
+          // characterImg={...} // 있으면 전달
+        />
+      )}
 
       {showComplete && (
         <MissionCompleteModal
@@ -210,7 +247,7 @@ export default MissionPage;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   position: relative;
   background-color: #f8faff;
@@ -221,13 +258,4 @@ const MainContainer = styled.div`
   overflow-y: auto;
   padding: 1.5rem 3rem;
   box-sizing: border-box;
-`;
-
-const TabBarWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  z-index: 100;
 `;

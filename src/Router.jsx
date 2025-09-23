@@ -18,8 +18,8 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
-      { index: true, element: <LoginPage /> },  
-      { path: "/main", element: <MainPage /> },  
+      { index: true, element: <LoginPage /> },
+      { path: "/main", element: <MainPage /> },
       { path: "/mission", element: <MissionPage /> },
       { path: "/community", element: <CommunityPage /> },
       { path: "/community/post/:postId", element: <PostItemPage /> },
@@ -27,12 +27,11 @@ const router = createBrowserRouter([
       { path: "/coupon", element: <MyCouponsPage /> },
       { path: "/mission/calendar", element: <MissionCalendarPage /> },
       { path: "/serviceInfo1", element: <FirstPage /> },
-      { path: "/serviceInfo1/serviceInfo2", element: <SecondPage/> },
-      { path: "/test", element: <TestPage/> },
-      { path: "/typeInfo", element: <TypePage/> },
+      { path: "/serviceInfo1/serviceInfo2", element: <SecondPage /> },
+      { path: "/test", element: <TestPage /> },
+      { path: "/typeInfo", element: <TypePage /> },
     ],
   },
 ]);
-
 
 export default router;

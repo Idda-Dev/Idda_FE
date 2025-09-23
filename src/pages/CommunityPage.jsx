@@ -3,9 +3,6 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import PostList from "../features/Post/components/PostList";
 import Location from "../features/Post/components/Location";
-import TabBar from "../components/TabBar";
-import PurpleCommunityIcon from "../assets/PurpleCommunityIcon.png";
-
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -50,7 +47,7 @@ const CommunityPage = () => {
           <>
             <Location location={location} setLocation={setLocation} />
             <PostListWrapper>
-              <PostList location={location} userId={userId}/>
+              <PostList location={location} userId={userId} />
             </PostListWrapper>
           </>
         ) : (
@@ -61,7 +58,6 @@ const CommunityPage = () => {
           </>
         )}
       </Wrapper>
-      <TabBar icons={{ community: PurpleCommunityIcon }} userId={userId} />
     </Container>
   );
 };
@@ -80,7 +76,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   width: calc(74% + 2rem);
-  height: calc(100% - 2.5rem);
+  height: 100%; /* 탭바 고려 X */
   padding-top: 52px;
   display: flex;
   flex-direction: column;

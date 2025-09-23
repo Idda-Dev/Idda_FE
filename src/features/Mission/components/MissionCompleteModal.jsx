@@ -27,14 +27,8 @@ const MissionCompleteModal = ({ onClose, onGoBoard, onGoShop }) => {
         <Title>솜뭉치 5개를 모았어요.</Title>
         <Sub>오늘 하루도 수고했어요 :) 내일 또 만나요!</Sub>
 
-        <Btn onClick={onGoBoard}>
-          <Emoji aria-hidden>☁️</Emoji>
-          게시판 구경가기
-        </Btn>
-        <Btn onClick={onGoShop}>
-          <Emoji aria-hidden>☁️</Emoji>
-          상점 바로가기
-        </Btn>
+        <Btn onClick={onGoBoard}>게시판 구경가기</Btn>
+        <Btn onClick={onGoShop}>상점 바로가기</Btn>
       </Card>
     </Overlay>
   );
@@ -119,7 +113,6 @@ const Sub = styled.div`
 const Btn = styled.div`
   width: 100%;
   height: 45px;
-  padding: 12px 65px 12px 18px;
   border-radius: 36px;
 
   background: var(--Background, #e8f0ff);
@@ -135,6 +128,8 @@ const Btn = styled.div`
   align-items: center;
   justify-content: center;
   gap: 10px;
+
+  text-align: center;
 
   &:not(:last-of-type) {
     margin-bottom: 18px;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 // 앱웹 사이즈 기본 도화지 : AppContainer
 export const AppContainer = styled.div`
   border: 1px solid black;
-  height: 100vh;
+  height: 100dvh; /* 모바일 브라우저 UI 변동 대응 */
   width: 390px;
   margin: 0 auto;
 
