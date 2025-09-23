@@ -4,7 +4,7 @@ import StarIcon from "../assets/StarIcon.png";
 import BookMarkIcon from "../assets/BookMarkIcon.png";
 import { useNavigate } from "react-router-dom";
 
-const Record = ({ postId, memberId, title, content, photoUrl, date }) => {
+const Record = ({ postId, memberId,userId, title, content, photoUrl, date }) => {
   const dateObj = new Date(date);
   const y = dateObj.getFullYear();
   const m = String(dateObj.getMonth() + 1).padStart(2, "0");
@@ -15,7 +15,7 @@ const Record = ({ postId, memberId, title, content, photoUrl, date }) => {
   const nav = useNavigate();
 
   const handleMoveCommunity = () => {
-    nav(`/community/post/${postId}`, { state: { memberId } });
+    nav(`/community/post/${postId}`, { state: { memberId ,userId} });
   };
 
   return (

@@ -91,6 +91,7 @@ const AlreadyWrittenMission = ({
             <Record
               postId={recordData.postId}
               memberId={userId}
+              userId={userId}
               title={recordData.title}
               content={recordData.content}
               photoUrl={recordData.photoUrl}
