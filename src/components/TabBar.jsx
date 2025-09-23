@@ -30,11 +30,11 @@ const TabBar = () => {
 
   const tabs = [
     {
-      path: "/",
+      path: "/main",
       label: "홈",
       icon: HomeIcon,
       activeIcon: PurpleHomeIcon,
-      match: (p) => p === "/", // ← 홈은 정확히 일치할 때만 활성
+      match: (p) => p === "/main", // ← 홈은 정확히 일치할 때만 활성
     },
     {
       path: "/mission",

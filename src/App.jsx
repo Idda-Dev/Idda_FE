@@ -1,23 +1,21 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { AppContainer } from "./components/CommonComponents";
 import TabBar from "./components/TabBar";
-import PurpleHomeIcon from "./assets/PurpleHomeIcon.png"; // 필요하면 커스텀 아이콘
 import styled from "styled-components";
 
 function App() {
+  const location = useLocation();
+
+  // 탭바를 숨기고 싶은 경로들
+  const hideTabBarRoutes = ["/", "/login"];
+
+  const shouldHideTabBar = hideTabBarRoutes.includes(location.pathname);
+
   return (
-    <div>
-      <AppContainer>
-        <MainArea>
-          {/* ▼ 하단에 공간 예약 */}
-          <Outlet />
-        </MainArea>
-        <TabBar
-          icons={{ home: PurpleHomeIcon }}
-          backgroundColor="rgba(255,255,255,0.9)"
-        />
-      </AppContainer>
-    </div>
+    <AppContainer>
+      <Outlet />
+      {!shouldHideTabBar && <TabBar />} {/* ✅ 조건부 렌더링 */}
+    </AppContainer>
   );
 }
 
