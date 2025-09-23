@@ -157,6 +157,8 @@ const MissionPage = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
+      setAlreadyVerified(true);
+
       const nextLevel = Number(data?.level);
       if (nextLevel >= 2 && nextLevel <= 5) {
         setLevelUpInfo({ level: nextLevel, name: LEVEL_NAME[nextLevel - 1] });
