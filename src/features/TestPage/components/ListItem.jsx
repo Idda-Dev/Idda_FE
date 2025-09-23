@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import CheckImg from '../assets/CheckIcon.png';      
-import CheckboxBgImg from '../assets/Checkbox.png'; 
+import React from "react";
+import styled from "styled-components";
+import CheckImg from "../assets/CheckIcon.png";
+import CheckboxBgImg from "../assets/CheckBox.png";
 
 const ListItem = ({ content, isSelected, onClick }) => {
   return (
