@@ -34,7 +34,7 @@ const getYMDInKST = (date = new Date()) => {
  *  - onReload?: () => void  // (옵션) 부모쪽에서 재조회 트리거 시 호출하고 싶을 때
  */
 const AlreadyWrittenMission = ({
-  userId = 1,
+  userId ,
   baseUrl = import.meta.env.VITE_API_BASE_URL,
   dateOverride, // 없으면 오늘(KST)
   onReload,
