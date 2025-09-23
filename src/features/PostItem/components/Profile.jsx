@@ -4,14 +4,22 @@ import ProfileIcon from "../assets/ProfileIcon.png"
 
 const Profile = ({ nickname, profileImageUrl, time }) => {
   const formatTime = (isoString) => {
-    const date = new Date(isoString);
+  const date = new Date(isoString);
 
-    return `${date.getFullYear()}/${
-      String(date.getMonth() + 1).padStart(2, "0")
-    }/${String(date.getDate()).padStart(2, "0")} ${
-      String(date.getHours()).padStart(2, "0")
-    }:${String(date.getMinutes()).padStart(2, "0")}`;
-  };
+  // 현재 시각을 timestamp(ms)로 변환
+  const timestamp = date.getTime();
+  // KST = UTC + 9시간
+  const kstDate = new Date(timestamp + 9 * 60 * 60 * 1000);
+
+  const year = kstDate.getFullYear();
+  const month = String(kstDate.getMonth() + 1).padStart(2, "0");
+  const day = String(kstDate.getDate()).padStart(2, "0");
+  const hour = String(kstDate.getHours()).padStart(2, "0");
+  const minute = String(kstDate.getMinutes()).padStart(2, "0");
+
+  return `${year}/${month}/${day} ${hour}:${minute}`;
+};
+
 
   return (
     <Container>

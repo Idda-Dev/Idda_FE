@@ -1,4 +1,3 @@
-// MissionPage.jsx
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
@@ -159,7 +158,7 @@ const MissionPage = () => {
           userId={userId}
         />
         {alreadyVerified ? (
-          <AlreadyWrittenMission />
+          <AlreadyWrittenMission userId={user_id} />
         ) : (
           <ProofMission
             data={{
