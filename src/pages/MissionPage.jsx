@@ -1,8 +1,7 @@
-// MissionPage.jsx
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import MissionCompleteModal from "../features/Mission/components/MissionCompleteModal";
 import LevelUpModal from "../features/Mission/components/LevelUpModal";
 
@@ -12,6 +11,11 @@ import ProofMission from "../features/Mission/components/ProofMission";
 import AlreadyWrittenMission from "../features/Mission/components/AlreadyWrittenMission";
 
 const MissionPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const userId = location.state?.userId; // navigate로 전달된 userId
+  const user_id = userId;
+
   const [imagePreview, setImagePreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -26,7 +30,7 @@ const MissionPage = () => {
   const [alreadyVerified, setAlreadyVerified] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
-  const [showComplete, setShowComplete] = useState(false); // ✅ 완료 모달 상태
+  const [showComplete, setShowComplete] = useState(false);
 
   const [showLevelUp, setShowLevelUp] = useState(false); // 레벨업 모달
   const [levelUpInfo, setLevelUpInfo] = useState({ level: null, name: "" });
@@ -35,10 +39,7 @@ const MissionPage = () => {
   const LEVEL_NAME = ["한뭉치", "두뭉치", "세뭉치", "네뭉치", "다섯뭉치"];
 
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  const user_id = 1;
   const isFormValid = imagePreview && finalText && selected !== "공개 여부";
-
-  const navigate = useNavigate();
 
   const getYMDInKST = (date = new Date()) => {
     const fmt = new Intl.DateTimeFormat("sv-SE", {
@@ -47,20 +48,19 @@ const MissionPage = () => {
       month: "2-digit",
       day: "2-digit",
     });
-    return fmt.format(date); // "YYYY-MM-DD"
+    return fmt.format(date);
   };
 
   useEffect(() => {
+    if (!user_id) return; // userId 없으면 요청 안함
     const fetchMissionData = async () => {
       try {
         const formattedDate = getYMDInKST();
-
         const response = await axios.get(
           `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(
             formattedDate
           )}`
         );
-
         setMissionData({
           content: response.data.content,
           missionComment: response.data.missionComment,
@@ -71,7 +71,7 @@ const MissionPage = () => {
       }
     };
     fetchMissionData();
-  }, [BASE_URL, refreshTrigger]);
+  }, [BASE_URL, refreshTrigger, user_id]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -83,9 +83,10 @@ const MissionPage = () => {
       }
     };
     fetchUser();
-  }, [BASE_URL]);
+  }, []);
 
   const handleRefreshMission = async () => {
+    if (!user_id) return;
     try {
       setIsRefreshing(true);
       const res = await axios.put(
@@ -133,6 +134,7 @@ const MissionPage = () => {
       alert("모든 입력을 완료해주세요.");
       return;
     }
+    if (!user_id) return;
 
     try {
       const formData = new FormData();
@@ -140,7 +142,6 @@ const MissionPage = () => {
       formData.append("public", selected === "공개" ? "true" : "false");
       formData.append("file", imageFile);
 
-      // ✅ KST 기준 날짜 사용
       const date = getYMDInKST();
       const missionIdResponse = await axios.get(
         `${BASE_URL}/api/users/${user_id}/missions?date=${encodeURIComponent(
@@ -182,9 +183,10 @@ const MissionPage = () => {
           onRefresh={handleRefreshMission}
           isRefreshing={isRefreshing}
           alreadyVerified={alreadyVerified}
+          userId={userId}
         />
         {alreadyVerified ? (
-          <AlreadyWrittenMission />
+          <AlreadyWrittenMission userId={user_id} />
         ) : (
           <ProofMission
             data={{
@@ -223,17 +225,16 @@ const MissionPage = () => {
         />
       )}
 
-      {/* ✅ 완료 모달 */}
       {showComplete && (
         <MissionCompleteModal
           onClose={() => setShowComplete(false)}
           onGoBoard={() => {
             setShowComplete(false);
-            navigate("/community"); // 실제 라우트에 맞게 변경
+            navigate("/community", { state: { userId: user_id } });
           }}
           onGoShop={() => {
             setShowComplete(false);
-            navigate("/shop"); // 실제 라우트에 맞게 변경
+            navigate("/shop", { state: { userId: user_id } });
           }}
         />
       )}
@@ -243,7 +244,6 @@ const MissionPage = () => {
 
 export default MissionPage;
 
-/* 스타일 */
 const Container = styled.div`
   display: flex;
   flex-direction: column;

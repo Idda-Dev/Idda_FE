@@ -6,15 +6,37 @@ import Content1 from './Content1';
 import Content2 from './Content2';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-// userId = 1 설정 
-const userId = 1;
 
-const ShopModal = ({ isOpen, onClose, item }) => {
+const ShopModal = ({ isOpen, onClose, item, userId }) => {
   const [clicked, setClicked] = useState(false);
   const [purchaseSuccess, setPurchaseSuccess] = useState(false);
+  const [userCandy, setUserCandy] = useState(0);
+  const [loadingUser, setLoadingUser] = useState(true);
   const navigate = useNavigate();
 
-  // 모달 열릴 때마다 상태 초기화
+  // 유저 정보 조회
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        if (!BASE_URL) {
+          console.warn("⚠️ BASE_URL 미설정 → 목데이터 사용");
+          setUserCandy(1000); // 목데이터 캔디
+          return;
+        }
+
+        const res = await axios.get(`${BASE_URL}/api/users/${userId}`);
+        setUserCandy(res.data.candy);
+      } catch (err) {
+        console.error("유저 정보 API 호출 실패:", err);
+        setUserCandy(0);
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+
+    if (isOpen) fetchUserInfo();
+  }, [userId, isOpen]);
+
   useEffect(() => {
     if (isOpen) {
       setClicked(false);
@@ -23,25 +45,28 @@ const ShopModal = ({ isOpen, onClose, item }) => {
   }, [isOpen]);
 
   if (!isOpen) return null;
+  if (loadingUser) return <Overlay>로딩중...</Overlay>;
 
   const handleClickConfirm = async () => {
-    
+    if (userCandy < item.price) {
+      console.log("캔디 부족");
+      setPurchaseSuccess(false);
+      setClicked(true);
+      return;
+    }
+
     if (!BASE_URL) {
-      console.warn("⚠️ BASE_URL이 설정되지 않았습니다. → 목데이터 시뮬레이션");
-      const hasEnoughCandy = item.price <= 5; 
-      setPurchaseSuccess(hasEnoughCandy);
+      console.warn("⚠️ BASE_URL 미설정 → 목데이터 시뮬레이션");
+      setPurchaseSuccess(true);
       setClicked(true);
       return;
     }
 
     try {
-      const response = await axios.post(`${BASE_URL}/api/users/${userId}/coupons/${item.couponId}`);
-      
-      if (response.status === 201) {
-        setPurchaseSuccess(true);
-      } else {
-        setPurchaseSuccess(true);
-      }
+      const response = await axios.post(
+        `${BASE_URL}/api/users/${userId}/coupons/${item.couponId}`
+      );
+      setPurchaseSuccess(response.status === 201);
     } catch (err) {
       console.error("API 호출 실패:", err);
       setPurchaseSuccess(false);
@@ -53,17 +78,14 @@ const ShopModal = ({ isOpen, onClose, item }) => {
   const handleClickComplete = () => {
     onClose();
     if (purchaseSuccess) {
-      navigate("/coupon");
+      navigate("/coupon", { state: { userId } });
     }
   };
 
   return (
     <Overlay onClick={onClose}>
       <ModalBox onClick={(e) => e.stopPropagation()}>
-        {clicked ? 
-          <Content2 isSuccess={purchaseSuccess} /> : 
-          <Content1 item={item} />
-        }
+        {clicked ? <Content2 isSuccess={purchaseSuccess} /> : <Content1 item={item} />}
         {!clicked ? (
           <Button onClick={handleClickConfirm}>구매하기</Button>
         ) : (
@@ -78,7 +100,7 @@ const ShopModal = ({ isOpen, onClose, item }) => {
 
 export default ShopModal;
 
-// --- 스타일 컴포넌트 ---
+// Styled-components
 const Overlay = styled.div`
   position: absolute;
   top: 0;

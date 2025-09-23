@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import BgImg from "../assets/FirstPageTitle.png"
+import { survey } from "./SurveyQuestions"; 
 
-const FirstPageTitle = () => {
+const FirstPageTitle = ({ questionIndex = 0 }) => {
   return (
     <Container>
       <Background src={BgImg} />
-      <Title>외출 빈도</Title>
+      <Title>{survey[questionIndex].question}</Title>
     </Container>
   )
 }
@@ -25,9 +26,10 @@ const Background = styled.img`
 
 const Title = styled.p`
   position: absolute;
-  top: 13%;    
+  top: 3%;    
   left: 54%;   
   transform: translate(-50%, -50%); 
   color: #2F0047;
   font-size: 1.3rem;
+  white-space: pre-line;  /* \n 줄바꿈 반영 */
 `

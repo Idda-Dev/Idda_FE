@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import QrModal from './QrModal';
 
-const Coupon = ({ item, activeTab }) => {
+const Coupon = ({ item, activeTab, userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isUsedOrExpired = activeTab === 2;
 
@@ -41,6 +41,7 @@ const Coupon = ({ item, activeTab }) => {
         <QrModal
           memberCouponId={item.memberCouponId}
           onClose={handleCloseModal}
+          userId={userId}  
         />
       )}
     </>

@@ -1,31 +1,42 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
-import BackgroundImg from "../assets/Background.png" 
-import TitleBgImg from "../assets/TitleBackground.png"       
-import TextBgImg from "../assets/TalkIcon.png"   // 🔥 Text2 뒤에 올 이미지
+import { useLocation, useNavigate } from 'react-router-dom'; 
+import BackgroundImg from "../assets/Background.png";
+import TitleBgImg from "../assets/TitleBackground.png";
+import TextBgImg from "../assets/TalkIcon.png";
+import starIcon from "../assets/Star.png"
+import step1 from "../assets/Step1.png"
+import step2 from "../assets/Step2.png"
 
 const SecondPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { nickname, level, userId, user } = location.state || {};
+
+  console.log("✅ SecondPage → nickname:", nickname, "level:", level, "userId:", userId, "user:", user);
+
+  const handleNavigate = () => {
+    navigate("/main", { state: { userId, user } });
+  };
+
   return (
-    <Container>
+    <Container onClick={handleNavigate}>
         <TitleWrapper>
-          <TitleBackground src={TitleBgImg} alt="title-bg" />
+          <Star src={starIcon}/>
           <Title>매일 작은 미션에 도전해요</Title>
         </TitleWrapper>
-        
-        <Text1>"매일 예상하지 못한 미션이 나와서<br />도전하는 재미가 있어요."</Text1>
-        <Content>서로의 미션 인증글에 응원을 남겨보세요</Content>
-        <TextWrapper>
-          <TextBackground src={TextBgImg} alt="text-bg" />
-          <Text2>
-            "나랑 비슷한 사람들이 있다는 사실 <br />
-            자체만으로도 위로가 됐어요."
-          </Text2>
-        </TextWrapper>
-
-        <Content>
-          미션인증으로 솜뭉치를 모아 <br />인근 가게의 할인쿠폰을 구입할 수 있어요.
-        </Content>
-
+        <ContentWrapper>
+            <Wrapper>
+              <Text>STEP1</Text>
+              <Icon1 src={step1}/>
+              <Content>미션 인증글에 응원을 남겨 보세요.</Content>
+            </Wrapper>
+            <Wrapper>
+              <Text>STEP1</Text>
+              <Icon2 src={step2}/>
+              <Content>미션 인증으로 솜뭉치를 모아 인근 가게의 <br/>할인 쿠폰을 구입해요.</Content>
+            </Wrapper>
+        </ContentWrapper>
         <Box>
           한걸음씩, 이불 밖도 따뜻한 세상으로<br />
           나갈 습관을 함께 만들어 봐요!
@@ -36,96 +47,97 @@ const SecondPage = () => {
 
 export default SecondPage;
 
+/* styled-components 동일 */
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  background: url(${BackgroundImg}) no-repeat center center;
+  background: linear-gradient(to bottom, #2F0047, #856b9b);
   background-size: cover;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding-top: 6rem;
-  padding-bottom: 7rem;
+  padding-top: 3.2rem;
+  padding-bottom: 1.8rem;
   padding-left: 2rem;
   padding-right: 2rem;
-`
+  cursor: pointer; /* ✅ 클릭 가능하게 */
+`;
 
 const TitleWrapper = styled.div`
-  position: relative;
-  display: inline-block;
-  margin-bottom: 1rem;
-  width: 17rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom:1rem;
+`;
+
+const Star=styled.img`
+  width: 1.4rem;
 `
 
-const TitleBackground = styled.img`
-  width: 100%;
-  height: auto;
-`
 
 const Title = styled.p`
   margin: 0;
-  position: absolute;
   width: 100%;
-  top: 46%;
-  left: 58%;
-  transform: translate(-50%, -50%);
-  font-size: 1rem;
+  font-size: 1.2rem;
   text-align: center;
-`
+  color: white;
+`;
 
-const Text1 = styled.p`
-  margin: 0;
-  font-size: 0.8rem;
-  text-align: right;
+const ContentWrapper=styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
   width: 100%;
+`
+
+const Wrapper=styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+`
+
+const Text=styled.p`
+  margin: 0 0 0.8rem 0;
+  background: #D1CDFF;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
   color: #2F0047;
-`
-
-/* 🔥 Text2용 Wrapper */
-const TextWrapper = styled.div`
-  position: relative;
-  display: flex;         // flex로 이미지와 텍스트 정렬
-  align-items: center;   // 세로 중앙 맞춤
-  justify-content: flex-start; // 왼쪽 붙이기
-  width: 100%;           // 부모 폭 채우기
-  margin: 0;             // 위아래 여백 제거
-`
-
-const TextBackground = styled.img`
-  width: 13rem;   // 말풍선 이미지 크기
-  height: auto;
-`
-
-const Text2 = styled.p`
-  position: absolute;
-  top: 50%;
-  
-  transform: translateY(-50%);
-  margin: 0;
   font-size: 0.8rem;
-  color: #2F0047;
-  text-align: left;   // 왼쪽 정렬
-  width: 11rem;     
+  font-weight: 600;
 `
 
-
-const Content = styled.p`
-  margin: 0;
-  font-size: 1rem;
-  text-align: center;
+const Icon1=styled.img`
+  width: 11rem;
 `
+
+const Icon2=styled.img`
+  width: 8.5rem;
+`
+
+const Content=styled.p`
+  margin: 1rem 0;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 550;
+  text-align: start;
+`
+
 
 const Box = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 77%;
-  height: 4rem;
+  width: 85%;
+  height: 3.3rem;
+  margin-top: 1rem;
   background: #E4E0F6;
   border-radius: 30px;
   text-align: center;
-  font-weight: 500;
+  font-weight: 550;
   font-size: 0.9rem;
   color: #2F0047;
-`
+`;

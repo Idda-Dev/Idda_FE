@@ -7,7 +7,7 @@ import { community } from "../../../mocks/community"
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // `location` prop을 받도록
-const PostList = ({ location }) => {
+const PostList = ({ location, userId }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -48,7 +48,7 @@ const PostList = ({ location }) => {
   return (
     <Container>
       {posts.map((post) => (
-        <PostListItem key={post.postId ?? post.id} post={post} />
+        <PostListItem key={post.postId ?? post.id} post={post} userId={userId}/>
       ))}
     </Container>
   );

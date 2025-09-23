@@ -3,17 +3,26 @@ import BackIcon from "../features/PostItem/assets/BackIcon.png";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const Header = ({ title, backPath, backgroundColor, color, backIcon }) => {
+const Header = ({ title, backgroundColor, color, backIcon, userId, backPath }) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
     if (typeof backPath === "function") {
-      backPath(); // 함수이면 실행
+      // 함수면 그대로 실행
+      backPath();
     } else if (backPath !== undefined) {
+      // 문자열/숫자 경로 또는 -1 처리
       const path = backPath === "-1" ? -1 : backPath;
-      navigate(path);
+      if (path === -1) {
+        // 브라우저 뒤로가기
+        navigate(-1);
+      } else {
+        // 경로 이동 시 userId 전달
+        navigate(path, { state: { userId } });
+      }
     } else {
-      navigate("/");
+      // 기본 루트 이동 시 userId 전달
+      navigate("/main", { state: { userId } });
     }
   };
 
@@ -27,7 +36,6 @@ const Header = ({ title, backPath, backgroundColor, color, backIcon }) => {
 
 export default Header;
 
-// Styled Components
 const Container = styled.div`
   position: absolute;
   display: flex;
