@@ -83,7 +83,7 @@ const Text1 = styled.p`
 
 const Text2 = styled.p`
     margin: 0;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 600;
     color: white;
 `
