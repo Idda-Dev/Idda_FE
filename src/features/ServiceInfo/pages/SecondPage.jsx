@@ -1,9 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
-import BackgroundImg from "../assets/Background.png";
-import TitleBgImg from "../assets/TitleBackground.png";
-import TextBgImg from "../assets/TalkIcon.png";
 import starIcon from "../assets/Star.png";
 import step1 from "../assets/Step1.png";
 import step2 from "../assets/Step2.png";
@@ -63,6 +60,7 @@ export default SecondPage;
 /* styled-components 동일 */
 const Container = styled.div`
   width: 100%;
+  height: 100%;
   background: linear-gradient(to bottom, #2f0047, #856b9b);
   background-size: cover;
   display: flex;
