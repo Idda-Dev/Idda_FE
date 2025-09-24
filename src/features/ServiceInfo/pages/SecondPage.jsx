@@ -130,7 +130,7 @@ const Icon2 = styled.img`
 const Content = styled.div`
   margin: 1rem 0;
   color: white;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 550;
   text-align: start;
 `;
