@@ -89,6 +89,8 @@ const Icon1 = styled.img`
   height: 100%;
   border-radius: 50%;
   display: block;
+  object-fit: cover;   /* 비율 유지 + 영역 채우기 */
+  object-position: center; /* 중앙 기준으로 crop */
 `;
 
 
