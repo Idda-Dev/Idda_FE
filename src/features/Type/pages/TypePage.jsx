@@ -160,7 +160,7 @@ const Text1 = styled.p`
 `;
 
 const Text2 = styled.p`
-  margin: 3rem 0 0 0;
+  margin: 1.5rem 0 0 0;
   font-size: 1rem;
   color: black;
 `;
@@ -172,12 +172,12 @@ const Highlight = styled.span`
 `;
 
 const Text3 = styled.p`
-  margin: 0.8rem 0 0 0;
+  margin: 0.5rem 0 0 0;
   font-size: 0.7rem;
 `;
 
 const Text4 = styled.p`
-  margin: 3rem 0 0 0;
+  margin: 1rem 0 0 0;
   color: #2f0047;
   text-decoration: underline;
   text-underline-offset: 0.3rem;

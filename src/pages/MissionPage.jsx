@@ -210,6 +210,7 @@ const MissionPage = () => {
             }}
           />
         )}
+        <div style={{ height: "50px" }} />
       </MainContainer>
 
       {showLevelUp && (
