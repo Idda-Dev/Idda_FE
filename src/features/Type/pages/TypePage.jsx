@@ -9,8 +9,8 @@ import HomeIcon from "../assets/HomeIcon.png";
 import NextBt from "../assets/NextBt.png";
 import moongchi1 from "../assets/Hanmoongchi.gif";
 import moongchi2 from "../assets/Doomoongchi.gif";
-import moongchi3 from "../assets/Hanmoongchi.gif";
-import moongchi4 from "../assets/Hanmoongchi.gif";
+import moongchi3 from "../assets/Semoongchi.gif";
+import moongchi4 from "../assets/Nemoongchi.gif";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
