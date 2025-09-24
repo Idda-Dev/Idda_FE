@@ -1,10 +1,9 @@
-// pages/TypePage.jsx
+/// pages/TypePage.jsx
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useUserStore from "../../../store/useUserStore"; // ← 경로 확인!
-
 import HomeIcon from "../assets/HomeIcon.png";
 import NextBt from "../assets/NextBt.png";
 import moongchi1 from "../assets/Hanmoongchi.gif";
@@ -18,12 +17,7 @@ const TypePage = () => {
   const navigate = useNavigate();
 
   // zustand에서만 읽기
-  const {
-    userId,
-    nickname,
-    level,
-    setUser, // 보충 저장
-  } = useUserStore();
+  const { userId, nickname, level, setUser } = useUserStore();
 
   // 1) userId 없으면 로그인으로
   useEffect(() => {
@@ -50,11 +44,30 @@ const TypePage = () => {
     hydrateIfNeeded();
   }, [userId, nickname, level, setUser]);
 
-  const typeMap = { 1: "한뭉치", 2: "두뭉치", 3: "세뭉치", 4: "네뭉치" };
-  const gifMap = { 1: moongchi1, 2: moongchi2, 3: moongchi3, 4: moongchi4 };
+  const typeMap = {
+    1: "한뭉치",
+    2: "두뭉치",
+    3: "세뭉치",
+    4: "네뭉치",
+  };
+
+  const gifMap = {
+    1: moongchi1,
+    2: moongchi2,
+    3: moongchi3,
+    4: moongchi4,
+  };
+
+  const missionTextMap = {
+    1: "방안에서 할 수 있는",
+    2: "집안에서 할 수 있는",
+    3: "작은 외출 하는",
+    4: "타인과 상호작용하는",
+  };
 
   const userType = typeMap[level] || "...";
   const userGif = gifMap[level] || moongchi1;
+  const missionText = missionTextMap[level] || "방안에서 할 수 있는";
 
   const handleNext = async () => {
     if (!userId) {
@@ -86,8 +99,10 @@ const TypePage = () => {
       <Text2>
         {nickname}님의 집콕 유형은 <Highlight>{userType}</Highlight> 에요.
       </Text2>
-      <Text3>{userType}는 집콕력이 아주 높아요.</Text3>
-      <Text4>방안에서 할 수 있는 미션부터 시작해요!</Text4>
+
+      <Text4>
+        {missionText} 미션부터 시작해요!
+      </Text4>
 
       <NextButton src={NextBt} alt="Next" onClick={handleNext} />
     </Container>
@@ -96,11 +111,10 @@ const TypePage = () => {
 
 export default TypePage;
 
-/* ====================== styles ====================== */
 const Container = styled.div`
   background-color: #eceaff;
   width: 100%;
-  height: 100dvh; /* 모바일 주소창 대응 */
+  height: 100dvh; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -160,7 +174,7 @@ const Text1 = styled.p`
 `;
 
 const Text2 = styled.p`
-  margin: 1.5rem 0 0 0;
+  margin: 4rem 0 0 0;
   font-size: 1rem;
   color: black;
 `;
@@ -171,13 +185,8 @@ const Highlight = styled.span`
   padding: 0.3rem;
 `;
 
-const Text3 = styled.p`
-  margin: 0.5rem 0 0 0;
-  font-size: 0.7rem;
-`;
-
 const Text4 = styled.p`
-  margin: 1rem 0 0 0;
+  margin: 2rem 0 0 0;
   color: #2f0047;
   text-decoration: underline;
   text-underline-offset: 0.3rem;
