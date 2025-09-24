@@ -38,7 +38,7 @@ const SecondPage = () => {
           <Content>미션 인증글에 응원을 남겨 보세요.</Content>
         </Wrapper>
         <Wrapper>
-          <Text>STEP1</Text>
+          <Text>STEP2</Text>
           <Icon2 src={step2} />
           <Content>
             미션 인증으로 솜뭉치를 모아 인근 가게의 <br />
