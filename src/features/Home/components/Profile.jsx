@@ -76,8 +76,8 @@ const Wrapper1 =styled.span`
 `
 
 const Icon1Wrapper = styled.div`
-  width: 4.7rem;
-  height: 4.7rem;
+  width: 5rem;
+  height: 5rem;
   border-radius: 50%; 
   display: flex;
   justify-content: center;
@@ -90,7 +90,7 @@ const Icon1 = styled.img`
   border-radius: 50%;
   display: block;
   object-fit: cover;   /* 비율 유지 + 영역 채우기 */
-  object-position: center; /* 중앙 기준으로 crop */
+  object-position: center -40%; /* 🔽 중앙보다 조금 더 아래쪽을 기준으로 */
 `;
 
 
