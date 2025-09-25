@@ -100,9 +100,7 @@ const TypePage = () => {
         {nickname}님의 집콕 유형은 <Highlight>{userType}</Highlight> 에요.
       </Text2>
 
-      <Text4>
-        {missionText} 미션부터 시작해요!
-      </Text4>
+      <Text4>{missionText} 미션부터 시작해요!</Text4>
 
       <NextButton src={NextBt} alt="Next" onClick={handleNext} />
     </Container>
@@ -114,7 +112,7 @@ export default TypePage;
 const Container = styled.div`
   background-color: #eceaff;
   width: 100%;
-  height: 100dvh; 
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -174,7 +172,7 @@ const Text1 = styled.p`
 `;
 
 const Text2 = styled.p`
-  margin: 4rem 0 0 0;
+  margin: 1.5rem 0 0 0;
   font-size: 1rem;
   color: black;
 `;
@@ -186,7 +184,7 @@ const Highlight = styled.span`
 `;
 
 const Text4 = styled.p`
-  margin: 2rem 0 0 0;
+  margin: 1.5rem 0 0 0;
   color: #2f0047;
   text-decoration: underline;
   text-underline-offset: 0.3rem;
