@@ -55,6 +55,6 @@ const Check = styled.img`
 
 const Content = styled.p`
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-align: start;
 `;
