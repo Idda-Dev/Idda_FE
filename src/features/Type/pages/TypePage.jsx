@@ -1,9 +1,11 @@
-/// pages/TypePage.jsx
 import React, { useEffect } from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import useUserStore from "../../../store/useUserStore"; // ← 경로 확인!
+
+import LeeSeoyoonFont from "../../../../public/fonts/이서윤체.ttf";
+
+import useUserStore from "../../../store/useUserStore"; 
 import HomeIcon from "../assets/HomeIcon.png";
 import NextBt from "../assets/NextBt.png";
 import moongchi1 from "../assets/Hanmoongchi.gif";
@@ -86,6 +88,7 @@ const TypePage = () => {
 
   return (
     <Container>
+      <FontStyle />
       <Wrapper>
         <Icon src={HomeIcon} alt="home" />
         <Text1>집콕 유형 테스트 결과</Text1>
@@ -110,6 +113,15 @@ const TypePage = () => {
 };
 
 export default TypePage;
+
+const FontStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'LeeSeoyoon';
+    src: url(${LeeSeoyoonFont}) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+`;
 
 const Container = styled.div`
   background-color: #eceaff;
@@ -157,7 +169,8 @@ const TypeBadge = styled.p`
   margin: 0;
   padding: 0.3rem 0.6rem;
   border-radius: 36px;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-family: "LeeSeoyoon";
 `;
 
 const NextButton = styled.img`
@@ -170,7 +183,8 @@ const NextButton = styled.img`
 const Text1 = styled.p`
   margin: 0;
   color: #2f0047;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  font-family: "LeeSeoyoon";
 `;
 
 const Text2 = styled.p`
@@ -183,6 +197,7 @@ const Highlight = styled.span`
   background-color: white;
   border-radius: 36px;
   padding: 0.3rem;
+  font-family: "LeeSeoyoon";
 `;
 
 const Text4 = styled.p`
@@ -190,4 +205,6 @@ const Text4 = styled.p`
   color: #2f0047;
   text-decoration: underline;
   text-underline-offset: 0.3rem;
+  font-family: "LeeSeoyoon";
+  font-size: 1.2rem;
 `;

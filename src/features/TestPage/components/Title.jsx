@@ -11,6 +11,7 @@ const Title = ({ questionIndex }) => {
 export default Title;
 
 const Text = styled.p`
+  font-size: 1.1rem;
   text-align: start;
   margin: 0;
   width: 75%;

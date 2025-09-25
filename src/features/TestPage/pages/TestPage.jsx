@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useUserStore from "../../../store/useUserStore";
+
+import LeeSeoyoonFont from "../../../../public/fonts/이서윤체.ttf";
 
 import Title from "../components/Title";
 import FirstPageTitle from "../components/FirstPageTitle";
@@ -83,6 +85,7 @@ const TestPage = () => {
 
   return (
     <Container>
+      <FontStyle />
       <Wrapper>
         {questionNumber === 1 ? (
           <FirstPageTitle questionIndex={currentQuestionIndex} />
@@ -115,7 +118,15 @@ const TestPage = () => {
 
 export default TestPage;
 
-/* ================= styled ================= */
+const FontStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'LeeSeoyoon';
+    src: url(${LeeSeoyoonFont}) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -126,6 +137,7 @@ const Container = styled.div`
   padding-top: 9rem;
   padding-bottom: 3rem;
   background-color: #eceaff;
+  font-family: "LeeSeoyoon";
 `;
 
 const Wrapper = styled.div`
@@ -134,4 +146,5 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+  font-family: "LeeSeoyoon";
 `;
