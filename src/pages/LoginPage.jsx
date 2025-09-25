@@ -112,6 +112,11 @@ const StartButton = styled.button`
   cursor: pointer;
   outline: none;
 
+  &:focus {
+    outline: none;      /* focus 시에도 테두리 제거 */
+    box-shadow: none;  
+  }
+
   img {
     width: 55%;
     height: auto;

@@ -202,4 +202,5 @@ const CommentInputWrapper = styled.div`
   align-items: center;
   z-index: 200;
   background: #fff;
+  max-width: inherit;
 `;
