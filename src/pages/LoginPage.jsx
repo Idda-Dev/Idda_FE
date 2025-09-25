@@ -32,9 +32,14 @@ const LoginPage = () => {
       setUser(userData); // ✅ zustand에 저장
 
       if (userData.newMember) {
+        // 신규 회원 → 설문조사 시작
         navigate("/test");
-      } else {
+      } else if (userData.levelAssigned) {
+        // 기존 회원 + 설문조사 완료 → 메인으로
         navigate("/main");
+      } else {
+        // 기존 회원 + 설문조사 미완료 → 설문조사로
+        navigate("/test");
       }
     } catch (err) {
       console.error("API 호출 실패:", err);
@@ -66,7 +71,6 @@ const LoginPage = () => {
 
 export default LoginPage;
 
-/* ================= styled ================= */
 const Container = styled.div`
   width: 100%;
   height: 100dvh;
