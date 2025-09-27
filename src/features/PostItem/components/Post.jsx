@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Post = ({ title, content, photoUrl }) => {
   return (
@@ -21,12 +21,12 @@ const Container = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   width: 74%;
-  min-height: 20vh;       /* 최소 높이 */
-  max-height: 40vh;       /* 최대 높이 */
+  min-height: 20vh; /* 최소 높이 */
+  max-height: 40vh; /* 최대 높이 */
   padding: 1.5rem;
   background-color: white;
   border-radius: 16px;
-  border: 1px solid #6F69B0;
+  border: 1px solid #6f69b0;
   gap: 0.4rem;
 `;
 
@@ -38,14 +38,14 @@ const FixedTop = styled.div`
 
 const ScrollContent = styled.div`
   width: 100%;
-  flex: 1 1 auto;       /* 남은 공간 채움 */
+  flex: 1 1 auto; /* 남은 공간 채움 */
   overflow-y: auto;
-  padding-bottom: 0;   
+  padding-bottom: 0;
 `;
 
 const Image = styled.img`
-  width: 100%;
-  max-height: 170px;    /* 이미지 최대 높이 제한 */
+  width: 70%;
+  max-height: 170px; /* 이미지 최대 높이 제한 */
   max-width: 280px;
   border-radius: 9px;
   object-fit: cover;
@@ -67,7 +67,7 @@ const Content = styled.div`
   text-underline-offset: 5px;
   text-decoration-thickness: 0.05rem;
   letter-spacing: -0.5px;
-  margin: 0;      
+  margin: 0;
   text-align: start;
 `;
 

@@ -5,7 +5,7 @@ import axios from "axios";
 
 import LeeSeoyoonFont from "../../../../public/fonts/이서윤체.ttf";
 
-import useUserStore from "../../../store/useUserStore"; 
+import useUserStore from "../../../store/useUserStore";
 import HomeIcon from "../assets/HomeIcon.png";
 import NextBt from "../assets/NextBt.png";
 import moongchi1 from "../assets/Hanmoongchi.gif";
@@ -186,7 +186,7 @@ const Text1 = styled.p`
 `;
 
 const Text2 = styled.p`
-  margin: 4rem 0 0 0;
+  margin: 2rem 0 0 0;
   font-size: 1rem;
   color: black;
 `;
@@ -199,7 +199,7 @@ const Highlight = styled.span`
 `;
 
 const Text4 = styled.p`
-  margin: 2rem 0 0 0;
+  margin: 1rem 0 0 0;
   color: #2f0047;
   text-decoration: underline;
   text-underline-offset: 0.3rem;

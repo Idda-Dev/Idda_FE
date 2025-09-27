@@ -60,7 +60,6 @@ export default SecondPage;
 /* styled-components 동일 */
 const Container = styled.div`
   width: 100%;
-  height: 100%;
   background: linear-gradient(to bottom, #2f0047, #856b9b);
   background-size: cover;
   display: flex;
