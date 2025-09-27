@@ -90,7 +90,7 @@ const Icon1 = styled.img`
   border-radius: 50%;
   display: block;
   object-fit: cover;   /* 비율 유지 + 영역 채우기 */
-  object-position: center -40%; /* 🔽 중앙보다 조금 더 아래쪽을 기준으로 */
+  object-position: center -30%; /* 🔽 중앙보다 조금 더 아래쪽을 기준으로 */
 `;
 
 
