@@ -37,7 +37,7 @@ const MissionPage = () => {
   const [levelUpInfo, setLevelUpInfo] = useState({ level: null, name: "" });
   const [userName, setUserName] = useState("");
 
-  const LEVEL_NAME = ["한뭉치", "두뭉치", "세뭉치", "네뭉치", "다섯뭉치"];
+  const LEVEL_NAME = ["한뭉치", "두뭉치", "세뭉치", "네뭉치", "솜뭉치"];
   const isFormValid = imagePreview && finalText && selected !== "공개 여부";
 
   const getYMDInKST = (date = new Date()) => {

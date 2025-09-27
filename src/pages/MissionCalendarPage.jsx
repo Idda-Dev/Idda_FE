@@ -299,7 +299,7 @@ const CalendarBox = styled.div`
 
 const RecordBox = styled.div`
   width: ${({ $isPast }) => ($isPast ? "66%" : "100%")};
-  height: 17rem;
+  height:auto;
   display: flex;
   justify-content: center;
   align-items: center;
