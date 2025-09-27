@@ -27,7 +27,7 @@ const LevelUpModal = ({ levelName, userName, onClose, characterImg }) => {
     두뭉치: "두뭉치는 집안에서 할 수 있는 미션부터 시작해요.",
     세뭉치: "세뭉치는 작은 외출 미션부터 시작해요.",
     네뭉치: "네뭉치는 타인과 상호작용하는 미션부터 시작해요.",
-    다섯뭉치: `이제 모든 뭉치의 미션을 받아볼 수 있어요.\n여기까지 오느라 정말 수고했어요. ${userName}님의 여정을 늘 응원해요!`,
+    솜뭉치: `이제 모든 뭉치의 미션을 받아볼 수 있어요.\n여기까지 오느라 정말 수고했어요. ${userName}님의 여정을 늘 응원해요!`,
   };
 
   // 컴포넌트 안쪽
@@ -36,7 +36,7 @@ const LevelUpModal = ({ levelName, userName, onClose, characterImg }) => {
     두뭉치: Char2,
     세뭉치: Char3,
     네뭉치: Char4,
-    다섯뭉치: Char5,
+    솜뭉치: Char5,
   };
   // ✅ levelName에 해당하는 메시지 선택
   const desc2Text = levelMentMap[levelName] || "";

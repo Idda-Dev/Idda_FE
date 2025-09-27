@@ -43,7 +43,7 @@ const Container = styled.div`
   border-radius: 16px;
   width: 100%;
   height: 100%;
-  padding: 0.8rem 1.3rem;
+  padding: 1rem 1.3rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

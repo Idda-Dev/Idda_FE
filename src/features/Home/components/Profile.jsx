@@ -99,7 +99,7 @@ const Nickname = styled.div`
     color: #2F0047;
     margin: 0;
     height: 1.5rem;
-    padding: 0.1rem 0.8rem; 
+    padding: 0.1rem 0.6rem; 
     border-radius: 36px;
     font-size: 0.8rem;
     font-weight: 550;
