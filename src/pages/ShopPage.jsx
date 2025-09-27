@@ -24,6 +24,7 @@ const ShopPage = () => {
       <ShopListWrapper>
         <ShopList userId={userId} />
       </ShopListWrapper>
+      <div style={{ height: "50px" }} />
     </Wrapper>
   );
 };
