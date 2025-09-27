@@ -17,8 +17,6 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const TypePage = () => {
   const navigate = useNavigate();
-
-  // zustand에서만 읽기
   const { userId, nickname, level, setUser } = useUserStore();
 
   // 1) userId 없으면 로그인으로
@@ -33,7 +31,6 @@ const TypePage = () => {
       if (nickname && level) return;
       try {
         const { data } = await axios.get(`${BASE_URL}/api/users/${userId}`);
-        // 서버 응답 예: { memberId, nickname, level, ... }
         setUser({
           memberId: data.memberId ?? userId,
           nickname: data.nickname ?? nickname,
@@ -60,29 +57,31 @@ const TypePage = () => {
     4: moongchi4,
   };
 
+  // 데이터 준비 안 됐으면 null 처리
+  if (!level) {
+    return null; // 아무 것도 렌더링 안 함
+  }
+
+  const userType = typeMap[level];
+  const userGif = gifMap[level];
   const missionTextMap = {
     1: "방안에서 할 수 있는",
     2: "집안에서 할 수 있는",
     3: "작은 외출 하는",
     4: "타인과 상호작용하는",
   };
-
-  const userType = typeMap[level] || "...";
-  const userGif = gifMap[level] || moongchi1;
-  const missionText = missionTextMap[level] || "방안에서 할 수 있는";
+  const missionText = missionTextMap[level];
 
   const handleNext = async () => {
     if (!userId) {
       navigate("/");
       return;
     }
-    // 미션 생성은 비동기 백그라운드로
     axios
       .post(`${BASE_URL}/api/users/${userId}/missions`, {})
       .then((res) => console.log("✅ 미션 생성", res.data))
       .catch((err) => console.error("❌ 미션 생성 실패:", err));
 
-    // 스토어만 믿고 이동 (state 없이)
     navigate("/serviceInfo1");
   };
 
@@ -109,6 +108,7 @@ const TypePage = () => {
     </Container>
   );
 };
+
 
 export default TypePage;
 

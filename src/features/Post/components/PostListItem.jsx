@@ -133,6 +133,7 @@ const OverlapImage = styled.img`
   border-radius: 50%;
   border: 4px solid #ECEAFF;
   object-fit: cover;
+  background-color: #fff;
 `;
 
 const Box = styled.div`
