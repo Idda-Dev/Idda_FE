@@ -24,14 +24,20 @@ const MissionPage = () => {
   const [finalText, setFinalText] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("공개 여부");
+
+  // ✅ 난이도(difficulty)까지 포함해서 보관
   const [missionData, setMissionData] = useState({
     content: "",
     missionComment: "",
+    difficulty: "", // "EASY" | "NORMAL" | "HARD"
   });
+
   const [alreadyVerified, setAlreadyVerified] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
+
   const [showComplete, setShowComplete] = useState(false);
+  const [earnedCandy, setEarnedCandy] = useState(0); // ✅ 완료 모달에 표시할 개수
 
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [levelUpInfo, setLevelUpInfo] = useState({ level: null, name: "" });
@@ -50,6 +56,20 @@ const MissionPage = () => {
     return fmt.format(date);
   };
 
+  // ✅ 난이도→Candy 매핑 함수
+  const getCandyByDifficulty = (difficulty) => {
+    switch (difficulty) {
+      case "EASY":
+        return 4;
+      case "NORMAL":
+        return 6;
+      case "HARD":
+        return 8;
+      default:
+        return 0;
+    }
+  };
+
   // 미션 데이터
   useEffect(() => {
     if (!userId) return;
@@ -64,6 +84,7 @@ const MissionPage = () => {
         setMissionData({
           content: response.data.content,
           missionComment: response.data.missionComment,
+          difficulty: response.data.difficulty, // ✅ 추가
         });
         setAlreadyVerified(response.data.verified);
       } catch (error) {
@@ -94,9 +115,11 @@ const MissionPage = () => {
       const res = await axios.put(
         `${BASE_URL}/api/users/${userId}/missions/refresh`
       );
+      // ✅ refresh 응답에서도 난이도 포함
       setMissionData({
         content: res.data.content,
         missionComment: res.data.missionComment,
+        difficulty: res.data.difficulty,
       });
       setAlreadyVerified(false);
       setInputText("");
@@ -159,13 +182,25 @@ const MissionPage = () => {
 
       setAlreadyVerified(true);
 
-      const nextLevel = Number(data?.level);
-      if (nextLevel >= 2 && nextLevel <= 5) {
-        setLevelUpInfo({ level: nextLevel, name: LEVEL_NAME[nextLevel - 1] });
-        setShowLevelUp(true);
+      // ✅ 이번에 획득한 Candy는 현재 미션의 난이도로 계산
+      const earned = getCandyByDifficulty(missionData.difficulty);
+      setEarnedCandy(earned);
+
+      // ✅ levelUp 여부로 모달 분기
+      const levelUp = Boolean(data?.levelUp);
+      if (levelUp) {
+        const nextLevel = Number(data?.level);
+        if (nextLevel >= 1 && nextLevel <= 5) {
+          setLevelUpInfo({ level: nextLevel, name: LEVEL_NAME[nextLevel - 1] });
+        } else {
+          setLevelUpInfo({ level: null, name: "" });
+        }
+        setShowLevelUp(true); // ✅ levelUp이면 레벨업 모달
       } else {
-        setShowComplete(true);
+        setShowComplete(true); // ✅ 아니면 완료 모달
       }
+
+      // (선택) 데이터 리프레시
       setTimeout(() => setRefreshTrigger((prev) => !prev), 300);
     } catch (error) {
       console.error(error);
@@ -180,6 +215,7 @@ const MissionPage = () => {
         <TodayMission
           content={missionData.content}
           missionComment={missionData.missionComment}
+          difficulty={missionData.difficulty} // ✅ 넘겨줌
           onRefresh={handleRefreshMission}
           isRefreshing={isRefreshing}
           alreadyVerified={alreadyVerified}
@@ -219,13 +255,15 @@ const MissionPage = () => {
           userName={userName}
           onClose={() => {
             setShowLevelUp(false);
-            setShowComplete(true);
+            // 레벨업 후에는 완료 모달은 띄우지 않고 그냥 페이지 유지하고 싶으면 아래 줄 주석 처리
+            setShowComplete(true); // ← 레벨업 후에도 “오늘도 수고했어요” 모달 보여주려면 유지
           }}
         />
       )}
 
       {showComplete && (
         <MissionCompleteModal
+          candyCount={earnedCandy} // ✅ 난이도에 따른 개수 전달
           onClose={() => setShowComplete(false)}
           onGoBoard={() => {
             setShowComplete(false);
