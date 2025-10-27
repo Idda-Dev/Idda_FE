@@ -10,12 +10,12 @@ import ReMissionIcon from "../assets/ReMissionIcon.png";
 const TodayMission = ({
   content,
   missionComment,
+  difficulty, // ✅ 추가
   onRefresh,
   isRefreshing,
   alreadyVerified,
   userId,
 }) => {
-  // 미션 달력으로 이동
   const nav = useNavigate();
 
   const handleMissionCalendarPage = () => {
@@ -23,6 +23,22 @@ const TodayMission = ({
       state: { hasTodayRecord: !!alreadyVerified, userId: userId },
     });
   };
+
+  // ✅ 난이도→Candy 매핑
+  const getCandyByDifficulty = (d) => {
+    switch (d) {
+      case "EASY":
+        return 4;
+      case "NORMAL":
+        return 6;
+      case "HARD":
+        return 8;
+      default:
+        return 0;
+    }
+  };
+
+  const candyCount = getCandyByDifficulty(difficulty);
 
   return (
     <div>
@@ -66,7 +82,9 @@ const TodayMission = ({
         )}
         <TextOverlayBold>{content}</TextOverlayBold>
         <TextOverlayRegular>{missionComment}</TextOverlayRegular>
-        <CandyOverlay>15개</CandyOverlay>
+
+        {/* ✅ Candy 개수 난이도 기반으로 렌더링 */}
+        <CandyOverlay>{candyCount ? `${candyCount}개` : ""}</CandyOverlay>
       </ImageWrapper>
     </div>
   );
@@ -108,7 +126,7 @@ const TextOverlayBold = styled.p`
   position: absolute;
   top: 25%;
   left: 50%;
-  transform: translate(-50%, -50%); /* 정확히 중앙으로 이동 */
+  transform: translate(-50%, -50%);
   color: #fff;
   font-size: 17.5px;
   font-weight: 600;
@@ -119,7 +137,7 @@ const TextOverlayRegular = styled.p`
   position: absolute;
   top: 45%;
   left: 50%;
-  transform: translate(-50%, -50%); /* 정확히 중앙으로 이동 */
+  transform: translate(-50%, -50%);
   color: #c4c4c4;
   font-size: 10px;
   font-weight: 400;

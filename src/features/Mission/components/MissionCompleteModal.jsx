@@ -2,11 +2,16 @@
 import React, { useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 
-import CloseIcon from "../../../assets/CancleIcon.png"; // 닫기 아이콘 (있는 걸 재사용)
+import CloseIcon from "../../../assets/CancleIcon.png";
 import MissionClearTag from "../assets/MissionClearTag.png";
 import LeeSeoyoonFont from "../../../../public/fonts/이서윤체.ttf";
 
-const MissionCompleteModal = ({ onClose, onGoBoard, onGoShop }) => {
+const MissionCompleteModal = ({
+  candyCount = 0,
+  onClose,
+  onGoBoard,
+  onGoShop,
+}) => {
   // 배경 스크롤 잠금
   useEffect(() => {
     const prev = document.body.style.overflow;
@@ -18,13 +23,13 @@ const MissionCompleteModal = ({ onClose, onGoBoard, onGoShop }) => {
     <Overlay>
       <FontStyle />
       <Card>
-        {/* 보라 라벨 + 말풍선 아이콘 영역은 간략화 */}
         <Badge src={MissionClearTag} />
         <CloseBtn type="button" onClick={onClose} aria-label="닫기">
           <img src={CloseIcon} alt="close" />
         </CloseBtn>
 
-        <Title>솜뭉치 15개를 모았어요.</Title>
+        {/* ✅ Candy 개수 동적 표시 */}
+        <Title>솜뭉치 {candyCount}개를 모았어요.</Title>
         <Sub>오늘 하루도 수고했어요 :) 내일 또 만나요!</Sub>
 
         <Btn onClick={onGoBoard}>게시판 구경가기</Btn>
@@ -48,8 +53,8 @@ const FontStyle = createGlobalStyle`
 `;
 
 const Overlay = styled.div`
-  position: absolute; /* 부모(Container) 기준 */
-  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  position: absolute;
+  inset: 0;
   background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
@@ -134,8 +139,4 @@ const Btn = styled.div`
   &:not(:last-of-type) {
     margin-bottom: 18px;
   }
-`;
-
-const Emoji = styled.span`
-  font-size: 18px;
 `;
